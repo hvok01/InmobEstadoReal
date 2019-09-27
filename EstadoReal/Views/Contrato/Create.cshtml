@@ -1,0 +1,50 @@
+﻿@model EstadoReal.Models.Contrato
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Crear</h1>
+
+<h4>Contrato</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="InicioContrato" class="control-label"></label>
+                <input type="date" name="InicioContrato"/>
+                <span asp-validation-for="InicioContrato" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FinContrato" class="control-label"></label>
+                <input type="date" name="FinContrato" />
+                <span asp-validation-for="FinContrato" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Deudas" class="control-label"></label>
+                <input asp-for="Deudas" class="form-control" />
+                <span asp-validation-for="Deudas" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdInquilino" class="control-label"></label>
+                <input asp-for="IdInquilino" class="form-control" />
+                <span asp-validation-for="IdInquilino" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdInmueble" class="control-label"></label>
+                <input asp-for="IdInmueble" class="form-control" />
+                <span asp-validation-for="IdInmueble" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Crear" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Volver</a>
+</div>
+

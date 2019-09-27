@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EstadoReal.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,16 +10,36 @@ namespace EstadoReal.Controllers
 {
     public class ContratoController : Controller
     {
+        private readonly IRepositorio<Contrato> repositorio;
+
+        public ContratoController(IRepositorio<Contrato> repositorio)
+        {
+            this.repositorio = repositorio;
+        }
+
         // GET: Contrato
         public ActionResult Index()
         {
-            return View();
+            var lista = repositorio.ObtenerTodos();
+            if (TempData.ContainsKey("Id"))
+                ViewBag.Id = TempData["Id"];
+            return View(lista);
         }
 
         // GET: Contrato/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            try
+            {
+                var contrato = repositorio.ObtenerPorId(id);
+                return View(contrato);
+            }
+            catch (Exception e)
+            {
+                ViewBag.Error = e.Message;
+                ViewBag.StackTrate = e.StackTrace;
+                return View();
+            }
         }
 
         // GET: Contrato/Create
@@ -30,16 +51,23 @@ namespace EstadoReal.Controllers
         // POST: Contrato/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Contrato contrato)
         {
             try
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    repositorio.Alta(contrato);
+                    TempData["Id"] = contrato.IdContrato;
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                    return View();
             }
-            catch
+            catch (Exception ex)
             {
+                ViewBag.Error = ex.Message;
+                ViewBag.StackTrate = ex.StackTrace;
                 return View();
             }
         }
@@ -47,19 +75,26 @@ namespace EstadoReal.Controllers
         // GET: Contrato/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            ViewBag.id = id;
+            var contrato = repositorio.ObtenerPorId(id);
+            return View(contrato);
         }
 
         // POST: Contrato/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(Contrato contrato)
         {
             try
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    repositorio.Modificacion(contrato);
+                    TempData["Id"] = contrato.IdContrato;
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                    return View();
             }
             catch
             {
@@ -70,22 +105,33 @@ namespace EstadoReal.Controllers
         // GET: Contrato/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            try
+            {
+                var contrato = repositorio.ObtenerPorId(id);
+                return View(contrato);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = ex.Message;
+                ViewBag.StackTrae = ex.StackTrace;
+                return View();
+            }
         }
 
         // POST: Contrato/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(Contrato contrato)
         {
             try
             {
-                // TODO: Add delete logic here
-
+                repositorio.Baja(contrato.IdContrato);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
+                ViewBag.Error = ex.Message;
+                ViewBag.StackTrae = ex.StackTrace;
                 return View();
             }
         }

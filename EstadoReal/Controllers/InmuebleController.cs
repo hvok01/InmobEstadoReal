@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EstadoReal.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,16 +10,36 @@ namespace EstadoReal.Controllers
 {
     public class InmuebleController : Controller
     {
+        private readonly IRepositorio<Inmueble> repositorio;
+
+        public InmuebleController(IRepositorio<Inmueble> repositorio)
+        {
+            this.repositorio = repositorio;
+        }
+
         // GET: Inmueble
         public ActionResult Index()
         {
-            return View();
+            var lista = repositorio.ObtenerTodos();
+            if (TempData.ContainsKey("Id"))
+                ViewBag.Id = TempData["Id"];
+            return View(lista);
         }
 
         // GET: Inmueble/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            try
+            {
+                var inmueble = repositorio.ObtenerPorId(id);
+                return View(inmueble);
+            }
+            catch (Exception e)
+            {
+                ViewBag.Error = e.Message;
+                ViewBag.StackTrate = e.StackTrace;
+                return View();
+            }
         }
 
         // GET: Inmueble/Create
@@ -30,16 +51,23 @@ namespace EstadoReal.Controllers
         // POST: Inmueble/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Inmueble inmueble)
         {
             try
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid && inmueble.Direccion != "")
+                {
+                    repositorio.Alta(inmueble);
+                    TempData["Id"] = inmueble.IdInmueble;
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                    return View();
             }
-            catch
+            catch (Exception ex)
             {
+                ViewBag.Error = ex.Message;
+                ViewBag.StackTrate = ex.StackTrace;
                 return View();
             }
         }
@@ -47,19 +75,26 @@ namespace EstadoReal.Controllers
         // GET: Inmueble/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            ViewBag.id = id;
+            var inmueble = repositorio.ObtenerPorId(id);
+            return View(inmueble);
         }
 
         // POST: Inmueble/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(Inmueble inmueble)
         {
             try
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid && inmueble.Direccion != "")
+                {
+                    repositorio.Modificacion(inmueble);
+                    TempData["Id"] = inmueble.IdInmueble;
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                    return View();
             }
             catch
             {
@@ -70,22 +105,33 @@ namespace EstadoReal.Controllers
         // GET: Inmueble/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            try
+            {
+                var inmueble = repositorio.ObtenerPorId(id);
+                return View(inmueble);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = ex.Message;
+                ViewBag.StackTrae = ex.StackTrace;
+                return View();
+            }
         }
 
         // POST: Inmueble/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(Inmueble inmueble)
         {
             try
             {
-                // TODO: Add delete logic here
-
+                repositorio.Baja(inmueble.IdInmueble);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
+                ViewBag.Error = ex.Message;
+                ViewBag.StackTrae = ex.StackTrace;
                 return View();
             }
         }

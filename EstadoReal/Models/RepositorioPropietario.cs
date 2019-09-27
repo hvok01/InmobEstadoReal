@@ -41,7 +41,7 @@ namespace EstadoReal.Models
             int res = -1;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"DELETE FROM Propietarios WHERE IdPropieterio = {id}";
+                string sql = $"DELETE FROM Propietarios WHERE idPropietario = {id}";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.CommandType = CommandType.Text;

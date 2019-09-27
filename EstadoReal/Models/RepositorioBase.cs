@@ -14,8 +14,7 @@ namespace EstadoReal.Models
         protected RepositorioBase(IConfiguration configuration)
         {
             this.configuration = configuration;
-            connectionString = configuration["Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=EstadoRealDataBase;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"];
+            connectionString = configuration["ConnectionStrings:DefaultConnection"];
         }
-
     }
 }

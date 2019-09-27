@@ -1,0 +1,64 @@
+﻿@model IEnumerable<EstadoReal.Models.Pago>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+
+<div>
+    <a asp-action="Create">Crear nuevo Pago</a>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Monto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Estado)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fecha)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NroPago)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Monto)
+            </td>
+            @if (item.Estado == 1)
+            {
+                <td>
+                    Cancelado
+                </td>
+            }
+            else
+            {
+                <td>
+                    Pendiente
+                </td>
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.Fecha)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NroPago)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.IdPago }) |
+                @Html.ActionLink("Details", "Details", new { id = item.IdPago }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.IdPago })
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

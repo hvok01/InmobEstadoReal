@@ -1,0 +1,93 @@
+﻿@model IEnumerable<EstadoReal.Models.Inmueble>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+
+<div>
+    <a asp-action="Create">Crear nuevo Inmueble</a>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Direccion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UsoResidencial)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tipo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ambientes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Precio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Estado)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdPropietario)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Direccion)
+            </td>
+
+            @if (item.UsoResidencial == 1)
+            {
+                <td class="col-sm-10">
+                    Sí
+                </td>
+            }
+            else
+            {
+                <td class="col-sm-10">
+                    No
+                </td>
+            }
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Tipo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ambientes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Precio)
+            </td>
+            @if (item.Estado == 1)
+            {
+                <td class="col-sm-10">
+                    Disponible
+                </td>
+            }
+            else
+            {
+                <td class="col-sm-10">
+                    Ocupado
+                </td>
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.IdPropietario)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.IdInmueble }) |
+                @Html.ActionLink("Details", "Details", new { id = item.IdInmueble }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.IdInmueble })
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

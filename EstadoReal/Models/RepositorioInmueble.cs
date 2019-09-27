@@ -21,7 +21,7 @@ namespace EstadoReal.Models
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string sql = $"INSERT INTO Inmuebles (Direccion, UsoResidencial, Tipo, Ambientes, Precio, Estado, IdPropietario) " +
-                    $"VALUES ('{i.Direccion}', {i.UsoResidencial},'{i.Tipo}',{i.Ambientes},{i.Precio},{i.Estado},{i.IdPropietario})";
+                    $"VALUES ('{i.Direccion}', {i.UsoResidencial}, '{i.Tipo}', {i.Ambientes}, {i.Precio}, {i.Estado}, {i.IdPropietario}) ;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.CommandType = CommandType.Text;
@@ -90,11 +90,11 @@ namespace EstadoReal.Models
                         {
                             IdInmueble = reader.GetInt32(0),
                             Direccion = reader.GetString(1),
-                            UsoResidencial = reader.GetBoolean(2),
+                            UsoResidencial = reader.GetByte(2),
                             Tipo = reader.GetString(3),
                             Ambientes = reader.GetInt32(4),
                             Precio = reader.GetDecimal(5),
-                            Estado = reader.GetBoolean(6),
+                            Estado = reader.GetByte(6),
                             IdPropietario = reader.GetInt32(7),
                         };
                     }
@@ -123,11 +123,11 @@ namespace EstadoReal.Models
                         {
                             IdInmueble = reader.GetInt32(0),
                             Direccion = reader.GetString(1),
-                            UsoResidencial = reader.GetBoolean(2),
+                            UsoResidencial = reader.GetByte(2),
                             Tipo = reader.GetString(3),
                             Ambientes = reader.GetInt32(4),
                             Precio = reader.GetDecimal(5),
-                            Estado = reader.GetBoolean(6),
+                            Estado = reader.GetByte(6),
                             IdPropietario = reader.GetInt32(7),
                         };
                     }
@@ -155,11 +155,11 @@ namespace EstadoReal.Models
                         {
                             IdInmueble = reader.GetInt32(0),
                             Direccion = reader.GetString(1),
-                            UsoResidencial = reader.GetBoolean(2),
+                            UsoResidencial = reader.GetByte(2),
                             Tipo = reader.GetString(3),
                             Ambientes = reader.GetInt32(4),
                             Precio = reader.GetDecimal(5),
-                            Estado = reader.GetBoolean(6),
+                            Estado = reader.GetByte(6),
                             IdPropietario = reader.GetInt32(7),
                         };
                         res.Add(i);

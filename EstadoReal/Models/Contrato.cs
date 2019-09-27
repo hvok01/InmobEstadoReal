@@ -10,10 +10,15 @@ namespace EstadoReal.Models
     {
         [Key]
         public int IdContrato { get; set; }
+        [Required]
         public string InicioContrato { get; set; }
+        [Required]
         public string FinContrato { get; set; }
+        [Required]
         public decimal Deudas { get; set; }
+        [Required]
         public int IdInquilino { get; set; }
+        [Required]
         public int IdInmueble { get; set; }
     }
 }

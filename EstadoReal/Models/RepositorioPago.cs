@@ -58,7 +58,7 @@ namespace EstadoReal.Models
             int res = -1;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"UPDATE Pagos SET Monto={p.Monto}, Estado={p.Estado}, Fecha='{p.Fecha}', NroPago={p.NroPago}, IdContrato={p.IdContrato}, " +
+                string sql = $"UPDATE Pagos SET Monto={p.Monto} , Estado={p.Estado}, Fecha='{p.Fecha}', NroPago={p.NroPago} " +
                     $"WHERE IdPago = {p.IdPago} ;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
@@ -90,8 +90,8 @@ namespace EstadoReal.Models
                         {
                             IdPago = reader.GetInt32(0),
                             Monto = reader.GetDecimal(1),
-                            Estado = reader.GetBoolean(2),
-                            Fecha = reader.GetString(3),
+                            Estado = reader.GetByte(2),
+                            Fecha = reader.GetDateTime(3).ToString(),
                             NroPago = reader.GetInt32(4),
                             IdContrato = reader.GetInt32(5),
                         };
@@ -121,8 +121,8 @@ namespace EstadoReal.Models
                         {
                             IdPago = reader.GetInt32(0),
                             Monto = reader.GetDecimal(1),
-                            Estado = reader.GetBoolean(2),
-                            Fecha = reader.GetString(3),
+                            Estado = reader.GetByte(2),
+                            Fecha = reader.GetDateTime(3).ToString(),
                             NroPago = reader.GetInt32(4),
                             IdContrato = reader.GetInt32(5),
                         };
@@ -151,8 +151,8 @@ namespace EstadoReal.Models
                         {
                             IdPago = reader.GetInt32(0),
                             Monto = reader.GetDecimal(1),
-                            Estado = reader.GetBoolean(2),
-                            Fecha = reader.GetString(3),
+                            Estado = reader.GetByte(2),
+                            Fecha = reader.GetDateTime(3).ToString(),
                             NroPago = reader.GetInt32(4),
                             IdContrato = reader.GetInt32(5),
                         };

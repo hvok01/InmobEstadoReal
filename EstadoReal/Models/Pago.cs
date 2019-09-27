@@ -10,10 +10,15 @@ namespace EstadoReal.Models
     {
         [Key]
         public int IdPago { get; set; }
+        [Required]
         public decimal Monto { get; set; }
-        public bool Estado { get; set; }
+        [Required]
+        public byte Estado { get; set; }
+        [Required]
         public string Fecha { get; set; }
+        [Required]
         public int NroPago { get; set; }
+        [Required]
         public int IdContrato { get; set; }
     }
 }

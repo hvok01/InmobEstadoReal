@@ -12,12 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Contrato\" />
-    <Folder Include="Views\Inmueble\" />
-    <Folder Include="Views\Inquilino\" />
-    <Folder Include="Views\Pago\" />
-    <Folder Include="Views\Propietario\" />
-    <Folder Include="wwwroot\" />
+    <Folder Include="wwwroot\img\" />
+    <Folder Include="wwwroot\js\" />
+    <Folder Include="wwwroot\css\" />
   </ItemGroup>
 
 </Project>

@@ -10,12 +10,19 @@ namespace EstadoReal.Models
     {
         [Key]
         public int IdInmueble { get; set; }
+        [Required]
         public string Direccion { get; set; }
-        public bool UsoResidencial { get; set; }
+        [Required]
+        public byte UsoResidencial { get; set; }
+        [Required]
         public string Tipo { get; set; }
+        [Required]
         public int Ambientes { get; set; }
+        [Required]
         public decimal Precio { get; set; }
-        public bool Estado { get; set; }
+        [Required]
+        public byte Estado { get; set; }
+        [Required]
         public int IdPropietario { get; set; }
     }
 }

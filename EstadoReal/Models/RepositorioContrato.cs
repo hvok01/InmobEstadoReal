@@ -89,8 +89,8 @@ namespace EstadoReal.Models
                         c = new Contrato
                         {
                             IdContrato = reader.GetInt32(0),
-                            InicioContrato = reader.GetString(1),
-                            FinContrato = reader.GetString(2),
+                            InicioContrato = reader.GetDateTime(1).ToString(),
+                            FinContrato = reader.GetDateTime(2).ToString(),
                             Deudas = reader.GetDecimal(3),
                             IdInquilino = reader.GetInt32(4),
                             IdInmueble = reader.GetInt32(5),
@@ -120,8 +120,8 @@ namespace EstadoReal.Models
                         c = new Contrato
                         {
                             IdContrato = reader.GetInt32(0),
-                            InicioContrato = reader.GetString(1),
-                            FinContrato = reader.GetString(2),
+                            InicioContrato = reader.GetDateTime(1).ToString(),
+                            FinContrato = reader.GetDateTime(2).ToString(),
                             Deudas = reader.GetDecimal(3),
                             IdInquilino = reader.GetInt32(4),
                             IdInmueble = reader.GetInt32(5),
@@ -151,8 +151,8 @@ namespace EstadoReal.Models
                         c = new Contrato
                         {
                             IdContrato = reader.GetInt32(0),
-                            InicioContrato = reader.GetString(1),
-                            FinContrato = reader.GetString(2),
+                            InicioContrato = reader.GetDateTime(1).ToString(),
+                            FinContrato = reader.GetDateTime(2).ToString(),
                             Deudas = reader.GetDecimal(3),
                             IdInquilino = reader.GetInt32(4),
                             IdInmueble = reader.GetInt32(5),
@@ -181,8 +181,8 @@ namespace EstadoReal.Models
                         Contrato c = new Contrato
                         {
                             IdContrato = reader.GetInt32(0),
-                            InicioContrato = reader.GetString(1),
-                            FinContrato = reader.GetString(2),
+                            InicioContrato = reader.GetDateTime(1).ToString(),
+                            FinContrato = reader.GetDateTime(2).ToString(),
                             Deudas = reader.GetDecimal(3),
                             IdInquilino = reader.GetInt32(4),
                             IdInmueble = reader.GetInt32(5),
