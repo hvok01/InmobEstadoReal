@@ -20,8 +20,8 @@ namespace EstadoReal.Models
             int res = -1;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"INSERT INTO Inmuebles (Direccion, UsoResidencial, Tipo, Ambientes, Precio, Estado, IdPropietario) " +
-                    $"VALUES ('{i.Direccion}', {i.UsoResidencial}, '{i.Tipo}', {i.Ambientes}, {i.Precio}, {i.Estado}, {i.IdPropietario}) ;";
+                string sql = $"INSERT INTO Inmuebles (Direccion, UsoResidencial, Tipo, Ambientes, Precio, Disponibilidad, EstadoInmueble, IdPropietario) " +
+                    $"VALUES ('{i.Direccion}', {i.UsoResidencial}, '{i.Tipo}', {i.Ambientes}, {i.Precio}, {i.Disponibilidad}, 1 , {i.IdPropietario}) ;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.CommandType = CommandType.Text;
@@ -41,7 +41,7 @@ namespace EstadoReal.Models
             int res = -1;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"DELETE FROM Inmuebles WHERE IdInmueble = {id}";
+                string sql = $"UPDATE Inmuebles SET EstadoInmueble = 0 WHERE IdInmueble = {id}";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.CommandType = CommandType.Text;
@@ -58,8 +58,8 @@ namespace EstadoReal.Models
             int res = -1;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"UPDATE Inmuebles SET Direccion='{i.Direccion}', UsoResidencial={i.UsoResidencial}, Tipo='{i.Tipo}', Ambientes={i.Ambientes}, Precio={i.Precio}, " +
-                    $"Estado={i.Estado}, IdPropietario={i.IdPropietario} WHERE IdInmueble = {i.IdInmueble}";
+                string sql = $"UPDATE Inmuebles SET Direccion='{i.Direccion}', UsoResidencial={i.UsoResidencial}, Tipo='{i.Tipo}', Ambientes={i.Ambientes}, Precio= {i.Precio}, " +
+                    $"Disponibilidad={i.Disponibilidad}, EstadoInmueble = 1 WHERE IdInmueble = {i.IdInmueble} ;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.CommandType = CommandType.Text;
@@ -76,8 +76,8 @@ namespace EstadoReal.Models
             Inmueble i = null;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"SELECT IdInmueble, Direccion, UsoResidencial, Tipo, Ambientes, Precio, Estado, IdPropietario " +
-                    $" FROM Inmuebles WHERE IdInmueble=@id";
+                string sql = $"SELECT IdInmueble, Direccion, UsoResidencial, Tipo, Ambientes, Precio, Disponibilidad, EstadoInmueble, IdPropietario " +
+                    $" FROM Inmuebles WHERE IdInmueble=@id AND EstadoInmueble = 1;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.Parameters.Add("@id", SqlDbType.Int).Value = id;
@@ -94,8 +94,9 @@ namespace EstadoReal.Models
                             Tipo = reader.GetString(3),
                             Ambientes = reader.GetInt32(4),
                             Precio = reader.GetDecimal(5),
-                            Estado = reader.GetByte(6),
-                            IdPropietario = reader.GetInt32(7),
+                            Disponibilidad = reader.GetByte(6),
+                            EstadoInmueble = reader.GetByte(7),
+                            IdPropietario = reader.GetInt32(8),
                         };
                     }
                     connection.Close();
@@ -104,22 +105,22 @@ namespace EstadoReal.Models
             return i;
         }
 
-        public Inmueble ObtenerPorIdPropietario(int id)
+        public IList<Inmueble> ObtenerPorIdPropietario(int id)
         {
-            Inmueble i = null;
+            IList<Inmueble> res = new List<Inmueble>();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"SELECT IdInmueble, Direccion, UsoResidencial, Tipo, Ambientes, Precio, Estado, IdPropietario " +
-                    $" FROM Inmuebles WHERE IdPropietario=@id";
+                string sql = $"SELECT IdInmueble, Direccion, UsoResidencial, Tipo, Ambientes, Precio, Disponibilidad, EstadoInmueble, IdPropietario " +
+                    $" FROM Inmuebles WHERE IdPropietario=@id AND EstadoInmueble = 1;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.Parameters.Add("@id", SqlDbType.Int).Value = id;
                     command.CommandType = CommandType.Text;
                     connection.Open();
                     var reader = command.ExecuteReader();
-                    if (reader.Read())
+                    while (reader.Read())
                     {
-                        i = new Inmueble
+                        Inmueble i = new Inmueble
                         {
                             IdInmueble = reader.GetInt32(0),
                             Direccion = reader.GetString(1),
@@ -127,14 +128,51 @@ namespace EstadoReal.Models
                             Tipo = reader.GetString(3),
                             Ambientes = reader.GetInt32(4),
                             Precio = reader.GetDecimal(5),
-                            Estado = reader.GetByte(6),
-                            IdPropietario = reader.GetInt32(7),
+                            Disponibilidad = reader.GetByte(6),
+                            EstadoInmueble = reader.GetByte(7),
+                            IdPropietario = reader.GetInt32(8),
                         };
+                        res.Add(i);
                     }
                     connection.Close();
                 }
             }
-            return i;
+            return res;
+        }
+
+        public IList<Inmueble> ObtenerDisponiblesPorIdPropietario(int id)
+        {
+            IList<Inmueble> res = new List<Inmueble>();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string sql = $"SELECT IdInmueble, Direccion, UsoResidencial, Tipo, Ambientes, Precio, Disponibilidad, EstadoInmueble, IdPropietario " +
+                    $" FROM Inmuebles WHERE IdPropietario=@id AND EstadoInmueble = 1 AND Disponibilidad = 1";
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.Add("@id", SqlDbType.Int).Value = id;
+                    command.CommandType = CommandType.Text;
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Inmueble i = new Inmueble
+                        {
+                            IdInmueble = reader.GetInt32(0),
+                            Direccion = reader.GetString(1),
+                            UsoResidencial = reader.GetByte(2),
+                            Tipo = reader.GetString(3),
+                            Ambientes = reader.GetInt32(4),
+                            Precio = reader.GetDecimal(5),
+                            Disponibilidad = reader.GetByte(6),
+                            EstadoInmueble = reader.GetByte(7),
+                            IdPropietario = reader.GetInt32(8),
+                        };
+                        res.Add(i);
+                    }
+                    connection.Close();
+                }
+            }
+            return res;
         }
 
         public IList<Inmueble> ObtenerTodos()
@@ -142,8 +180,8 @@ namespace EstadoReal.Models
             IList<Inmueble> res = new List<Inmueble>();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"SELECT IdInmueble, Direccion, UsoResidencial, Tipo, Ambientes, Precio, Estado, IdPropietario " +
-                    $" FROM Inmuebles";
+                string sql = $"SELECT IdInmueble, Direccion, UsoResidencial, Tipo, Ambientes, Precio, Disponibilidad, EstadoInmueble, IdPropietario " +
+                    $" FROM Inmuebles WHERE EstadoInmueble = 1;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.CommandType = CommandType.Text;
@@ -159,8 +197,9 @@ namespace EstadoReal.Models
                             Tipo = reader.GetString(3),
                             Ambientes = reader.GetInt32(4),
                             Precio = reader.GetDecimal(5),
-                            Estado = reader.GetByte(6),
-                            IdPropietario = reader.GetInt32(7),
+                            Disponibilidad = reader.GetByte(6),
+                            EstadoInmueble = reader.GetByte(7),
+                            IdPropietario = reader.GetInt32(8),
                         };
                         res.Add(i);
                     }
@@ -169,5 +208,41 @@ namespace EstadoReal.Models
             }
             return res;
         }
+
+
+        public IList<Inmueble> ObtenerDisponibles()
+        {
+            IList<Inmueble> res = new List<Inmueble>();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string sql = $"SELECT IdInmueble, Direccion, UsoResidencial, Tipo, Ambientes, Precio, Disponibilidad, EstadoInmueble, IdPropietario " +
+                    $" FROM Inmuebles WHERE Disponibilidad = 1 AND EstadoInmueble = 1;";
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.CommandType = CommandType.Text;
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Inmueble i = new Inmueble
+                        {
+                            IdInmueble = reader.GetInt32(0),
+                            Direccion = reader.GetString(1),
+                            UsoResidencial = reader.GetByte(2),
+                            Tipo = reader.GetString(3),
+                            Ambientes = reader.GetInt32(4),
+                            Precio = reader.GetDecimal(5),
+                            Disponibilidad = reader.GetByte(6),
+                            EstadoInmueble = reader.GetByte(7),
+                            IdPropietario = reader.GetInt32(8),
+                        };
+                        res.Add(i);
+                    }
+                    connection.Close();
+                }
+            }
+            return res;
+        }
+
     }
 }

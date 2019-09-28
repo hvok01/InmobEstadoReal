@@ -13,11 +13,13 @@ namespace EstadoReal.Models
         [Required]
         public decimal Monto { get; set; }
         [Required]
-        public byte Estado { get; set; }
+        public byte Pagado { get; set; }
         [Required]
         public string Fecha { get; set; }
         [Required]
         public int NroPago { get; set; }
+
+        public byte EstadoPago { get; set; }
         [Required]
         public int IdContrato { get; set; }
     }

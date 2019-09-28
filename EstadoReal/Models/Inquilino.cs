@@ -21,10 +21,12 @@ namespace EstadoReal.Models
         [Required]
         public string Correo { get; set; }
         [Required]
-        public int Telefono { get; set; }
+        public long Telefono { get; set; }
         [Required]
         public string NombreGarante { get; set; }
         [Required]
         public int DniGarante { get; set; }
+
+        public byte EstadoInquilino { get; set; }
     }
 }

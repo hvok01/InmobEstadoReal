@@ -17,5 +17,6 @@ namespace EstadoReal.Models
         public DbSet<Inmueble> Inmuebles { get; set; }
         public DbSet<Inquilino> Inquilinos { get; set; }
         public DbSet<Pago> Pagos { get; set; }
+        public DbSet<Empleado> Empleados { get; set; }
     }
 }

@@ -11,18 +11,18 @@ using Microsoft.AspNetCore.Mvc;
 namespace EstadoReal.Controllers
 {
     [Authorize]
-    public class PropietarioController : Controller
+    public class EmpleadoController : Controller
     {
-        private readonly IRepositorioPropietario repositorio;
-        private readonly IRepositorioEmpleado empleado;
+        private readonly IRepositorioEmpleado repositorio;
+        private readonly IRepositorioPropietario propietario;
 
-        public PropietarioController(IRepositorioPropietario repositorio, IRepositorioEmpleado empleado)
+        public EmpleadoController(IRepositorioEmpleado repositorio, IRepositorioPropietario propietario)
         {
             this.repositorio = repositorio;
-            this.empleado = empleado;
+            this.propietario = propietario;
         }
 
-        // GET: Propietario
+        // GET: Empleado
         public ActionResult Index()
         {
             var lista = repositorio.ObtenerTodos();
@@ -31,13 +31,13 @@ namespace EstadoReal.Controllers
             return View(lista);
         }
 
-        // GET: Propietario/Details/5
+        // GET: Empleado/Details/5
         public ActionResult Details(int id)
         {
             try
             {
-                var prop = repositorio.ObtenerPorId(id);
-                return View(prop);
+                var empleado = repositorio.ObtenerPorId(id);
+                return View(empleado);
             }
             catch (Exception e)
             {
@@ -47,39 +47,39 @@ namespace EstadoReal.Controllers
             }
         }
 
-        // GET: Propietario/Create
+        // GET: Empleado/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Propietario/Create
+        // POST: Empleado/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Propietario propietario)
+        public ActionResult Create(Empleado empleado)
         {
             try
             {
-                var existeCorreoPropietario = repositorio.ObtenerPorCorreo(propietario.Correo);
-
-                if (ModelState.IsValid && existeCorreoPropietario == null)
+                if (ModelState.IsValid)
                 {
-                    if (empleado.ObtenerPorCorreo(propietario.Correo) != null)
+                    if(repositorio.ObtenerPorCorreo(empleado.Correo) != null || propietario.ObtenerPorCorreo(empleado.Correo) != null)
                     {
-                        //el correo ya exite champ
-                        return View();
-                    } else
-                    {
-                        propietario.Clave = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                            password: propietario.Clave,
-                            salt: System.Text.Encoding.ASCII.GetBytes("SALADA"),
-                            prf: KeyDerivationPrf.HMACSHA1,
-                            iterationCount: 1000,
-                            numBytesRequested: 256 / 8));
-                        repositorio.Alta(propietario);
-                        TempData["Id"] = propietario.IdPropietario;
+                        //este correo ya está en uso y este software no permite los mismo correos :(
                         return RedirectToAction(nameof(Index));
                     }
+                    else
+                    {
+                        empleado.Clave = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                                                password: empleado.Clave,
+                                                salt: System.Text.Encoding.ASCII.GetBytes("SALADA"),
+                                                prf: KeyDerivationPrf.HMACSHA1,
+                                                iterationCount: 1000,
+                                                numBytesRequested: 256 / 8));
+                        repositorio.Alta(empleado);
+                        TempData["Id"] = empleado.IdEmpleado;
+                        return RedirectToAction(nameof(Index));
+                    }
+                    
                 }
                 else
                     return View();
@@ -92,32 +92,31 @@ namespace EstadoReal.Controllers
             }
         }
 
-        // GET: Propietario/Edit/5
+        // GET: Empleado/Edit/5
         public ActionResult Edit(int id)
         {
             ViewBag.id = id;
-            var prop = repositorio.ObtenerPorId(id);
-            return View(prop);
+            var empl = repositorio.ObtenerPorId(id);
+            return View(empl);
         }
 
-        // POST: Propietario/Edit/5
+        // POST: Empleado/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Propietario propietario)
+        public ActionResult Edit(Empleado empleado)
         {
             try
             {
-                TempData["Nombre"] = propietario.Nombre;
-                if (ModelState.IsValid && propietario.Nombre != "" && propietario.Clave != "")
+                if (ModelState.IsValid && empleado.Nombre != "" && empleado.Clave != "")
                 {
-                    propietario.Clave = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                        password: propietario.Clave,
+                    empleado.Clave = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                        password: empleado.Clave,
                         salt: System.Text.Encoding.ASCII.GetBytes("SALADA"),
                         prf: KeyDerivationPrf.HMACSHA1,
                         iterationCount: 1000,
                         numBytesRequested: 256 / 8));
-                    repositorio.Modificacion(propietario);
-                    TempData["Id"] = propietario.IdPropietario;
+                    repositorio.Modificacion(empleado);
+                    TempData["Id"] = empleado.IdEmpleado;
                     return RedirectToAction(nameof(Index));
                 }
                 else
@@ -129,13 +128,13 @@ namespace EstadoReal.Controllers
             }
         }
 
-        // GET: Propietario/Delete/5
+        // GET: Empleado/Delete/5
         public ActionResult Delete(int id)
         {
             try
             {
-                var prop = repositorio.ObtenerPorId(id);
-                return View(prop);
+                var empl = repositorio.ObtenerPorId(id);
+                return View(empl);
             }
             catch (Exception ex)
             {
@@ -145,14 +144,14 @@ namespace EstadoReal.Controllers
             }
         }
 
-        // POST: Propietario/Delete/5
+        // POST: Empleado/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(Propietario propietario)
+        public ActionResult Delete(Empleado empleado)
         {
             try
             {
-                repositorio.Baja(propietario.IdPropietario);
+                repositorio.Baja(empleado.IdEmpleado);
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)

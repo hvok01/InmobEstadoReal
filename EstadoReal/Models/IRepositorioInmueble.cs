@@ -7,6 +7,8 @@ namespace EstadoReal.Models
 {
     public interface IRepositorioInmueble : IRepositorio<Inmueble>
     {
-        Inmueble ObtenerPorIdPropietario(int id);
+        IList<Inmueble> ObtenerPorIdPropietario(int id);
+        IList<Inmueble> ObtenerDisponiblesPorIdPropietario(int id);
+        IList<Inmueble>  ObtenerDisponibles();
     }
 }

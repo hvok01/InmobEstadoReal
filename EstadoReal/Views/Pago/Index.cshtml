@@ -18,7 +18,7 @@
                 @Html.DisplayNameFor(model => model.Monto)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Estado)
+                @Html.DisplayNameFor(model => model.Pagado)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Fecha)
@@ -35,7 +35,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Monto)
             </td>
-            @if (item.Estado == 1)
+            @if (item.Pagado == 1)
             {
                 <td>
                     Cancelado

@@ -20,8 +20,8 @@ namespace EstadoReal.Models
             int res = -1;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"INSERT INTO Pagos (Monto, Estado, Fecha, NroPago, IdContrato) " +
-                    $"VALUES ({p.Monto}, {p.Estado}, '{p.Fecha}', {p.NroPago}, {p.IdContrato}) ;";
+                string sql = $"INSERT INTO Pagos (Monto, Pagado, Fecha, NroPago, EstadoPago, IdContrato) " +
+                    $"VALUES ({p.Monto}, {p.Pagado}, '{p.Fecha}', {p.NroPago}, 1,  {p.IdContrato}) ;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.CommandType = CommandType.Text;
@@ -41,7 +41,7 @@ namespace EstadoReal.Models
             int res = -1;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"DELETE FROM Pagos WHERE IdPago = {id} ;";
+                string sql = $"UPDATE Pagos SET EstadoPago = 0 WHERE IdPago = {id} ;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.CommandType = CommandType.Text;
@@ -58,7 +58,7 @@ namespace EstadoReal.Models
             int res = -1;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"UPDATE Pagos SET Monto={p.Monto} , Estado={p.Estado}, Fecha='{p.Fecha}', NroPago={p.NroPago} " +
+                string sql = $"UPDATE Pagos SET Monto={p.Monto} , Pagado={p.Pagado}, Fecha='{p.Fecha}', NroPago={p.NroPago} " +
                     $"WHERE IdPago = {p.IdPago} ;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
@@ -76,8 +76,8 @@ namespace EstadoReal.Models
             Pago p = null;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"SELECT IdPago, Monto, Estado, Fecha, NroPago, IdContrato " +
-                    $" FROM Pagos WHERE IdPago=@id ;";
+                string sql = $"SELECT IdPago, Monto, Pagado, Fecha, NroPago, EstadoPago, IdContrato " +
+                    $" FROM Pagos WHERE IdPago=@id AND EstadoPago = 1;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.Parameters.Add("@id", SqlDbType.Int).Value = id;
@@ -90,10 +90,11 @@ namespace EstadoReal.Models
                         {
                             IdPago = reader.GetInt32(0),
                             Monto = reader.GetDecimal(1),
-                            Estado = reader.GetByte(2),
+                            Pagado = reader.GetByte(2),
                             Fecha = reader.GetDateTime(3).ToString(),
                             NroPago = reader.GetInt32(4),
-                            IdContrato = reader.GetInt32(5),
+                            EstadoPago = reader.GetByte(5),
+                            IdContrato = reader.GetInt32(6),
                         };
                     }
                     connection.Close();
@@ -107,8 +108,8 @@ namespace EstadoReal.Models
             Pago p = null;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"SELECT IdPago, Monto, Estado, Fecha, NroPago, IdContrato " +
-                    $" FROM Pagos WHERE IdContrato=@id ;";
+                string sql = $"SELECT IdPago, Monto, Pagado, Fecha, NroPago, EstadoPago, IdContrato " +
+                    $" FROM Pagos WHERE IdContrato=@id AND EstadoPago = 1;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.Parameters.Add("@id", SqlDbType.Int).Value = id;
@@ -121,10 +122,11 @@ namespace EstadoReal.Models
                         {
                             IdPago = reader.GetInt32(0),
                             Monto = reader.GetDecimal(1),
-                            Estado = reader.GetByte(2),
+                            Pagado = reader.GetByte(2),
                             Fecha = reader.GetDateTime(3).ToString(),
                             NroPago = reader.GetInt32(4),
-                            IdContrato = reader.GetInt32(5),
+                            EstadoPago = reader.GetByte(5),
+                            IdContrato = reader.GetInt32(6),
                         };
                     }
                     connection.Close();
@@ -138,8 +140,8 @@ namespace EstadoReal.Models
             IList<Pago> res = new List<Pago>();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"SELECT IdPago, Monto, Estado, Fecha, NroPago, IdContrato " +
-                    $" FROM Pagos ;";
+                string sql = $"SELECT IdPago, Monto, Pagado, Fecha, NroPago, EstadoPago, IdContrato  " +
+                    $" FROM Pagos WHERE EstadoPago = 1;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.CommandType = CommandType.Text;
@@ -151,10 +153,11 @@ namespace EstadoReal.Models
                         {
                             IdPago = reader.GetInt32(0),
                             Monto = reader.GetDecimal(1),
-                            Estado = reader.GetByte(2),
+                            Pagado = reader.GetByte(2),
                             Fecha = reader.GetDateTime(3).ToString(),
                             NroPago = reader.GetInt32(4),
-                            IdContrato = reader.GetInt32(5),
+                            EstadoPago = reader.GetByte(5),
+                            IdContrato = reader.GetInt32(6),
                         };
                         res.Add(p);
                     }

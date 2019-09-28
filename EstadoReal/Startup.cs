@@ -33,11 +33,12 @@ namespace EstadoReal
                 {
                     options.LoginPath = "/Home/Login";
                     options.LogoutPath = "/Home/Logout";
-                    options.AccessDeniedPath = "/Home/Restringido";
+                    //antes era restringido pero no tenemos xd
+                    options.AccessDeniedPath = "/Home/Index";
                 });
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("Administrador", policy => policy.RequireClaim(ClaimTypes.Role, "Administrador"));
+                options.AddPolicy("Empleado", policy => policy.RequireClaim(ClaimTypes.Role, "Empleado"));
             });
             services.AddMvc();
             services.AddTransient<IRepositorio<Propietario>, RepositorioPropietario>();
@@ -50,6 +51,8 @@ namespace EstadoReal
             services.AddTransient<IRepositorioInquilino, RepositorioInquilino>();
             services.AddTransient<IRepositorio<Pago>, RepositorioPago>();
             services.AddTransient<IRepositorioPago, RepositorioPago>();
+            services.AddTransient<IRepositorio<Empleado>, RepositorioEmpleado>();
+            services.AddTransient<IRepositorioEmpleado, RepositorioEmpleado>();
             services.AddDbContext<DataContext>(options => options.UseSqlServer(configuration["ConnectionStrings:DefaultConnection"]));
         }
 

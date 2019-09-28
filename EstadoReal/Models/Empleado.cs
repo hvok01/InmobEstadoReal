@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace EstadoReal.Models
 {
-    public class Propietario
+    public class Empleado
     {
         [Key]
-        public int IdPropietario { get; set; }
+        public int IdEmpleado { get; set; }
         [Required]
         public string Nombre { get; set; }
         [Required]
@@ -19,12 +19,11 @@ namespace EstadoReal.Models
         [DataType(DataType.EmailAddress)]
         [Required]
         public string Correo { get; set; }
-        [Required]
-        public long Telefono { get; set; }
         [DataType(DataType.Password)]
         [Required]
         public string Clave { get; set; }
 
-        public byte EstadoPropietario { get; set; }
+        public byte EstadoEmpleado { get; set; }
+
     }
 }

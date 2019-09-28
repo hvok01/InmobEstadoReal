@@ -21,7 +21,9 @@ namespace EstadoReal.Models
         [Required]
         public decimal Precio { get; set; }
         [Required]
-        public byte Estado { get; set; }
+        public byte Disponibilidad { get; set; }
+
+        public byte EstadoInmueble { get; set; }
         [Required]
         public int IdPropietario { get; set; }
     }

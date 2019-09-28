@@ -20,5 +20,7 @@ namespace EstadoReal.Models
         public int IdInquilino { get; set; }
         [Required]
         public int IdInmueble { get; set; }
+
+        public byte EstadoContrato { get; set; }
     }
 }

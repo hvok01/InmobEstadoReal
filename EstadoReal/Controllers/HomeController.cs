@@ -16,11 +16,13 @@ namespace EstadoReal.Controllers
     public class HomeController : Controller
     {
         private readonly IRepositorioPropietario propietarios;
+        private readonly IRepositorioEmpleado empleadosRepo;
         private readonly DataContext contexto;
 
-        public HomeController(IRepositorioPropietario propietarios, DataContext contexto)
+        public HomeController(IRepositorioPropietario propietarios, IRepositorioEmpleado empleadosRepo, DataContext contexto)
         {
             this.propietarios = propietarios;
+            this.empleadosRepo = empleadosRepo;
             this.contexto = contexto;
         }
 
@@ -55,17 +57,17 @@ namespace EstadoReal.Controllers
                     prf: KeyDerivationPrf.HMACSHA1,
                     iterationCount: 1000,
                     numBytesRequested: 256 / 8));
-                var p = propietarios.ObtenerPorCorreo(loginView.Usuario);
-                if (p == null || p.Clave != hashed)
+                var e = empleadosRepo.ObtenerPorCorreo(loginView.Usuario);
+                if ( e == null || e.Clave != hashed)
                 {
                     ViewBag.Mensaje = "Datos inválidos";
                     return View();
                 }
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, p.Correo),
-                    new Claim("FullName", p.Nombre + " " + p.Apellido),
-                    new Claim(ClaimTypes.Role, p.IdPropietario < 10? "Administrador":"Propietario"),
+                    new Claim(ClaimTypes.Name, e.Correo),
+                    new Claim("FullName", e.Nombre + " " + e.Apellido),
+                    new Claim(ClaimTypes.Role, "Empleado"),
                 };
 
                 var claimsIdentity = new ClaimsIdentity(
@@ -99,7 +101,7 @@ namespace EstadoReal.Controllers
                     CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity),
                     authProperties);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Empleado");
             }
             catch (Exception ex)
             {
@@ -109,8 +111,52 @@ namespace EstadoReal.Controllers
             }
         }
 
-        // GET: Home/Login
-        public async Task<ActionResult> Logout()
+        public ActionResult Registrar()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Registrar(Empleado empleado)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    if (empleadosRepo.ObtenerPorCorreo(empleado.Correo) != null || empleadosRepo.ObtenerPorCorreo(empleado.Correo) != null)
+                    {
+                        //este correo ya está en uso y este software no permite los mismo correos :(
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        empleado.Clave = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                                                password: empleado.Clave,
+                                                salt: System.Text.Encoding.ASCII.GetBytes("SALADA"),
+                                                prf: KeyDerivationPrf.HMACSHA1,
+                                                iterationCount: 1000,
+                                                numBytesRequested: 256 / 8));
+                        empleadosRepo.Alta(empleado);
+                        TempData["Id"] = empleado.IdEmpleado;
+                        return RedirectToAction(nameof(Index));
+                    }
+
+                }
+                else
+                    return View();
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = ex.Message;
+                ViewBag.StackTrate = ex.StackTrace;
+                return View();
+            }
+        }
+
+
+            // GET: Home/Login
+            public async Task<ActionResult> Logout()
         {
             await HttpContext.SignOutAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme);
@@ -125,7 +171,7 @@ namespace EstadoReal.Controllers
             return View(claims);
         }
 
-        [Authorize(Policy = "Administrador")]
+        [Authorize(Policy = "Empleado")]
         public ActionResult Admin()
         {
             var identity = (ClaimsIdentity)User.Identity;

@@ -20,8 +20,8 @@ namespace EstadoReal.Models
             int res = -1;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"INSERT INTO Contratos (InicioContrato, FinContrato, Deudas, IdInquilino, IdInmueble) " +
-                    $"VALUES ('{c.InicioContrato}', '{c.FinContrato}',{c.Deudas},{c.IdInquilino},{c.IdInmueble})";
+                string sql = $"INSERT INTO Contratos (InicioContrato, FinContrato, Deudas, IdInquilino, IdInmueble, EstadoContrato) " +
+                    $"VALUES ('{c.InicioContrato}', '{c.FinContrato}',{c.Deudas},{c.IdInquilino},{c.IdInmueble}, 1) ;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.CommandType = CommandType.Text;
@@ -41,7 +41,7 @@ namespace EstadoReal.Models
             int res = -1;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"DELETE FROM Contratos WHERE IdContrato = {id}";
+                string sql = $"UPDATE Contratos SET EstadoContrato = 0 WHERE IdContrato = {id}";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.CommandType = CommandType.Text;
@@ -58,7 +58,7 @@ namespace EstadoReal.Models
             int res = -1;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"UPDATE Contratos SET InicioContrato='{c.InicioContrato}', FinContrato='{c.FinContrato}', Deudas={c.Deudas}, IdInquilino={c.IdInquilino}, IdInmueble={c.IdInmueble} " +
+                string sql = $"UPDATE Contratos SET InicioContrato='{c.InicioContrato}', FinContrato='{c.FinContrato}', Deudas={c.Deudas}, EstadoContrato = 1 " +
                     $"WHERE IdContrato = {c.IdContrato}";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
@@ -76,8 +76,8 @@ namespace EstadoReal.Models
             Contrato c = null;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"SELECT IdContrato, InicioContrato, FinContrato, Deudas, IdInquilino, IdInmueble " +
-                    $" FROM Contratos WHERE IdContrato=@id";
+                string sql = $"SELECT IdContrato, InicioContrato, FinContrato, Deudas, EstadoContrato, IdInquilino, IdInmueble " +
+                    $" FROM Contratos WHERE IdContrato=@id AND EstadoContrato = 1 ;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.Parameters.Add("@id", SqlDbType.Int).Value = id;
@@ -92,8 +92,9 @@ namespace EstadoReal.Models
                             InicioContrato = reader.GetDateTime(1).ToString(),
                             FinContrato = reader.GetDateTime(2).ToString(),
                             Deudas = reader.GetDecimal(3),
-                            IdInquilino = reader.GetInt32(4),
-                            IdInmueble = reader.GetInt32(5),
+                            EstadoContrato = reader.GetByte(4),
+                            IdInquilino = reader.GetInt32(5),
+                            IdInmueble = reader.GetInt32(6),
                         };
                     }
                     connection.Close();
@@ -107,8 +108,8 @@ namespace EstadoReal.Models
             Contrato c = null;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"SELECT IdContrato, InicioContrato, FinContrato, Deudas, IdInquilino, IdInmueble " +
-                    $" FROM Contratos WHERE IdInmueble=@id";
+                string sql = $"SELECT IdContrato, InicioContrato, FinContrato, Deudas, EstadoContrato, IdInquilino, IdInmueble " +
+                    $" FROM Contratos WHERE IdInmueble=@id AND EstadoContrato = 1 ;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.Parameters.Add("@id", SqlDbType.Int).Value = id;
@@ -123,8 +124,9 @@ namespace EstadoReal.Models
                             InicioContrato = reader.GetDateTime(1).ToString(),
                             FinContrato = reader.GetDateTime(2).ToString(),
                             Deudas = reader.GetDecimal(3),
-                            IdInquilino = reader.GetInt32(4),
-                            IdInmueble = reader.GetInt32(5),
+                            EstadoContrato = reader.GetByte(4),
+                            IdInquilino = reader.GetInt32(5),
+                            IdInmueble = reader.GetInt32(6),
                         };
                     }
                     connection.Close();
@@ -138,8 +140,8 @@ namespace EstadoReal.Models
             Contrato c = null;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"SELECT IdContrato, InicioContrato, FinContrato, Deudas, IdInquilino, IdInmueble " +
-                    $" FROM Contratos WHERE IdInquilino=@id";
+                string sql = $"SELECT IdContrato, InicioContrato, FinContrato, Deudas, EstadoContrato, IdInquilino, IdInmueble " +
+                    $" FROM Contratos WHERE IdInquilino=@id AND EstadoContrato = 1 ;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.Parameters.Add("@id", SqlDbType.Int).Value = id;
@@ -154,8 +156,9 @@ namespace EstadoReal.Models
                             InicioContrato = reader.GetDateTime(1).ToString(),
                             FinContrato = reader.GetDateTime(2).ToString(),
                             Deudas = reader.GetDecimal(3),
-                            IdInquilino = reader.GetInt32(4),
-                            IdInmueble = reader.GetInt32(5),
+                            EstadoContrato = reader.GetByte(4),
+                            IdInquilino = reader.GetInt32(5),
+                            IdInmueble = reader.GetInt32(6),
                         };
                     }
                     connection.Close();
@@ -169,8 +172,8 @@ namespace EstadoReal.Models
             IList<Contrato> res = new List<Contrato>();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"SELECT IdContrato, InicioContrato, FinContrato, Deudas, IdInquilino, IdInmueble " +
-                    $" FROM Contratos";
+                string sql = $"SELECT IdContrato, InicioContrato, FinContrato, Deudas, EstadoContrato, IdInquilino, IdInmueble " +
+                    $" FROM Contratos WHERE EstadoContrato = 1 ;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.CommandType = CommandType.Text;
@@ -184,8 +187,9 @@ namespace EstadoReal.Models
                             InicioContrato = reader.GetDateTime(1).ToString(),
                             FinContrato = reader.GetDateTime(2).ToString(),
                             Deudas = reader.GetDecimal(3),
-                            IdInquilino = reader.GetInt32(4),
-                            IdInmueble = reader.GetInt32(5),
+                            EstadoContrato = reader.GetByte(4),
+                            IdInquilino = reader.GetInt32(5),
+                            IdInmueble = reader.GetInt32(6),
                         };
                         res.Add(c);
                     }

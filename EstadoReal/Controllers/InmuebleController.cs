@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EstadoReal.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EstadoReal.Controllers
 {
+    [Authorize]
     public class InmuebleController : Controller
     {
-        private readonly IRepositorio<Inmueble> repositorio;
+        private readonly IRepositorioInmueble repositorio;
 
-        public InmuebleController(IRepositorio<Inmueble> repositorio)
+        public InmuebleController(IRepositorioInmueble repositorio)
         {
             this.repositorio = repositorio;
         }
@@ -87,7 +89,7 @@ namespace EstadoReal.Controllers
         {
             try
             {
-                if (ModelState.IsValid && inmueble.Direccion != "")
+                if (ModelState.IsValid)
                 {
                     repositorio.Modificacion(inmueble);
                     TempData["Id"] = inmueble.IdInmueble;

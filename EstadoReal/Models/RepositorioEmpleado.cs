@@ -8,20 +8,20 @@ using System.Threading.Tasks;
 
 namespace EstadoReal.Models
 {
-    public class RepositorioPropietario : RepositorioBase, IRepositorioPropietario
+    public class RepositorioEmpleado : RepositorioBase, IRepositorioEmpleado
     {
-        public RepositorioPropietario(IConfiguration configuration) : base(configuration)
+        public RepositorioEmpleado(IConfiguration configuracion) : base(configuracion)
         {
 
         }
 
-        public int Alta(Propietario p)
+        public int Alta(Empleado e)
         {
             int res = -1;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"INSERT INTO Propietarios (Nombre, Apellido, Dni, Correo, Telefono, Clave, EstadoPropietario) " +
-                    $"VALUES ('{p.Nombre}', '{p.Apellido}',{p.Dni},'{p.Correo}',{p.Telefono},'{p.Clave}', 1) ;";
+                string sql = $"INSERT INTO Empleados (Nombre, Apellido, Dni, Correo, Clave, EstadoEmpleado) " +
+                    $"VALUES ('{e.Nombre}', '{e.Apellido}', {e.Dni}, '{e.Correo}', '{e.Clave}', 1) ;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.CommandType = CommandType.Text;
@@ -29,7 +29,7 @@ namespace EstadoReal.Models
                     res = command.ExecuteNonQuery();
                     command.CommandText = "SELECT SCOPE_IDENTITY()";
                     var id = command.ExecuteScalar();
-                    p.IdPropietario = Convert.ToInt32(id);
+                    e.IdEmpleado = Convert.ToInt32(id);
                     connection.Close();
                 }
             }
@@ -41,7 +41,7 @@ namespace EstadoReal.Models
             int res = -1;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"UPDATE Propietarios SET EstadoPropietario = 0 WHERE idPropietario = {id}";
+                string sql = $"UPDATE Empleados SET EstadoEmpleado = 0 WHERE IdEmpleado = {id} ;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.CommandType = CommandType.Text;
@@ -53,14 +53,13 @@ namespace EstadoReal.Models
             return res;
         }
 
-        public int Modificacion(Propietario p)
+        public int Modificacion(Empleado e)
         {
             int res = -1;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"UPDATE Propietarios SET Nombre='{p.Nombre}', Apellido='{p.Apellido}', Dni={p.Dni}, Correo='{p.Correo}', " +
-                    $"Telefono={p.Telefono}, Clave='{p.Clave}', EstadoPropietario = 1 " +
-                    $"WHERE IdPropietario = {p.IdPropietario}";
+                string sql = $"UPDATE Empleados SET Nombre='{e.Nombre}', Apellido='{e.Apellido}', Dni={e.Dni}, Correo='{e.Correo}', " +
+                    $"Clave='{e.Clave}', EstadoEmpleado = 1 WHERE IdEmpleado = {e.IdEmpleado} ;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.CommandType = CommandType.Text;
@@ -72,13 +71,13 @@ namespace EstadoReal.Models
             return res;
         }
 
-        public Propietario ObtenerPorCorreo(string correo)
+        public Empleado ObtenerPorCorreo(string correo)
         {
-            Propietario p = null;
+            Empleado e = null;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"SELECT IdPropietario, Nombre, Apellido, Dni, Correo, Telefono, Clave, EstadoPropietario FROM Propietarios" +
-                    $" WHERE Correo=@correo";
+                string sql = $"SELECT IdEmpleado, Nombre, Apellido, Dni, Correo, Clave, EstadoEmpleado FROM Empleados" +
+                    $" WHERE Correo=@correo AND EstadoEmpleado = 1 ;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.Parameters.Add("@correo", SqlDbType.VarChar).Value = correo;
@@ -87,31 +86,30 @@ namespace EstadoReal.Models
                     var reader = command.ExecuteReader();
                     if (reader.Read())
                     {
-                        p = new Propietario
+                        e = new Empleado
                         {
-                            IdPropietario = reader.GetInt32(0),
+                            IdEmpleado = reader.GetInt32(0),
                             Nombre = reader.GetString(1),
                             Apellido = reader.GetString(2),
                             Dni = reader.GetInt32(3),
                             Correo = reader.GetString(4),
-                            Telefono = reader.GetInt64(5),
-                            Clave = reader.GetString(6),
-                            EstadoPropietario = reader.GetByte(7),
+                            Clave = reader.GetString(5),
+                            EstadoEmpleado = reader.GetByte(6),
                         };
                     }
                     connection.Close();
                 }
             }
-            return p;
+            return e;
         }
 
-        public Propietario ObtenerPorId(int id)
+        public Empleado ObtenerPorId(int id)
         {
-            Propietario p = null;
+            Empleado e = null;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"SELECT IdPropietario, Nombre, Apellido, Dni, Correo, Telefono, Clave, EstadoPropietario FROM Propietarios" +
-                    $" WHERE IdPropietario=@id AND EstadoPropietario = 1;";
+                string sql = $"SELECT IdEmpleado, Nombre, Apellido, Dni, Correo, Clave, EstadoEmpleado FROM Empleados" +
+                    $" WHERE IdEmpleado=@id AND EstadoEmpleado = 1 ;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.Parameters.Add("@id", SqlDbType.Int).Value = id;
@@ -120,31 +118,30 @@ namespace EstadoReal.Models
                     var reader = command.ExecuteReader();
                     if (reader.Read())
                     {
-                        p = new Propietario
+                        e = new Empleado
                         {
-                            IdPropietario = reader.GetInt32(0),
+                            IdEmpleado = reader.GetInt32(0),
                             Nombre = reader.GetString(1),
                             Apellido = reader.GetString(2),
                             Dni = reader.GetInt32(3),
                             Correo = reader.GetString(4),
-                            Telefono = reader.GetInt64(5),
-                            Clave = reader.GetString(6),
-                            EstadoPropietario = reader.GetByte(7),
+                            Clave = reader.GetString(5),
+                            EstadoEmpleado = reader.GetByte(6),
                         };
                     }
                     connection.Close();
                 }
             }
-            return p;
+            return e;
         }
 
-        public IList<Propietario> ObtenerTodos()
+        public IList<Empleado> ObtenerTodos()
         {
-            IList<Propietario> res = new List<Propietario>();
+            List<Empleado> res = new List<Empleado>();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"SELECT IdPropietario, Nombre, Apellido, Dni, Correo, Telefono, Clave, EstadoPropietario" +
-                    $" FROM Propietarios WHERE EstadoPropietario = 1;";
+                string sql = $"SELECT IdEmpleado, Nombre, Apellido, Dni, Correo, Clave, EstadoEmpleado " +
+                    $" FROM Empleados WHERE EstadoEmpleado = 1 ;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.CommandType = CommandType.Text;
@@ -152,18 +149,17 @@ namespace EstadoReal.Models
                     var reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        Propietario p = new Propietario
+                        Empleado e = new Empleado
                         {
-                            IdPropietario = reader.GetInt32(0),
+                            IdEmpleado = reader.GetInt32(0),
                             Nombre = reader.GetString(1),
                             Apellido = reader.GetString(2),
                             Dni = reader.GetInt32(3),
                             Correo = reader.GetString(4),
-                            Telefono = reader.GetInt64(5),
-                            Clave = reader.GetString(6),
-                            EstadoPropietario = reader.GetByte(7),
+                            Clave = reader.GetString(5),
+                            EstadoEmpleado = reader.GetByte(6),
                         };
-                        res.Add(p);
+                        res.Add(e);
                     }
                     connection.Close();
                 }

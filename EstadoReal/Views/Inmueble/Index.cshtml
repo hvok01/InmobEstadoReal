@@ -30,7 +30,7 @@
                 @Html.DisplayNameFor(model => model.Precio)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Estado)
+                @Html.DisplayNameFor(model => model.Disponibilidad)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.IdPropietario)
@@ -67,7 +67,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Precio)
             </td>
-            @if (item.Estado == 1)
+            @if (item.Disponibilidad == 1)
             {
                 <td class="col-sm-10">
                     Disponible

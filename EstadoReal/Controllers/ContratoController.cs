@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EstadoReal.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EstadoReal.Controllers
 {
+    [Authorize]
     public class ContratoController : Controller
     {
         private readonly IRepositorio<Contrato> repositorio;
