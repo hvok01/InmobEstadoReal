@@ -2,7 +2,141 @@
 @{
     ViewData["Title"] = "Index";
 }
+<link href="~/css/HomeIndex.css" type="text/css" rel="stylesheet" />
 
-<h1>Index</h1>
+<div class="background"></div>
+<div class="gradient"></div>
 
-<p>¿La venganza?</p>
+<!-- Barra de navegacion -->
+
+<div class="contenedor-nav">
+    <nav>
+        <div class="logo-1"><a href="#"><img src="~/img/VolverIcon.png" alt="Volver" /></a></div>
+        <div class="logo-2"><a href="#"><img src="~/img/ERIcon1.png" alt="Estado Real" /></a></div>
+        <div class="logo-3"><a asp-action="Login"><img src="~/img/User1.png" alt="Iniciar Sesion" /></a></div>
+    </nav>
+</div>
+
+<!-- Seccion 1 -->
+
+<div class="contenedor-section1">
+    <div>
+        <h1>Hacé real </h1>
+        <h1> tu sueño.</h1>
+        <a href="#section2p" class="btn-1 vermas">Ver más</a>
+    </div>
+</div>
+
+<!-- Seccion 2 -->
+
+<div class="section2">
+    <div>
+        <h2 id="section2p">Nosotros</h2>
+        <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+            when an unknown printer took a galley of type and scrambled it to make a type
+            specimen book. It has survived not only five centuries, but also the leap into
+            electronic typesetting, remaining essentially unchanged. It was popularised in
+            the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+            and more recently with desktop publishing software like Aldus PageMaker
+            including versions of Lorem Ipsum.
+        </p>
+        <div class="imagen-interior"><a><img src="~/img/interior1.jpg" alt="Inmueble interior" /></a></div>
+        <div>
+            <img class="estado-real-logo" src="~/img/ERLogo1.png" alt="Estado Real Logo" />
+            <a class="btn-1" href="#media">Contactanos</a>
+        </div>
+    </div>
+</div>
+
+<!-- Seccion 3 -->
+
+<div class="section3">
+    <div class="section3-contenido">
+        <h2>Servicios.</h2>
+        <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+            when an unknown printer took a galley of type and scrambled it to make a type
+            specimen book. It has survived not only five centuries, but also the leap into
+            electronic typesetting, remaining essentially unchanged. It was popularised in
+            the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+            and more recently with desktop publishing software like Aldus PageMaker including
+            versions of Lorem Ipsum.
+        </p>
+        <div class="contenedor-fotos">
+            <div class="seccion-galeria">
+                <div class="contenedor-galeria">
+                    <input type="radio" name="radios" id="r1" checked />
+                    <input type="radio" name="radios" id="r2" />
+                    <input type="radio" name="radios" id="r3" />
+                    <div class="slide1">
+                        <div class="s1"> <img src="~/img/galeria1.jpg" alt="foto-1-galeria" class="imagen-galeria" /> </div>
+                        <div class="s1"> <div class="interior-datos-galeria"> <h3>Juana Koslay, San Luis </h3> <div> <img src="~/img/Entrar.png" alt="entrar" /> </div> </div></div>
+                    </div>
+                    <div class="slide2">
+                        <div> <img src="~/img/galeria2.jpg" alt="foto-2-galeria" class="imagen-galeria" /> </div>
+                        <div> <div class="interior-datos-galeria"> <h3>La punta, San Luis </h3> <div> <img src="~/img/Entrar.png" alt="entrar" /> </div> </div></div>
+                    </div>
+                    <div class="slide3">
+                        <div> <img src="~/img/galeria3.jpg" alt="foto-3-galeria" class="imagen-galeria" /> </div>
+                        <div> <div class="interior-datos-galeria"> <h3>P. de Los Funes, San Luis </h3> <div> <img src="~/img/Entrar.png" alt="entrar" /> </div> </div></div>
+                    </div>
+                    <div class="navegacion-galeria"> <label for="r1" class="click-me foto1">  </label> <label for="r2" class="click-me foto2">  </label> <label for="r3" class="click-me foto3">  </label> </div>
+                </div>
+            </div>
+            <div class="seccion-galeria-info">
+                <h2> Estado Real Inmobiliaria. </h2>
+                <p class="p2">
+                    Quisque nisi ante, condimentum vel tortor id, sollicitudin sodales libero.
+                    Nunc eget ex vitae est egestas lacinia eget sit amet mauris. Nam finibus vel
+                    tellus id mattis. Donec quis elit sed elit bibendum eleifend ac in risus. Phasellus
+                    pellentesque, magna sit amet accumsan efficitur, tortor libero convallis urna, ac vestibulum
+                    lorem eros sed lacus. Praesent consequat lacus at nulla hendrerit, non vulputate erat ultrices.
+                </p>
+                <a class="btn-1 contactanos" href="#media">Contactanos</a>
+                <div class="mediaWhite">
+                    <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><img src="~/img/MediaInstaWhite.png" alt="Instagram Link" /></a>
+                    <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><img src="~/img/MediaFaceWhite.png" alt="Facebook Link" /></a>
+                    <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><img src="~/img/MediaTwitterWhite.png" alt="Twitter Link" /></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Seccion 4 -->
+
+<div class="section4">
+    <div class="hero-texto"><h1>Hacé real su sueño.</h1></div>
+    <div class="filtro"></div>
+    <div class="hero-imagen"> <img src="~/img/hero-image.jpg" alt="Hacélo real."/> </div>
+
+    <div class="contacto-links">
+        <div class="contenido-links">
+            <h3 id="media">Ponete en contacto con nosotros:</h3>
+            <div class="media-links">
+                <a href="#"> <img src="~/img/MediaInstaBlack.png" alt="Instagram Link" /></a>
+                <a href="#"> <img src="~/img/MediaFaceBlack.png" alt="Facebook Link" /></a>
+                <a href="#"> <img src="~/img/MediaTwitterBlack .png" alt="Twitter Link" /></a>
+                <a href="#"> <img src="~/img/MediaMailBlack.png" alt="Gmail Link" /></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer-contenido">
+            <div>
+                <img src="~/img/ERLogo1.png" />
+            </div>
+            <div>
+                <a href="#">Terminos de servicio</a>
+                <a href="#">Politica de privacidad</a>
+            </div>
+            <div class="contacto-footer">
+                <p>© Estado Real 2019</p>
+            </div>
+        </div>
+    </div>
+</div>

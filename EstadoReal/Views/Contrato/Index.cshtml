@@ -5,58 +5,157 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<link href="~/css/EmpleadoIndex.css" rel="stylesheet" type="text/css" />
 
 
-<div>
-    <a asp-action="Create">Crear nuevo Contrato</a>
+<div class="contenedor-nav">
+    <nav>
+        <input type="checkbox" id="menu" class="hidden" />
+        <label class="logo-Volver" for="menu"><img src="~/img/VolverIcon.png" alt="Volver" /></label>
+        <label class="logo-1" for="menu"><img src="~/img/MenuBlack.png" alt="Menu" /></label>
+        <div class="logo-2"><a asp-action="Index"><img src="~/img/ERIcon1Black.png" alt="Estado Real" /></a></div>
+        <div class="logo-3"><a asp-controller="Home" asp-action="Login"><img src="~/img/SalirIcon.png" alt="Cerrar Sesion" /></a></div>
+
+    </nav>
 </div>
 
-<table>
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.InicioContrato)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FinContrato)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Deudas)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdInquilino)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdInmueble)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.InicioContrato)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FinContrato)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Deudas)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IdInquilino)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IdInmueble)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.IdContrato }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.IdContrato }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.IdContrato })
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="nav-display" id="nav">
+    <div><a asp-controller="Propietario" asp-action="index">Propietarios</a></div>
+    <div><a asp-controller="Inmueble" asp-action="index">Inmuebles</a></div>
+    <div><a asp-controller="Inquilino" asp-action="index">Inquilinos</a></div>
+    <div><a asp-controller="Contrato" asp-action="index">Contratos</a></div>
+    <div><a asp-controller="Pago" asp-action="index">Pagos</a></div>
+    <div>@Html.ActionLink("Configuraciones", "Edit", "Empleado", new { id = ViewBag.Empleado.IdEmpleado }, null)</div>
+    <div><a asp-controller="Home" asp-action="Logout">Salir</a></div>
+</div>
+
+
+<div class="contenedor-formulario-registrar">
+
+    <div class="contenedor-bienvenida">
+        <h2>Bienvenido al sistema de Estado Real</h2>
+    </div>
+    <div class="contenedor-crear">
+        <div class="info-1">
+            <div class="imagen-usuario"> <img src="~/img/User2.png" alt="empleado" /></div>
+            <div class="borde"></div>
+            <p>Datos del empleado</p>
+        </div>
+
+        <div class="info-2">
+            <p>@ViewBag.Empleado.Nombre</p>
+            <p>@ViewBag.Empleado.Apellido</p>
+        </div>
+        <div class="info-3">
+            <p>@ViewBag.Empleado.Correo</p>
+            <div class="borde"></div>
+        </div>
+        <div class="info-4">
+            @Html.ActionLink("Ver más", "Details", "Empleado", new { id = ViewBag.Empleado.IdEmpleado }, null)
+            @Html.ActionLink("Configuraciones", "Edit", "Empleado", new { id = ViewBag.Empleado.IdEmpleado }, null)
+        </div>
+
+    </div>
+
+    <div class="navegacion-central">
+        <div>
+            <a asp-controller="Empleado" asp-action="index">empleado</a>
+            <input type="checkbox" id="nav1" class="checkh" />
+            <label for="nav1"></label>
+        </div>
+        <div>
+            <a asp-controller="Propietario" asp-action="index">propietario</a>
+            <input type="checkbox" id="nav1" class="checkh" />
+            <label for="nav1"></label>
+        </div>
+        <div>
+            <a asp-controller="Inmueble" asp-action="index">inmuebles</a>
+            <input type="checkbox" id="nav1" class="checkh" />
+            <label for="nav1"></label>
+        </div>
+        <div>
+            <a asp-controller="Inquilino" asp-action="index">inquilinos</a>
+            <input type="checkbox" id="nav1" class="checkh" />
+            <label for="nav1"></label>
+        </div>
+        <div>
+            <a asp-controller="Contrato" asp-action="index">contratos</a>
+            <input type="checkbox" id="nav1" class="checkh" checked />
+            <label for="nav1"></label>
+        </div>
+        <div>
+            <a asp-controller="Pago" asp-action="index">pagos</a>
+            <input type="checkbox" id="nav1" class="checkh" />
+            <label for="pagos"></label>
+        </div>
+    </div>
+
+    <div class="cartel-mobile"><p>Contrato</p></div>
+
+    <div class="contenedor-crear">
+        <div class="info-1">
+            <div class="imagen-usuario seccion2"> <img src="~/img/User2.png" alt="crear contrato" /></div>
+            <div class="borde"></div>
+            <a asp-action="Create">Crear nuevo</a>
+            <!--asp-action="Buscar" todavia no existe-->
+            <a href="#" class="buscar">Buscar</a>
+        </div>
+    </div>
+
+    <div class="contenedor-crear">
+        <div class="info-1">
+            <div class="imagen-usuario"> <img src="~/img/User2.png" alt="propietario" /></div>
+            <div class="borde"></div>
+            <p>@Html.DisplayNameFor(model => model.InicioContrato)</p>
+        </div>
+        <div class="info-2">
+            <p>@Html.DisplayNameFor(model => model.FinContrato)</p>
+        </div>
+        <div class="info-3">
+            <p>@Html.DisplayNameFor(model => model.Deudas) </p>
+        </div>
+        <div class="info-5">
+        </div>
+    </div>
+    <hr />
+    @foreach (var item in Model)
+    {
+        <div class="contenedor-crear" id="mostrar">
+            <div class="info-1">
+                <div class="imagen-usuario"> <img src="~/img/User2.png" alt="propietario" /></div>
+                <div class="borde"></div>
+                <p>@Html.DisplayFor(modelItem => item.InicioContrato) </p>
+            </div>
+            <div class="info-2">
+                <p>@Html.DisplayFor(modelItem => item.FinContrato)</p>
+            </div>
+            <div class="info-3">
+                <p>@Html.DisplayFor(modelItem => item.Deudas)</p>
+            </div>
+            <div class="info-5">
+                @Html.ActionLink("ver más", "Details", new { id = item.IdContrato })
+                @Html.ActionLink("editar", "Edit", new { id = item.IdContrato })
+                @Html.ActionLink("borrar", "Delete", new { id = item.IdContrato })
+            </div>
+        </div>
+    }
+
+</div>
+
+<script>
+
+            let check = document.getElementById("menu");
+            let nav = document.getElementById("nav");
+            let contenido = document.getElementById("mostrar");
+
+            check.addEventListener('click', () => {
+                if (check.checked) {
+                    nav.style.display = "flex";
+                    contenido.style.display = "none";
+                } else {
+                    nav.style.display = "none";
+                    contenido.style.display = "flex";
+                }
+            });
+
+</script>

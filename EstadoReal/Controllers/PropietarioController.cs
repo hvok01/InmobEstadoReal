@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using EstadoReal.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -25,6 +26,12 @@ namespace EstadoReal.Controllers
         // GET: Propietario
         public ActionResult Index()
         {
+            var identity = (ClaimsIdentity)User.Identity;
+            var empleadoNombre = identity.Name;
+            IEnumerable<Claim> claims = identity.Claims;
+
+            ViewBag.empleado = empleado.ObtenerPorCorreo(empleadoNombre);
+
             var lista = repositorio.ObtenerTodos();
             if (TempData.ContainsKey("Id"))
                 ViewBag.Id = TempData["Id"];
@@ -68,7 +75,8 @@ namespace EstadoReal.Controllers
                     {
                         //el correo ya exite champ
                         return View();
-                    } else
+                    }
+                    else
                     {
                         propietario.Clave = Convert.ToBase64String(KeyDerivation.Pbkdf2(
                             password: propietario.Clave,
@@ -78,16 +86,19 @@ namespace EstadoReal.Controllers
                             numBytesRequested: 256 / 8));
                         repositorio.Alta(propietario);
                         TempData["Id"] = propietario.IdPropietario;
-                        return RedirectToAction(nameof(Index));
+                        ViewBag.Exito = "Propietario registrado con exito";
+                        return View();
                     }
                 }
                 else
+                    ViewBag.MensajeError = "No che, sabes que te faltó algo";
                     return View();
             }
             catch (Exception ex)
             {
                 ViewBag.Error = ex.Message;
                 ViewBag.StackTrate = ex.StackTrace;
+                ViewBag.MensajeError = "No sabemos que pasó pero hiciste algo mal seguro.";
                 return View();
             }
         }
@@ -118,13 +129,18 @@ namespace EstadoReal.Controllers
                         numBytesRequested: 256 / 8));
                     repositorio.Modificacion(propietario);
                     TempData["Id"] = propietario.IdPropietario;
-                    return RedirectToAction(nameof(Index));
+                    ViewBag.Exito = "Propietario registrado con exito";
+                    return View();
                 }
                 else
+                    ViewBag.MensajeError = "No che, sabes que te faltó algo";
                     return View();
             }
-            catch
+            catch (Exception ex)
             {
+                ViewBag.Error = ex.Message;
+                ViewBag.StackTrate = ex.StackTrace;
+                ViewBag.MensajeError = "No sabemos que pasó pero hiciste algo mal seguro.";
                 return View();
             }
         }

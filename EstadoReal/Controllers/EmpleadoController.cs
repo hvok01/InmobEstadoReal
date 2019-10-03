@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 using EstadoReal.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -26,8 +28,13 @@ namespace EstadoReal.Controllers
         public ActionResult Index()
         {
             var lista = repositorio.ObtenerTodos();
-            if (TempData.ContainsKey("Id"))
-                ViewBag.Id = TempData["Id"];
+
+            var identity = (ClaimsIdentity)User.Identity;
+            var empleadoNombre = identity.Name;
+            IEnumerable<Claim> claims = identity.Claims;
+
+            ViewBag.empleado = repositorio.ObtenerPorCorreo(empleadoNombre);
+
             return View(lista);
         }
 
@@ -60,9 +67,11 @@ namespace EstadoReal.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
+                var existeCorreoEmpleado = repositorio.ObtenerPorCorreo(empleado.Correo);
+
+                if (ModelState.IsValid && existeCorreoEmpleado == null)
                 {
-                    if(repositorio.ObtenerPorCorreo(empleado.Correo) != null || propietario.ObtenerPorCorreo(empleado.Correo) != null)
+                    if(propietario.ObtenerPorCorreo(empleado.Correo) != null)
                     {
                         //este correo ya está en uso y este software no permite los mismo correos :(
                         return RedirectToAction(nameof(Index));
@@ -76,7 +85,6 @@ namespace EstadoReal.Controllers
                                                 iterationCount: 1000,
                                                 numBytesRequested: 256 / 8));
                         repositorio.Alta(empleado);
-                        TempData["Id"] = empleado.IdEmpleado;
                         return RedirectToAction(nameof(Index));
                     }
                     
@@ -116,14 +124,17 @@ namespace EstadoReal.Controllers
                         iterationCount: 1000,
                         numBytesRequested: 256 / 8));
                     repositorio.Modificacion(empleado);
-                    TempData["Id"] = empleado.IdEmpleado;
-                    return RedirectToAction(nameof(Index));
+
+                    ViewBag.Exito = "Usuario editado con exito";
+                    return View();
                 }
                 else
+                    ViewBag.MensajeError = "Nuevo complejo sistema detectó que hay campos vacíos";
                     return View();
             }
             catch
             {
+                ViewBag.MensajeError = "No sabemos que pasó pero hiciste algo mal seguro.";
                 return View();
             }
         }

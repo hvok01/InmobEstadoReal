@@ -4,47 +4,94 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Crear</h1>
+<link href="~/css/EmpleadoCrear.css" rel="stylesheet" type="text/css" />
 
-<h4>Contrato</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="InicioContrato" class="control-label"></label>
-                <input type="date" name="InicioContrato"/>
-                <span asp-validation-for="InicioContrato" class="text-danger"></span>
+<div class="contenedor-nav">
+    <nav>
+        <input type="checkbox" id="menu" class="hidden" />
+        <label class="logo-Volver" for="menu"><img src="~/img/VolverIcon.png" alt="Volver" /></label>
+        <label class="logo-1" for="menu"><img src="~/img/MenuBlack.png" alt="Menu" /></label>
+        <div class="logo-2"><a asp-action="Index"><img src="~/img/ERIcon1Black.png" alt="Estado Real" /></a></div>
+        <div class="logo-3"><a asp-controller="Home" asp-action="Login"><img src="~/img/SalirIcon.png" alt="Cerrar Sesion" /></a></div>
+    </nav>
+</div>
+
+<div class="nav-display" id="nav">
+    <div><a asp-controller="Propietario" asp-action="index">Propietarios</a></div>
+    <div><a asp-controller="Inmueble" asp-action="index">Inmuebles</a></div>
+    <div><a asp-controller="Inquilino" asp-action="index">Inquilinos</a></div>
+    <div><a asp-controller="Contrato" asp-action="index">Contratos</a></div>
+    <div><a asp-controller="Pago" asp-action="index">Pagos</a></div>
+    <div><a asp-controller="Empleado" asp-action="Index">Configuracion</a></div>
+    <div><a asp-controller="Home" asp-action="Logout">Salir</a></div>
+</div>
+
+<div class="contenedor-formulario-registrar">
+
+    <div class="contenedor-bienvenida">
+        <h2>Registar nuevo contrato: No te olvides de llenar todos los campos.</h2>
+    </div>
+    <div class="contenedor-crear">
+        <div class="imagen-usuario"> <img src="~/img/User2.png" alt="crear empleado" /></div>
+        <div></div>
+        <p>Crear contrato</p>
+    </div>
+    <div class="contenedor-formulario">
+        <form asp-action="Crear" class="formulario">
+            <div class="contendor-f1">
+                <div class="form-group">
+                    <label asp-for="InicioContrato" class="control-label"></label>
+                    <input class="form-control" type="date" name="InicioContrato"/>
+                    <span asp-validation-for="InicioContrato" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FinContrato" class="control-label"></label>
+                    <input class="form-control" type="date" name="FinContrato" />
+                    <span asp-validation-for="FinContrato" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="FinContrato" class="control-label"></label>
-                <input type="date" name="FinContrato" />
-                <span asp-validation-for="FinContrato" class="text-danger"></span>
+            <div class="contendor-f1">
+                <div class="form-group">
+                    <label asp-for="Deudas" class="control-label"></label>
+                    <input asp-for="Deudas" class="form-control" placeholder="Deudas" />
+                    <span asp-validation-for="Deudas" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="IdInquilino" class="control-label"></label>
+                    <input asp-for="IdInquilino" class="form-control" placeholder="IdInquilino" />
+                    <span asp-validation-for="IdInquilino" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="IdInmueble" class="control-label"></label>
+                    <input asp-for="IdInmueble" class="form-control" placeholder="IdInmueble" />
+                    <span asp-validation-for="IdInmueble" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Deudas" class="control-label"></label>
-                <input asp-for="Deudas" class="form-control" />
-                <span asp-validation-for="Deudas" class="text-danger"></span>
+            <div class="contendor-f1">
+                <div class="form-group ultimo">
+                    <a asp-action="Index">Cancelar</a>
+                    <input type="submit" value="Crear" class="btn-1" />
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="IdInquilino" class="control-label"></label>
-                <input asp-for="IdInquilino" class="form-control" />
-                <span asp-validation-for="IdInquilino" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdInmueble" class="control-label"></label>
-                <input asp-for="IdInmueble" class="form-control" />
-                <span asp-validation-for="IdInmueble" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Crear" class="btn btn-primary" />
-            </div>
+            <div> <p style="color: #6D9B65;"> @ViewBag.Exito </p> <p class="mensaje-error">@ViewBag.MensajeError</p></div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Volver</a>
-</div>
+<script>
 
+    let check = document.getElementById("menu");
+    let nav = document.getElementById("nav");
+    let contenido = document.getElementById("mostrar");
+
+    check.addEventListener('click', () => {
+        if (check.checked) {
+            nav.style.display = "flex";
+            contenido.style.display = "none";
+        } else {
+            nav.style.display = "none";
+            contenido.style.display = "flex";
+        }
+    });
+
+</script>

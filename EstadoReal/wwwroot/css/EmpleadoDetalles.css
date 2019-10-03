@@ -1,0 +1,269 @@
+﻿@font-face {
+    font-family: 'Raleway', sans-serif;
+    src: url("https://fonts.googleapis.com/css?family=Raleway&display=swap");
+    font-style: normal;
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'Rubik', sans-serif;
+    src: url("https://fonts.googleapis.com/css?family=Rubik&display=swap");
+    font-style: normal;
+    font-weight: 400;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+}
+
+.contenedor-nav {
+    border-bottom: 2px solid rgba(22,22,22,1);
+}
+
+nav {
+    display: block;
+    margin: 0 5%;
+    padding: .5rem 0;
+    display: flex;
+}
+
+.logo-1 {
+    flex: 1;
+}
+
+.logo-2 {
+    flex: 12;
+}
+
+.logo-3 {
+    flex: 1;
+}
+
+.logo-1 img {
+    transform: rotate(180deg);
+}
+
+.logo-Volver {
+    flex: 1;
+    display: none;
+    transform: rotate(180deg);
+}
+
+a, img {
+    width: 25px;
+    height: 25px;
+    display: block;
+    margin: 0 auto;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
+#menu:checked ~ .logo-Volver {
+    display: flex;
+}
+
+#menu:checked ~ .logo-1 {
+    display: none;
+}
+
+.nav-display {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+}
+
+.nav-display div {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.nav-display div a {
+    width: auto;
+    text-decoration: none;
+    color: rgba(22,22,22,1);
+}
+
+.nav-display div a:hover {
+    text-decoration: underline;
+}
+
+.nav-display div a:visited {
+    color: rgba(22,22,22,1);
+}
+
+/*Barra de navegacion termina acá */
+
+.contenedor-formulario-registrar {
+    margin: 0 5%;
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.contenedor-bienvenida {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
+
+.contenedor-bienvenida h2 {
+     color: rgba(22,22,22,1);
+     font-size: .8rem;
+     font-family: Raleway, sans-serif;
+     margin: 0 auto;
+}
+
+.contenedor-formulario {
+    width: 100%;
+    padding-bottom: 50px;
+}
+
+.contendor-f1 {
+    display: inline;
+    width: 100%;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: row;
+    padding: 5px;
+    background-color: #DFDFDF;
+}
+
+.btn-1 {
+    width: auto;
+    height: auto;
+    font-family: 'Rubik', sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #6D9B65;
+    cursor: pointer;
+    display: inline;
+    border: none;
+    background-color: transparent;
+    margin-left: auto;
+}
+
+.form-group a {
+    font-family: 'Rubik', sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #184658;
+    display: inline;
+    margin: 0;
+    width: auto;
+    height: auto;
+    padding: 10px 0;
+}
+
+.ultimo {
+    border-bottom: 3px solid #6D9B65;
+}
+
+.form-group p {
+    font-family: 'Rubik', sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    color: rgba(22,22,22,1);
+    display: inline;
+}
+
+.data p {
+    font-weight: normal;
+}
+
+.ultimo a:last-child {
+    margin-left: auto;
+}
+
+.ultimo form {
+    display: flex;
+    width: 100%;
+}
+
+@media only screen and (min-width: 768px) {
+    .navegacion-central div {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .navegacion-central div:first-child {
+        display: flex;
+    }
+
+    .navegacion-central label {
+        width: 100%;
+    }
+
+    .info-3 {
+        flex: 1;
+        width: 100%;
+        display: flex;
+        text-align: center;
+    }
+
+    .contenedor-crear {
+        flex-direction: row;
+    }
+
+    .info-4 a {
+        justify-content: center;
+        align-items: center;
+        display: flex;
+    }
+
+    .info-4 a:nth-child(2) {
+        display: none;
+    }
+
+    .contenedor-crear .imagen-usuario img {
+        margin-top: 5px;
+    }
+
+    .borde {
+        height: auto;
+    }
+
+    .info-1 .seccion2 img {
+        margin-top: 10px;
+    }
+
+    .info-1 a {
+        padding: 10px 10px 10px 20px
+    }
+
+    /*Display formu */
+
+    .formulario {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .contendor-f1 {
+        display: flex;
+    }
+
+    .form-group {
+        width: 100%;
+        padding: 10px;
+        height: 30px;
+    }
+}

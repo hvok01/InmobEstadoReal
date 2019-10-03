@@ -4,31 +4,41 @@
     ViewData["Title"] = "Login";
 }
 
-<h1>Login</h1>
+<link href="~/css/HomeLogin.css" rel="stylesheet" type="text/css" />
 
-<h4>LoginView</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Login">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Usuario" class="control-label"></label>
-                <input asp-for="Usuario" class="form-control" />
-                <span asp-validation-for="Usuario" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Clave" class="control-label"></label>
-                <input asp-for="Clave" class="form-control" />
-                <span asp-validation-for="Clave" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Iniciar Sesion" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+<div class="background"></div>
+<div class="gradient"></div>
+
+
+<div class="contenedor-nav">
+    <nav>
+        <div class="logo-1"><a asp-action="Index"><img src="~/img/VolverIconWhite.png" alt="Volver" /></a></div>
+        <div class="logo-2"><a asp-action="Index"><img src="~/img/ERIcon1.png" alt="Estado Real" /></a></div>
+        <div class="logo-3"><a asp-action="Login"><img src="~/img/User1.png" alt="Iniciar Sesion" /></a></div>
+    </nav>
 </div>
 
-<div>
-    <a asp-action="Index">Volver a inicio</a>
+<div class="contenedor-login">
+    <div class="contenedor-formulario-login">
+         <form asp-action="Login" class="formulario-login">
+             <div>
+                 <img src="~/img/ERLogo1.png" alt="Estado Real Logo"/>
+             </div>
+             <div> <p class="mensaje-error"> @ViewBag.Mensaje</p> </div>
+             <div class="fomulario-div">
+                 <input asp-for="Usuario" class="txt-box1" placeholder="Usuario"/>
+                 <span asp-validation-for="Usuario"></span>
+             </div>
+             <div class="fomulario-div">
+                 <input asp-for="Clave" class="txt-box1" placeholder="Contraseña"/>
+                 <span asp-validation-for="Clave"></span>
+             </div>
+             <div class="fomulario-div">
+                  <input type="submit" value="Iniciar Sesion" class="btn-1" />
+             </div>
+         </form>
+         <div>
+             <a asp-action="Registrar">Registrate</a>
+         </div>
+    </div>
 </div>

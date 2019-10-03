@@ -4,69 +4,118 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<link href="~/css/EmpleadoCrear.css" rel="stylesheet" type="text/css" />
 
-<h4>Inmueble</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Direccion" class="control-label"></label>
-                <input asp-for="Direccion" class="form-control" />
-                <span asp-validation-for="Direccion" class="text-danger"></span>
+<div class="contenedor-nav">
+    <nav>
+        <input type="checkbox" id="menu" class="hidden" />
+        <label class="logo-Volver" for="menu"><img src="~/img/VolverIcon.png" alt="Volver" /></label>
+        <label class="logo-1" for="menu"><img src="~/img/MenuBlack.png" alt="Menu" /></label>
+        <div class="logo-2"><a asp-action="Index"><img src="~/img/ERIcon1Black.png" alt="Estado Real" /></a></div>
+        <div class="logo-3"><a asp-controller="Home" asp-action="Login"><img src="~/img/SalirIcon.png" alt="Cerrar Sesion" /></a></div>
+    </nav>
+</div>
+
+<div class="nav-display" id="nav">
+    <div><a asp-controller="Propietario" asp-action="index">Propietarios</a></div>
+    <div><a asp-controller="Inmueble" asp-action="index">Inmuebles</a></div>
+    <div><a asp-controller="Inquilino" asp-action="index">Inquilinos</a></div>
+    <div><a asp-controller="Contrato" asp-action="index">Contratos</a></div>
+    <div><a asp-controller="Pago" asp-action="index">Pagos</a></div>
+    <div><a asp-controller="Empleado" asp-action="Index">Configuracion</a></div>
+    <div><a asp-controller="Home" asp-action="Logout">Salir</a></div>
+</div>
+
+<div class="contenedor-formulario-registrar">
+
+    <div class="contenedor-bienvenida">
+        <h2>Registar nuevo Inmueble: No te olvides de llenar todos los campos.</h2>
+    </div>
+    <div class="contenedor-crear">
+        <div class="imagen-usuario"> <img src="~/img/User2.png" alt="crear empleado" /></div>
+        <div></div>
+        <p>Crear Inmueble</p>
+    </div>
+    <div class="contenedor-formulario">
+        <form asp-action="Crear" class="formulario">
+            <div class="contendor-f1">
+                <div class="form-group">
+                    <label asp-for="Direccion" class="control-label"></label>
+                    <input asp-for="Direccion" class="form-control" placeholder="Direccion" />
+                    <span asp-validation-for="Direccion" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="UsoResidencial" class="control-label"></label>
+                    <select asp-for="UsoResidencial" class="form-control">
+                        <option value="0">No</option>
+                        <option value="1" selected>Sí</option>
+                    </select>
+                    <span asp-validation-for="UsoResidencial" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group form-check">
-                <label asp-for="UsoResidencial" class="control-label"></label>
-                <select asp-for="UsoResidencial" >
-                    <option value="0">No</option>
-                    <option value="1" selected>Sí</option>
-                </select>
-                <span asp-validation-for="UsoResidencial" class="text-danger"></span>
+            <div class="contendor-f1">
+                <div class="form-group">
+                    <label asp-for="Tipo" class="control-label"></label>
+                    <select asp-for="Tipo" class="form-control">
+                        <option value="Departamento">Departamento</option>
+                        <option value="Local">Local</option>
+                        <option value="Deposito">Deposito</option>
+                        <option value="Oficina">Oficina</option>
+                        <option value="Individual">Individual</option>
+                    </select>
+                    <span asp-validation-for="Tipo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Ambientes" class="control-label"></label>
+                    <input asp-for="Ambientes" class="form-control" placeholder="Ambientes" />
+                    <span asp-validation-for="Ambientes" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Precio" class="control-label"></label>
+                    <input asp-for="Precio" class="form-control" placeholder="Precio" />
+                    <span asp-validation-for="Precio" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Tipo" class="control-label"></label>
-                <select asp-for="Tipo">
-                    <option value="Departamento">Departamento</option>
-                    <option value="Local" >Local</option>
-                    <option value="Deposito" >Deposito</option>
-                    <option value="Oficina" >Oficina</option>
-                    <option value="Individual" >Individual</option>
-                </select>
-                <span asp-validation-for="Tipo" class="text-danger"></span>
+            <div class="contendor-f1">
+                <div class="form-group">
+                    <label asp-for="Disponibilidad" class="control-label"></label>
+                    <select asp-for="Disponibilidad" class="form-control">
+                        <option value="0">Ocupado</option>
+                        <option value="1" selected>Disponible</option>
+                    </select>
+                    <span asp-validation-for="Disponibilidad" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="IdPropietario" class="control-label"></label>
+                    <input asp-for="IdPropietario" class="form-control" placeholder="IdPropietario" />
+                    <span asp-validation-for="IdPropietario" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Ambientes" class="control-label"></label>
-                <input asp-for="Ambientes" class="form-control" />
-                <span asp-validation-for="Ambientes" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Precio" class="control-label"></label>
-                <input asp-for="Precio" class="form-control" />
-                <span asp-validation-for="Precio" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label asp-for="Disponibilidad" class="control-label"></label>
-                <select asp-for="Disponibilidad">
-                    <option value="0">Ocupado</option>
-                    <option value="1" selected>Disponible</option>
-                </select>
-                <span asp-validation-for="Disponibilidad" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IdPropietario" class="control-label"></label>
-                <input asp-for="IdPropietario" class="form-control" />
-                <span asp-validation-for="IdPropietario" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
+                <div class="contendor-f1">
+                    <div class="form-group ultimo">
+                        <a asp-action="Index">Cancelar</a>
+                        <input type="submit" value="Crear" class="btn-1" />
+                    </div>
+                </div>
+                <div> <p style="color: #6D9B65;"> @ViewBag.Exito </p> <p class="mensaje-error">@ViewBag.MensajeError</p></div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Volver</a>
-</div>
+<script>
 
+    let check = document.getElementById("menu");
+    let nav = document.getElementById("nav");
+    let contenido = document.getElementById("mostrar");
+
+    check.addEventListener('click', () => {
+        if (check.checked) {
+            nav.style.display = "flex";
+            contenido.style.display = "none";
+        } else {
+            nav.style.display = "none";
+            contenido.style.display = "flex";
+        }
+    });
+
+</script>

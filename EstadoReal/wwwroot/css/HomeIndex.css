@@ -1,0 +1,613 @@
+﻿@font-face {
+    font-family: 'Raleway', sans-serif;
+    src: url("https://fonts.googleapis.com/css?family=Raleway&display=swap");
+    font-style: normal;
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'Rubik', sans-serif;
+    src: url("https://fonts.googleapis.com/css?family=Rubik&display=swap");
+    font-style: normal;
+    font-weight: 400;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+}
+
+.background {
+    width: 100%;
+    height: 100vh;
+    background: url("../img/HomePageBG.jpg") no-repeat 50% 50%;
+    position: absolute;
+    z-index: -5;
+}
+
+.gradient {
+    width: 100%;
+    height: 100vh;
+    background-image: linear-gradient(rgba(236,255,238,0),rgba(22,22,22,1));
+    position: absolute;
+    z-index: -1;
+}
+
+.contenedor-nav {
+    border-bottom: 2px solid #ECFFEE;
+}
+
+nav {
+    display: block;
+    margin: 0 5%;
+    padding: .5rem 0;
+    display: flex;
+}
+
+.logo-1 {
+    flex: 1;
+}
+
+.logo-1 > * {
+    display: none;
+}
+
+.logo-2 {
+    flex: 12;
+}
+
+.logo-3 {
+    flex: 1;
+}
+
+a, img {
+    width: 25px;
+    height: 25px;
+    display: block;
+    margin: 0 auto;
+    cursor: pointer;
+}
+
+/*Seccion 1 empieza acá*/
+
+.contenedor-section1 {
+    margin: 0 5%;
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.contenedor-section1 div {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.contenedor-section1 div h1 {
+    display: block;
+    margin: 0 auto;
+    font-family: 'Raleway', sans-serif;
+    font-size: 36px;
+    color: #ECFFEE;
+}
+
+.contenedor-section1 div h1:first-child {
+   font-weight: 800;
+}
+
+.vermas {
+    margin-top: 25%;
+}
+
+.btn-1 {
+    width: auto;
+    height: auto;
+    padding: 10px 20px;
+    background-color: #6D9B65;
+    font-family: 'Rubik', sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #ECFFEE;
+    cursor: pointer;
+    display: inline;
+}
+
+.btn-1:hover {
+    text-decoration: underline;
+}
+
+.btn-1:visited {
+    color: #ECFFEE;
+}
+
+/*Seccion 2 empieza acá*/
+
+.section2 {
+    background-color: #161616;
+}
+
+.section2 div {
+    margin: 0 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.section2 div h2 {
+    display: inline;
+    font-family: 'Raleway', sans-serif;
+    font-size: 28px;
+    font-weight: bold;
+    color: #ECFFEE;
+    margin: 15% 0 5% 0;
+}
+
+.section2 div p {
+    display: inline;
+    font-family: 'Raleway', sans-serif;
+    font-size: 1rem;
+    color: #ECFFEE;
+    margin: 5% 0 15% 0;
+}
+
+.imagen-interior {
+    width: 100%;
+    height: 25vh;
+}
+
+.imagen-interior:hover {
+    background-color: rgba(22,22,22,1);
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.imagen-interior a {
+    width: 100%;
+    height: 25vh;
+}
+
+.imagen-interior a img {
+    width: 100%;
+    height: 25vh;
+    object-fit: cover;
+    z-index: 3;
+}
+
+.estado-real-logo {
+    width: 150px;
+    height: auto;
+}
+
+/*Seccion 3 empieza acá*/
+
+.section3 {
+    background-color: rgba(22,22,22,1);
+}
+
+.section3-contenido {
+    margin: 0 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 25px;
+}
+
+.imagen-galeria {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.section3-contenido h2 {
+    display: block;
+    font-family: 'Raleway', sans-serif;
+    font-size: 28px;
+    font-weight: bold;
+    color: #ECFFEE;
+    margin: 15% 0 5% 0;
+}
+
+.section3-contenido p {
+    display: block;
+    margin: 0 auto;
+    font-family: 'Raleway', sans-serif;
+    font-size: 1rem;
+    color: #ECFFEE;
+    margin: 5% 0 15% 0;
+}
+
+.contenedor-galeria {
+    width: 100%;
+    height: 100%;
+}
+
+.slide1 {
+    width: 100%;
+    height: 100%;
+    display: none;
+    opacity: 0;
+    transition: 2s;
+}
+
+.slide2 {
+    width: 100%;
+    height: 100%;
+    display: none;
+    opacity: 0;
+    transition: 2s;
+}
+
+.slide3 {
+    width: 100%;
+    height: 100%;
+    display: none;
+    opacity: 0;
+    transition: 2s;
+}
+
+.navegacion-galeria {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 0;
+}
+
+.click-me {
+    width: 25%;
+    height: 3px;
+    background-color: #6D9B65;
+    margin: 5px 0;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+.click-me:hover {
+    background-color: #ECFFEE;
+}
+
+.interior-datos-galeria {
+    background-color: #ECFFEE;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+}
+
+.interior-datos-galeria h3 {
+    display: inline;
+    margin: 0;
+    flex: 1;
+}
+
+.interior-datos-galeria div {
+    flex: 1;
+}
+
+.interior-datos-galeria img {
+    display: inline;
+    width: 20px;
+    height: 20px;
+    float: right;
+}
+
+input[name="radios"] {
+    position: absolute;
+    display: none;
+}
+
+#r1:checked ~ .slide1 {
+    display: inline;
+    opacity: 1;
+}
+
+#r2:checked ~ .slide2 {
+    display: inline;
+    opacity: 1;
+}
+
+#r3:checked ~ .slide3 {
+    display: inline;
+    opacity: 1;
+}
+
+.mediaWhite {
+    width: 90%;
+    height: auto;
+    padding: 15px;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-evenly;
+}
+
+.mediaWhite a, .mediaWhite a img {
+    width: 25px;
+    height: 25px;
+    display: inline;
+}
+
+.seccion-galeria-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.contactanos {
+    margin-bottom: 10%;
+}
+
+
+/* Seccion 4 empieza acá */
+.section4 {
+    background-color: rgba(22,22,22,1);
+}
+
+.filtro {
+    width: 100%;
+    height: 25vh;
+    background-color: rgba(22,22,22,1);
+    opacity: 0.5;
+    position: absolute;
+    z-index: 1;
+}
+
+.hero-imagen {
+    width: 100%;
+    height: 25vh;
+}
+
+.hero-imagen img {
+    width: 100%;
+    height: 25vh;
+    object-fit: cover;
+}
+
+.hero-texto {
+    width: 100%;
+    height: 25vh;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+.hero-texto h1 {
+    display: inline;
+    font-family: 'Raleway', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    color: #ECFFEE;
+    z-index: 3;
+    position: absolute;
+    margin: 0;
+}
+
+.contacto-links {
+    width: 100%;
+    height: 25vh;
+    background-color: #6D9B65;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.contacto-links h3 {
+    display: inline;
+    font-family: 'Raleway', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    color: rgba(22,22,22,1);
+    margin: 5% 0;
+}
+
+.media-links {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-top: 10px;
+}
+
+.media-links a, .media-links a img {
+    display: inline;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.footer {
+    width: 100%;
+    background-color: rgba(22,22,22,1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-contenido {
+    width: 80%;
+    height: auto;
+}
+
+.footer-contenido img {
+    width: 100px;
+    height: 100px;
+}
+
+.footer-contenido div {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    margin: 5% 0;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-contenido div p{ 
+    color: #ECFFEE;
+    font-size: 11px;
+    font-family: 'Raleway', sans-serif;
+}
+
+.footer-contenido div a {
+    margin: 0;
+    width: auto;
+    color: #ECFFEE;
+    font-size: 11px;
+    font-family: 'Raleway', sans-serif;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.footer-contenido div a:visited {
+    color: #ECFFEE;
+}
+
+@media only screen and (min-width: 768px) {
+
+    .contenedor-section1 div {
+        margin-left: 50%;
+    }
+
+    .contenedor-section1 div h1 {
+        font-family: 'Raleway', sans-serif;
+        font-size: 64px;
+        color: #ECFFEE;
+        margin-left: 0;
+    }
+
+    .contenedor-section1 div .btn-1 {
+        margin-left: 0;
+        padding: 15px 25px;
+    }
+
+    .section2 div h2 {
+        display: inline;
+        font-size: 48px;
+        margin-right: auto;
+    }
+
+    .section2 div div {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    
+    .section2 div div img {
+        order: 2;
+    }
+
+    .section2 div div a {
+        order: 1;
+    }
+
+    .section2 div div a, .section2 div div img {
+        margin: 0;
+    }
+
+    .section3 div h2 {
+        display: inline;
+        font-size: 28px;
+        margin: 0;
+        margin-left: 20px;
+    }
+
+    .section3-contenido p {
+        margin: 2% 0 5% 0;
+    }
+
+    .seccion-galeria-info p {
+        font-size: .6rem;
+        margin-left: 20px;
+    }
+
+    .contactanos {
+        margin-bottom: 5%;
+        padding: 15px 25px;
+        cursor: pointer;
+        margin-top: auto;
+    }
+
+    .contactanos:hover {
+        text-decoration: underline;
+    }
+
+    .hero-texto h1 {
+        font-size: 64px;
+    }
+
+    .footer-contenido {
+        display: flex;
+        flex-direction: row;
+        width: 90%;
+    }
+
+    .footer-contenido div {
+        flex: 1;
+    }
+
+    .footer-contenido div img {
+        margin: 0;
+    }
+
+    .footer-contenido div:nth-child(2) a {
+        color: #777;
+    }
+
+    .footer-contenido a {
+        font-size: 8px;
+    }
+
+    .footer-contenido div p {
+        margin-left: auto;
+        margin-top: 0;
+    }
+
+    .footer-contenido div a {
+        margin: auto;
+    }
+
+    .contenedor-fotos {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        height: auto;
+    }
+
+    .seccion-galeria {
+        flex: 1;
+    }
+
+    .seccion-galeria-info {
+        flex: 1;
+    }
+
+    .seccion-galeria-info {
+        justify-content: normal;
+    }
+
+}
+
+@media only screen and (min-width: 1024px) {
+
+    .section2 div p {
+        margin: 3% 0;
+    }
+
+    .seccion-galeria-info p {
+        font-size: 1rem;
+        margin-top: 3%;
+    }
+
+    .section3-contenido {
+        padding-bottom: 5%;
+    }
+}

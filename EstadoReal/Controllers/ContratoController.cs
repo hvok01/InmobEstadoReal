@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using EstadoReal.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -13,15 +14,24 @@ namespace EstadoReal.Controllers
     public class ContratoController : Controller
     {
         private readonly IRepositorio<Contrato> repositorio;
+        private readonly IRepositorioEmpleado empleadoRepo;
 
-        public ContratoController(IRepositorio<Contrato> repositorio)
+        public ContratoController(IRepositorio<Contrato> repositorio, IRepositorioEmpleado empleadoRepo)
         {
             this.repositorio = repositorio;
+            this.empleadoRepo = empleadoRepo;
         }
 
         // GET: Contrato
         public ActionResult Index()
         {
+
+            var identity = (ClaimsIdentity)User.Identity;
+            var empleadoNombre = identity.Name;
+            IEnumerable<Claim> claims = identity.Claims;
+
+            ViewBag.empleado = empleadoRepo.ObtenerPorCorreo(empleadoNombre);
+
             var lista = repositorio.ObtenerTodos();
             if (TempData.ContainsKey("Id"))
                 ViewBag.Id = TempData["Id"];
@@ -61,15 +71,18 @@ namespace EstadoReal.Controllers
                 {
                     repositorio.Alta(contrato);
                     TempData["Id"] = contrato.IdContrato;
-                    return RedirectToAction(nameof(Index));
+                    ViewBag.Exito = "Contrato creado con exito";
+                    return View();
                 }
                 else
+                    ViewBag.MensajeError = "Uh no, mandaste uno o mas campos vacíos.";
                     return View();
             }
             catch (Exception ex)
             {
                 ViewBag.Error = ex.Message;
                 ViewBag.StackTrate = ex.StackTrace;
+                ViewBag.MensajeError = "No sabemos que pasó pero hiciste algo mal seguro";
                 return View();
             }
         }
@@ -93,13 +106,18 @@ namespace EstadoReal.Controllers
                 {
                     repositorio.Modificacion(contrato);
                     TempData["Id"] = contrato.IdContrato;
-                    return RedirectToAction(nameof(Index));
+                    ViewBag.Exito = "Contrato creado con exito";
+                    return View();
                 }
                 else
+                    ViewBag.MensajeError = "Uh no, mandaste uno o mas campos vacíos.";
                     return View();
             }
-            catch
+            catch (Exception ex)
             {
+                ViewBag.Error = ex.Message;
+                ViewBag.StackTrate = ex.StackTrace;
+                ViewBag.MensajeError = "No sabemos que pasó pero hiciste algo mal seguro";
                 return View();
             }
         }

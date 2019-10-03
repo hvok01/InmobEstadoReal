@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using EstadoReal.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -13,15 +14,23 @@ namespace EstadoReal.Controllers
     public class PagoController : Controller
     {
         private readonly IRepositorio<Pago> repositorio;
+        private readonly IRepositorioEmpleado empleadosRepo;
 
-        public PagoController(IRepositorio<Pago> repositorio)
+        public PagoController(IRepositorio<Pago> repositorio, IRepositorioEmpleado empleadosRepo)
         {
             this.repositorio = repositorio;
+            this.empleadosRepo = empleadosRepo;
         }
 
         // GET: Pago
         public ActionResult Index()
         {
+            var identity = (ClaimsIdentity)User.Identity;
+            var empleadoNombre = identity.Name;
+            IEnumerable<Claim> claims = identity.Claims;
+
+            ViewBag.empleado = empleadosRepo.ObtenerPorCorreo(empleadoNombre);
+
             var lista = repositorio.ObtenerTodos();
             if (TempData.ContainsKey("Id"))
                 ViewBag.Id = TempData["Id"];
@@ -61,15 +70,18 @@ namespace EstadoReal.Controllers
                 {
                     repositorio.Alta(pago);
                     TempData["Id"] = pago.IdPago;
-                    return RedirectToAction(nameof(Index));
+                    ViewBag.Exito = "Realizado con éxito";
+                    return View();
                 }
                 else
+                    ViewBag.MensajeError = "Parece que cometiste un error";
                     return View();
             }
             catch (Exception ex)
             {
                 ViewBag.Error = ex.Message;
                 ViewBag.StackTrate = ex.StackTrace;
+                ViewBag.MensajeError = "No sabemos que pasó pero seguro hiciste algo mal.";
                 return View();
             }
         }
@@ -94,13 +106,18 @@ namespace EstadoReal.Controllers
                     //que pasa aqui coñooo
                     repositorio.Modificacion(pago);
                     TempData["Id"] = pago.IdPago;
-                    return RedirectToAction(nameof(Index));
+                    ViewBag.Exito = "Realizado con éxito";
+                    return View();
                 }
                 else
+                    ViewBag.MensajeError = "Parece que cometiste un error";
                     return View();
             }
-            catch
+            catch (Exception ex)
             {
+                ViewBag.Error = ex.Message;
+                ViewBag.StackTrate = ex.StackTrace;
+                ViewBag.MensajeError = "No sabemos que pasó pero seguro hiciste algo mal.";
                 return View();
             }
         }

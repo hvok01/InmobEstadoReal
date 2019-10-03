@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using EstadoReal.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -13,15 +14,23 @@ namespace EstadoReal.Controllers
     public class InmuebleController : Controller
     {
         private readonly IRepositorioInmueble repositorio;
+        private readonly IRepositorioEmpleado empleadosRepo;
 
-        public InmuebleController(IRepositorioInmueble repositorio)
+        public InmuebleController(IRepositorioInmueble repositorio, IRepositorioEmpleado empleadosRepo)
         {
             this.repositorio = repositorio;
+            this.empleadosRepo = empleadosRepo;
         }
 
         // GET: Inmueble
         public ActionResult Index()
         {
+            var identity = (ClaimsIdentity)User.Identity;
+            var empleadoNombre = identity.Name;
+            IEnumerable<Claim> claims = identity.Claims;
+
+            ViewBag.empleado = empleadosRepo.ObtenerPorCorreo(empleadoNombre);
+
             var lista = repositorio.ObtenerTodos();
             if (TempData.ContainsKey("Id"))
                 ViewBag.Id = TempData["Id"];
@@ -61,15 +70,18 @@ namespace EstadoReal.Controllers
                 {
                     repositorio.Alta(inmueble);
                     TempData["Id"] = inmueble.IdInmueble;
-                    return RedirectToAction(nameof(Index));
+                    ViewBag.Exito = "Inmueble creado con exito";
+                    return View();
                 }
                 else
+                    ViewBag.MensajeError = "Uh no, te olvidaste de algo";
                     return View();
             }
             catch (Exception ex)
             {
                 ViewBag.Error = ex.Message;
                 ViewBag.StackTrate = ex.StackTrace;
+                ViewBag.MensajeError = "No sabemos que pasó pero hiciste algo mal seguro.";
                 return View();
             }
         }
@@ -93,13 +105,16 @@ namespace EstadoReal.Controllers
                 {
                     repositorio.Modificacion(inmueble);
                     TempData["Id"] = inmueble.IdInmueble;
-                    return RedirectToAction(nameof(Index));
+                    ViewBag.Exito = "Cambio guardados con exito";
+                    return View();
                 }
                 else
+                    ViewBag.MensajeError = "LLená todos los campos che!";
                     return View();
             }
             catch
             {
+                ViewBag.MensajeError = "No sabemos que pasó pero hiciste algo mal seguro.";
                 return View();
             }
         }

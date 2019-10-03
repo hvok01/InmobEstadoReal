@@ -58,6 +58,7 @@ namespace EstadoReal.Controllers
                     iterationCount: 1000,
                     numBytesRequested: 256 / 8));
                 var e = empleadosRepo.ObtenerPorCorreo(loginView.Usuario);
+                
                 if ( e == null || e.Clave != hashed)
                 {
                     ViewBag.Mensaje = "Datos inválidos";
@@ -97,6 +98,8 @@ namespace EstadoReal.Controllers
                     // redirect response value.
                 };
 
+                TempData["Id"] = e.IdEmpleado;
+
                 await HttpContext.SignInAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity),
@@ -124,10 +127,11 @@ namespace EstadoReal.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    if (empleadosRepo.ObtenerPorCorreo(empleado.Correo) != null || empleadosRepo.ObtenerPorCorreo(empleado.Correo) != null)
+                    if (empleadosRepo.ObtenerPorCorreo(empleado.Correo) != null)
                     {
                         //este correo ya está en uso y este software no permite los mismo correos :(
-                        return RedirectToAction(nameof(Index));
+                        ViewBag.MensajeError = "Este correo ya fue registrado :(";
+                        return View();
                     }
                     else
                     {
@@ -139,11 +143,13 @@ namespace EstadoReal.Controllers
                                                 numBytesRequested: 256 / 8));
                         empleadosRepo.Alta(empleado);
                         TempData["Id"] = empleado.IdEmpleado;
-                        return RedirectToAction(nameof(Index));
+                        ViewBag.Exito = "Registrado con exito.";
+                        return View();
                     }
 
                 }
                 else
+                    ViewBag.MensajeError = "No sabemos que pasó pero hiciste algo mal seguro.";
                     return View();
             }
             catch (Exception ex)

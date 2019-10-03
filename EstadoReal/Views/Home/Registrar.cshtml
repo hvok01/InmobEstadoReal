@@ -4,43 +4,64 @@
     ViewData["Title"] = "Registrar";
 }
 
-<h1>Registrar</h1>
+<link href="~/css/HomeRegistrar.css" rel="stylesheet" type="text/css" />
 
+<div class="contenedor-nav">
+    <nav>
+        <div class="logo-1"><a asp-action="Login"><img src="~/img/VolverIcon.png" alt="Volver" /></a></div>
+        <div class="logo-2"><a asp-action="Index"><img src="~/img/ERIcon1Black.png" alt="Estado Real" /></a></div>
+        <div class="logo-3"><a asp-action="Login"><img src="~/img/SalirIcon.png" alt="Salir" /></a></div>
+    </nav>
+</div>
 
-<h4>Empleado</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Registrar">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
+<div class="contenedor-formulario-registrar">
+
+    <div class="contenedor-bienvenida">
+        <h2>Registar nuevo empleado: No te olvides de llenar todos los campos.</h2>
+    </div>
+    <div class="contenedor-crear">
+        <div class="imagen-usuario"> <img src="~/img/User2.png" alt="crear empleado"/></div>
+        <div></div>
+        <p>Crear empleado</p>
+    </div>
+    <div class="contenedor-formulario">
+        <form asp-action="Registrar" class="formulario">
+            <div class="contendor-f1">
+                <div class="form-group">
+                    <label asp-for="Nombre" class="control-label"></label>
+                    <input asp-for="Nombre" class="form-control" placeholder="Nombre" />
+                    <span asp-validation-for="Nombre" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Apellido" class="control-label"></label>
+                    <input asp-for="Apellido" class="form-control" placeholder="Apellido" />
+                    <span asp-validation-for="Apellido" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Dni" class="control-label"></label>
+                    <input asp-for="Dni" class="form-control" placeholder="Dni" />
+                    <span asp-validation-for="Dni" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Apellido" class="control-label"></label>
-                <input asp-for="Apellido" class="form-control" />
-                <span asp-validation-for="Apellido" class="text-danger"></span>
+            <div class="contendor-f1">
+                <div class="form-group">
+                    <label asp-for="Correo" class="control-label"></label>
+                    <input asp-for="Correo" class="form-control" placeholder="Correo" />
+                    <span asp-validation-for="Correo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Clave" class="control-label"></label>
+                    <input asp-for="Clave" class="form-control" type="password" placeholder="Contraseña" />
+                    <span asp-validation-for="Clave" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Dni" class="control-label"></label>
-                <input asp-for="Dni" class="form-control" />
-                <span asp-validation-for="Dni" class="text-danger"></span>
+            <div class="contendor-f1">
+                <div class="form-group ultimo">
+                    <a asp-action="Login">Cancelar</a>
+                    <input type="submit" value="Registrar" class="btn-1" />
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Correo" class="control-label"></label>
-                <input asp-for="Correo" class="form-control" />
-                <span asp-validation-for="Correo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Clave" class="control-label"></label>
-                <input asp-for="Clave" class="form-control" type="password" />
-                <span asp-validation-for="Clave" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Registrar" class="btn btn-primary" />
-            </div>
+            <div> <p style="color: #6D9B65;"> @ViewBag.Exito </p> <p class="mensaje-error">@ViewBag.MensajeError</p></div>
         </form>
     </div>
 </div>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using EstadoReal.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -13,15 +14,23 @@ namespace EstadoReal.Controllers
     public class InquilinoController : Controller
     {
         private readonly IRepositorio<Inquilino> repositorio;
+        private readonly IRepositorioEmpleado empleadosRepo;
 
-        public InquilinoController(IRepositorio<Inquilino> repositorio)
+        public InquilinoController(IRepositorio<Inquilino> repositorio, IRepositorioEmpleado empleadosRepo)
         {
             this.repositorio = repositorio;
+            this.empleadosRepo = empleadosRepo;
         }
 
         // GET: Inquilino
         public ActionResult Index()
         {
+            var identity = (ClaimsIdentity)User.Identity;
+            var empleadoNombre = identity.Name;
+            IEnumerable<Claim> claims = identity.Claims;
+
+            ViewBag.empleado = empleadosRepo.ObtenerPorCorreo(empleadoNombre);
+
             var lista = repositorio.ObtenerTodos();
             if (TempData.ContainsKey("Id"))
                 ViewBag.Id = TempData["Id"];
@@ -61,15 +70,18 @@ namespace EstadoReal.Controllers
                 {
                     repositorio.Alta(inquilino);
                     TempData["Id"] = inquilino.IdInquilino;
-                    return RedirectToAction(nameof(Index));
+                    ViewBag.Exito = "Creado con éxito";
+                    return View();
                 }
                 else
+                    ViewBag.MensajeError = "¿Te olvidaste de completar un campo?";
                     return View();
             }
             catch (Exception ex)
             {
                 ViewBag.Error = ex.Message;
                 ViewBag.StackTrate = ex.StackTrace;
+                ViewBag.MensajeError = "No sabemos que pasó pero hiciste algo mal seguro.";
                 return View();
             }
         }
@@ -93,13 +105,18 @@ namespace EstadoReal.Controllers
                 {
                     repositorio.Modificacion(inquilino);
                     TempData["Id"] = inquilino.IdInquilino;
-                    return RedirectToAction(nameof(Index));
+                    ViewBag.Exito = "Editado con exito";
+                    return View();
                 }
                 else
+                    ViewBag.MensajeError = "Dejaste algo sin completar ¿puede ser?";
                     return View();
             }
-            catch
+            catch (Exception ex)
             {
+                ViewBag.Error = ex.Message;
+                ViewBag.StackTrate = ex.StackTrace;
+                ViewBag.MensajeError = "No sabemos que pasó pero hiciste algo mal seguro.";
                 return View();
             }
         }
