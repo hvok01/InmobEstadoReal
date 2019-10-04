@@ -31,7 +31,7 @@
 <div class="contenedor-formulario-registrar">
 
     <div class="contenedor-bienvenida">
-        <h2>¿Está seguro de borrar este pago?</h2>
+        <h2>¿Está seguro de borrar este propietario?</h2>
     </div>
 
     <div class="contenedor-formulario">
@@ -61,7 +61,7 @@
                 <p>@Html.DisplayNameFor(model => model.Correo)</p>
             </div>
             <div class="form-group data">
-                <p>@Html.DisplayFor(model => model.Correo)</p>
+                <p>@Model.Correo</p>
             </div>
             <div class="form-group">
                 <p>@Html.DisplayNameFor(model => model.Telefono)</p>
@@ -72,9 +72,9 @@
         </div>
         <div class="contendor-f1">
             <div class="form-group ultimo">
-                <form>
+                <form asp-action="Delete">
                     <a asp-action="Index">Volver</a>
-                    <input type="hidden" name="IdInquilino" readonly value="@Html.DisplayFor(model => model.IdPropietario)" />
+                    <input type="hidden" name="IdPropietario" readonly value="@Html.DisplayFor(model => model.IdPropietario)" />
                     <input type="submit" value="borrar" class="btn-1" />
                 </form>
             </div>

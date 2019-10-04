@@ -38,8 +38,8 @@
         <p>Editar Inquilino</p>
     </div>
     <div class="contenedor-formulario">
-        <form asp-action="Editar" class="formulario">
-            <input type="hidden" asp-for="IdInquilino" value="@Html.DisplayFor(model => model.IdInquilino)" />
+        <form asp-action="Edit" class="formulario">
+            <input type="hidden" asp-for="IdInquilino" value="@ViewBag.id" />
             <div class="contendor-f1">
                 <div class="form-group">
                     <label asp-for="Nombre" class="control-label"></label>

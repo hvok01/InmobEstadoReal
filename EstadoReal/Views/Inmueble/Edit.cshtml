@@ -37,9 +37,8 @@
         <p>Editar Inmueble</p>
     </div>
     <div class="contenedor-formulario">
-        <form asp-action="Editar" class="formulario">
-            <input type="hidden" asp-for="IdInmueble" value="@Html.DisplayFor(model => model.IdInmueble)" />
-            <input type="hidden" name="EstadoInmueble" value="@Html.DisplayFor(model => model.EstadoInmueble)" />
+        <form asp-action="Edit" class="formulario">
+            <input type="hidden" asp-for="IdInmueble" value="@ViewBag.id" />
             <div class="contendor-f1">
                 <div class="form-group">
                     <label asp-for="Direccion" class="control-label"></label>
@@ -50,7 +49,7 @@
                     <label asp-for="UsoResidencial" class="control-label"></label>
                     <select asp-for="UsoResidencial" class="form-control">
                         <option value="0">No</option>
-                        <option value="1" selected>Sí</option>
+                        <option value="1">Sí</option>
                     </select>
                     <span asp-validation-for="UsoResidencial" class="text-danger"></span>
                 </div>
@@ -81,10 +80,13 @@
                     <label asp-for="Disponibilidad" class="control-label"></label>
                     <select asp-for="Disponibilidad" class="form-control">
                         <option value="0">Ocupado</option>
-                        <option value="1" selected>Disponible</option>
+                        <option value="1">Disponible</option>
                     </select>
                     <span asp-validation-for="Disponibilidad" class="text-danger"></span>
                 </div>
+
+                <input asp-for="IdPropietario" type="hidden" class="form-control" placeholder="IdPropietario" />
+                
             </div>
             <div class="contendor-f1">
                 <div class="form-group ultimo">

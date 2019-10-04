@@ -37,7 +37,7 @@
         <p>Editar empleado</p>
     </div>
     <div class="contenedor-formulario">
-        <form asp-action="Editar" class="formulario">
+        <form asp-action="Edit" class="formulario">
             <input type="hidden" asp-for="IdEmpleado" value="@ViewBag.id" />
             <div class="contendor-f1">
                 <div class="form-group">
@@ -61,6 +61,11 @@
                     <label asp-for="Correo" class="control-label"></label>
                     <input asp-for="Correo" class="form-control" placeholder="Correo" />
                     <span asp-validation-for="Correo" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Clave" class="control-label"></label>
+                    <input asp-for="Clave" class="form-control" placeholder="Clave" />
+                    <span asp-validation-for="Clave" class="text-danger"></span>
                 </div>
             </div>
             <div class="contendor-f1">

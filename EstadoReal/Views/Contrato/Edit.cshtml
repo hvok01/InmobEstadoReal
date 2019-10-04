@@ -37,8 +37,8 @@
         <p>Editar contrato</p>
     </div>
     <div class="contenedor-formulario">
-        <form asp-action="Editar" class="formulario">
-            <input type="hidden" asp-for="IdContrato" value="@Model.IdContrato" />
+        <form asp-action="Edit" class="formulario">
+            <input type="hidden" asp-for="IdContrato" value="@ViewBag.id" />
             <div class="contendor-f1">
                 <div class="form-group">
                     <label asp-for="InicioContrato" class="control-label"></label>

@@ -64,9 +64,9 @@
         </div>
         <div class="contendor-f1">
             <div class="form-group ultimo">
-                <form>
+                <form asp-action="Delete">
                     <a asp-action="Index">Volver</a>
-                    <input type="hidden" name="IdEmpleado" readonly value="@Html.DisplayFor(model => model.IdEmpleado)" />
+                    <input type="hidden" name="IdEmpleado" readonly value="@Model.IdEmpleado" />
                     <input type="submit" value="Delete" class="btn-1" />
                 </form>
             </div>

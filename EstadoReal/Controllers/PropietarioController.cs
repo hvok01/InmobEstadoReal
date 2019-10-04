@@ -129,7 +129,8 @@ namespace EstadoReal.Controllers
                         numBytesRequested: 256 / 8));
                     repositorio.Modificacion(propietario);
                     TempData["Id"] = propietario.IdPropietario;
-                    ViewBag.Exito = "Propietario registrado con exito";
+                    ViewBag.MensajeError = "";
+                    ViewBag.Exito = "Propietario editado con exito";
                     return View();
                 }
                 else
