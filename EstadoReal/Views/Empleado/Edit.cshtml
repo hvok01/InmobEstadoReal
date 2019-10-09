@@ -74,7 +74,16 @@
                     <input type="submit" value="Editar" class="btn-1" />
                 </div>
             </div>
-            <div> <p style="color: #6D9B65;"> @ViewBag.Exito </p> <p class="mensaje-error">@ViewBag.MensajeError</p></div>
+            <div>
+                @if (ViewBag.MensajeError == "")
+                {
+                    <p style="color: #6D9B65;"> @ViewBag.Mensaje </p>
+                }
+                else
+                {
+                    <p class="mensaje-error">@ViewBag.Mensaje</p>
+                }
+            </div>
         </form>
     </div>
 </div>

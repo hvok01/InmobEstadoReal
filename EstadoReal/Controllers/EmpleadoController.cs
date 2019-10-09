@@ -125,16 +125,16 @@ namespace EstadoReal.Controllers
                         numBytesRequested: 256 / 8));
                     repositorio.Modificacion(empleado);
 
-                    ViewBag.Exito = "Usuario editado con exito";
+                    ViewBag.Mensaje = "Usuario editado con exito";
                     return View();
                 }
                 else
-                    ViewBag.MensajeError = "Nuevo complejo sistema detectó que hay campos vacíos";
-                    return View();
+                    ViewBag.Mensaje = "Nuevo complejo sistema detectó que hay campos vacíos";
+                return View();
             }
             catch
             {
-                ViewBag.MensajeError = "No sabemos que pasó pero hiciste algo mal seguro.";
+                ViewBag.Mensaje = "No sabemos que pasó pero hiciste algo mal seguro.";
                 return View();
             }
         }

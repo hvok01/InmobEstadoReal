@@ -59,7 +59,7 @@ namespace EstadoReal.Models
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string sql = $"UPDATE Inmuebles SET Direccion='{i.Direccion}', UsoResidencial={i.UsoResidencial}, Tipo='{i.Tipo}', Ambientes={i.Ambientes}, Precio= {i.Precio}, " +
-                    $"Disponibilidad={i.Disponibilidad}, EstadoInmueble = 1 WHERE IdInmueble = {i.IdInmueble} ;";
+                    $"Disponibilidad={i.Disponibilidad}, EstadoInmueble = 1, IdPropietario = {i.IdPropietario} WHERE IdInmueble = {i.IdInmueble} ;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.CommandType = CommandType.Text;

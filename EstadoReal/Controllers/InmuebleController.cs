@@ -15,11 +15,13 @@ namespace EstadoReal.Controllers
     {
         private readonly IRepositorioInmueble repositorio;
         private readonly IRepositorioEmpleado empleadosRepo;
+        private readonly IRepositorioPropietario propietario;
 
-        public InmuebleController(IRepositorioInmueble repositorio, IRepositorioEmpleado empleadosRepo)
+        public InmuebleController(IRepositorioInmueble repositorio, IRepositorioEmpleado empleadosRepo, IRepositorioPropietario propietario)
         {
             this.repositorio = repositorio;
             this.empleadosRepo = empleadosRepo;
+            this.propietario = propietario;
         }
 
         // GET: Inmueble
@@ -70,10 +72,12 @@ namespace EstadoReal.Controllers
                 {
                     repositorio.Alta(inmueble);
                     TempData["Id"] = inmueble.IdInmueble;
+                    if (TempData.ContainsKey("Exito"))
                     ViewBag.Exito = "Inmueble creado con exito";
                     return View();
                 }
                 else
+                    if (TempData.ContainsKey("MensajeError"))
                     ViewBag.MensajeError = "Uh no, te olvidaste de algo";
                     return View();
             }
@@ -81,6 +85,7 @@ namespace EstadoReal.Controllers
             {
                 ViewBag.Error = ex.Message;
                 ViewBag.StackTrate = ex.StackTrace;
+                if (TempData.ContainsKey("MensajeError"))
                 ViewBag.MensajeError = "No sabemos que pasó pero hiciste algo mal seguro.";
                 return View();
             }
@@ -91,6 +96,7 @@ namespace EstadoReal.Controllers
         {
             ViewBag.id = id;
             var inmueble = repositorio.ObtenerPorId(id);
+            ViewBag.todosPropietarios = propietario.ObtenerTodos();
             return View(inmueble);
         }
 
@@ -99,22 +105,31 @@ namespace EstadoReal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Inmueble inmueble)
         {
+
             try
             {
                 if (ModelState.IsValid)
                 {
                     repositorio.Modificacion(inmueble);
                     TempData["Id"] = inmueble.IdInmueble;
-                    ViewBag.Exito = "Cambio guardados con exito";
-                    return View();
+                    var inmu = repositorio.ObtenerPorId(inmueble.IdInmueble);
+                    ViewBag.todosPropietarios = propietario.ObtenerTodos();
+                    if (TempData.ContainsKey("Exito"))
+                        ViewBag.Exito = "Cambio guardados con exito";
+                    return View(inmu);
                 }
                 else
-                    ViewBag.MensajeError = "LLená todos los campos che!";
+                    if (TempData.ContainsKey("Exito"))
+                        ViewBag.MensajeError = "LLená todos los campos che!";
+                
+                    ViewBag.todosPropietarios = propietario.ObtenerTodos();
                     return View();
             }
             catch
             {
-                ViewBag.MensajeError = "No sabemos que pasó pero hiciste algo mal seguro.";
+                ViewBag.todosPropietarios = propietario.ObtenerTodos();
+                if (TempData.ContainsKey("Exito"))
+                    ViewBag.MensajeError = "No sabemos que pasó pero hiciste algo mal seguro.";
                 return View();
             }
         }

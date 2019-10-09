@@ -20,7 +20,6 @@ namespace EstadoReal.Models
         [Required]
         public string Correo { get; set; }
         [DataType(DataType.Password)]
-        [Required]
         public string Clave { get; set; }
 
         public byte EstadoEmpleado { get; set; }

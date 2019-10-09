@@ -85,16 +85,31 @@
                     <span asp-validation-for="Disponibilidad" class="text-danger"></span>
                 </div>
 
-                <input asp-for="IdPropietario" type="hidden" class="form-control" placeholder="IdPropietario" />
-                
+                <!--<input asp-for="IdPropietario" type="hidden" class="form-control" placeholder="IdPropietario" />-->
+
             </div>
+
             <div class="contendor-f1">
-                <div class="form-group ultimo">
-                    <a asp-action="Index">Volver</a>
-                    <input type="submit" value="Editar" class="btn-1" />
+                <div class="form-group">
+                    <label class="control-label">Nombre Propietario</label>
+                    <select class="form-control" name="IdPropietario">
+                        @foreach (var item in (IList<Propietario>)ViewBag.todosPropietarios)
+                        {
+                            @:<option @(item.IdPropietario == Model.IdPropietario ? "selected" : "") value="@item.IdPropietario">@(item.Nombre + " " + item.Apellido)</option>
+                        }
+                    </select>
+                    <span asp-validation-for="IdPropietario" class="text-danger"></span>
                 </div>
             </div>
-            <div> <p style="color: #6D9B65;"> @ViewBag.Exito </p> <p class="mensaje-error">@ViewBag.MensajeError</p></div>
+
+
+                <div class="contendor-f1">
+                    <div class="form-group ultimo">
+                        <a asp-action="Index">Volver</a>
+                        <input type="submit" value="Editar" class="btn-1" />
+                    </div>
+                </div>
+                <div> <p style="color: #6D9B65;"> @ViewBag.Exito </p> <p class="mensaje-error">@ViewBag.MensajeError</p></div>
         </form>
     </div>
 </div>
