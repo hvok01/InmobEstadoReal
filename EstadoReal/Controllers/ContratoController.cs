@@ -13,13 +13,19 @@ namespace EstadoReal.Controllers
     [Authorize]
     public class ContratoController : Controller
     {
-        private readonly IRepositorio<Contrato> repositorio;
+        private readonly IRepositorioContrato repositorio;
         private readonly IRepositorioEmpleado empleadoRepo;
+        private readonly IRepositorioInquilino inquilino;
+        private readonly IRepositorioInmueble inmueble;
+        private readonly IRepositorioPago pago;
 
-        public ContratoController(IRepositorio<Contrato> repositorio, IRepositorioEmpleado empleadoRepo)
+        public ContratoController(IRepositorioContrato repositorio, IRepositorioEmpleado empleadoRepo, IRepositorioInquilino inquilino, IRepositorioInmueble inmueble, IRepositorioPago pago)
         {
             this.repositorio = repositorio;
             this.empleadoRepo = empleadoRepo;
+            this.inquilino = inquilino;
+            this.inmueble = inmueble;
+            this.pago = pago;
         }
 
         // GET: Contrato
@@ -44,6 +50,8 @@ namespace EstadoReal.Controllers
             try
             {
                 var contrato = repositorio.ObtenerPorId(id);
+                ViewBag.InquilinoTodos = inquilino.ObtenerTodos();
+                ViewBag.InmuebleTodos = inmueble.ObtenerTodos();
                 return View(contrato);
             }
             catch (Exception e)
@@ -57,6 +65,8 @@ namespace EstadoReal.Controllers
         // GET: Contrato/Create
         public ActionResult Create()
         {
+            ViewBag.InquilinoTodos = inquilino.ObtenerTodos();
+            ViewBag.InmuebleTodos = inmueble.ObtenerTodos();
             return View();
         }
 
@@ -70,16 +80,22 @@ namespace EstadoReal.Controllers
                 if (ModelState.IsValid)
                 {
                     repositorio.Alta(contrato);
-                    TempData["Id"] = contrato.IdContrato;
+                    ViewBag.InquilinoTodos = inquilino.ObtenerTodos();
+                    ViewBag.InmuebleTodos = inmueble.ObtenerTodos();
+                    ViewBag.MensajeError = null;
                     ViewBag.Exito = "Contrato creado con exito";
                     return View();
                 }
                 else
+                    ViewBag.InquilinoTodos = inquilino.ObtenerTodos();
+                    ViewBag.InmuebleTodos = inmueble.ObtenerTodos();
                     ViewBag.MensajeError = "Uh no, mandaste uno o mas campos vacíos.";
                     return View();
             }
             catch (Exception ex)
             {
+                ViewBag.InquilinoTodos = inquilino.ObtenerTodos();
+                ViewBag.InmuebleTodos = inmueble.ObtenerTodos();
                 ViewBag.Error = ex.Message;
                 ViewBag.StackTrate = ex.StackTrace;
                 ViewBag.MensajeError = "No sabemos que pasó pero hiciste algo mal seguro";
@@ -91,6 +107,8 @@ namespace EstadoReal.Controllers
         public ActionResult Edit(int id)
         {
             ViewBag.id = id;
+            ViewBag.InquilinoTodos = inquilino.ObtenerTodos();
+            ViewBag.InmuebleTodos = inmueble.ObtenerTodos();
             var contrato = repositorio.ObtenerPorId(id);
             return View(contrato);
         }
@@ -100,25 +118,35 @@ namespace EstadoReal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Contrato contrato)
         {
+            ViewBag.id = contrato.IdContrato;
             try
             {
                 if (ModelState.IsValid)
                 {
                     repositorio.Modificacion(contrato);
-                    TempData["Id"] = contrato.IdContrato;
-                    ViewBag.Exito = "Contrato creado con exito";
-                    return View();
+                    var con = repositorio.ObtenerPorId(contrato.IdContrato);
+                    ViewBag.MensajeError = null;
+                    ViewBag.Exito = "Contrato editado con exito";
+                    ViewBag.InquilinoTodos = inquilino.ObtenerTodos();
+                    ViewBag.InmuebleTodos = inmueble.ObtenerTodos();
+                    return View(con);
                 }
                 else
+                    ViewBag.InquilinoTodos = inquilino.ObtenerTodos();
+                    ViewBag.InmuebleTodos = inmueble.ObtenerTodos();
+                    var cont = repositorio.ObtenerPorId(contrato.IdContrato);
                     ViewBag.MensajeError = "Uh no, mandaste uno o mas campos vacíos.";
-                    return View();
+                    return View(cont);
             }
             catch (Exception ex)
             {
+                ViewBag.InquilinoTodos = inquilino.ObtenerTodos();
+                ViewBag.InmuebleTodos = inmueble.ObtenerTodos();
                 ViewBag.Error = ex.Message;
                 ViewBag.StackTrate = ex.StackTrace;
+                var cont = repositorio.ObtenerPorId(contrato.IdContrato);
                 ViewBag.MensajeError = "No sabemos que pasó pero hiciste algo mal seguro";
-                return View();
+                return View(cont);
             }
         }
 
@@ -154,6 +182,45 @@ namespace EstadoReal.Controllers
                 ViewBag.StackTrae = ex.StackTrace;
                 return View();
             }
+        }
+        // GET: Contrato/Buscar/5
+        public ActionResult DateFilter()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DateFilter(Contrato contrato)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    ViewBag.ResultadosContratos = repositorio.BuscarEntreFechas(contrato.InicioContrato, contrato.FinContrato);
+                    return View();
+                } else
+                {
+                    ViewBag.ResultadosContratos = null;
+                    return View();
+                }
+                    
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ResultadosContratos = null;
+                ViewBag.Error = ex.Message;
+                ViewBag.StackTrae = ex.StackTrace;
+                return View();
+            }
+        }
+
+        // GET: Contrato/Buscar/5
+        public ActionResult ListPagos(int id)
+        {
+            ViewBag.MisPagos = pago.ObtenerPagosPorContrato(id);
+            return View();
         }
     }
 }

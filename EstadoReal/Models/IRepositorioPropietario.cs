@@ -8,5 +8,7 @@ namespace EstadoReal.Models
     public interface IRepositorioPropietario : IRepositorio<Propietario>
     {
         Propietario ObtenerPorCorreo(string correo);
+
+        IList<Propietario> ObtenerPorNombreApellido(string nombre, string apellido);
     }
 }

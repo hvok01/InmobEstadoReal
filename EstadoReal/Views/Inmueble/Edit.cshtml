@@ -12,7 +12,7 @@
         <label class="logo-Volver" for="menu"><img src="~/img/VolverIcon.png" alt="Volver" /></label>
         <label class="logo-1" for="menu"><img src="~/img/MenuBlack.png" alt="Menu" /></label>
         <div class="logo-2"><a asp-action="Index"><img src="~/img/ERIcon1Black.png" alt="Estado Real" /></a></div>
-        <div class="logo-3"><a asp-controller="Home" asp-action="Login"><img src="~/img/SalirIcon.png" alt="Cerrar Sesion" /></a></div>
+        <div class="logo-3"><a asp-controller="Home" asp-action="Logout"><img src="~/img/SalirIcon.png" alt="Cerrar Sesion" /></a></div>
     </nav>
 </div>
 
@@ -38,7 +38,7 @@
     </div>
     <div class="contenedor-formulario">
         <form asp-action="Edit" class="formulario">
-            <input type="hidden" asp-for="IdInmueble" value="@ViewBag.id" />
+            <input type="hidden" asp-for="IdInmueble" value="@ViewBag.Id" />
             <div class="contendor-f1">
                 <div class="form-group">
                     <label asp-for="Direccion" class="control-label"></label>
@@ -91,7 +91,7 @@
 
             <div class="contendor-f1">
                 <div class="form-group">
-                    <label class="control-label">Nombre Propietario</label>
+                    <label class="control-label">Propietario</label>
                     <select class="form-control" name="IdPropietario">
                         @foreach (var item in (IList<Propietario>)ViewBag.todosPropietarios)
                         {
@@ -109,7 +109,16 @@
                         <input type="submit" value="Editar" class="btn-1" />
                     </div>
                 </div>
-                <div> <p style="color: #6D9B65;"> @ViewBag.Exito </p> <p class="mensaje-error">@ViewBag.MensajeError</p></div>
+                <div>
+                    @if (ViewBag.MensajeError == null)
+                    {
+                        <p style="color: #6D9B65;"> @ViewBag.Exito </p>
+                    }
+                    else
+                    {
+                        <p class="mensaje-error"> @ViewBag.MensajeError</p>
+                    }
+                </div>
         </form>
     </div>
 </div>

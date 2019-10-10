@@ -58,8 +58,8 @@ namespace EstadoReal.Models
             int res = -1;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"UPDATE Contratos SET InicioContrato='{c.InicioContrato}', FinContrato='{c.FinContrato}', Deudas={c.Deudas}, EstadoContrato = 1 " +
-                    $"WHERE IdContrato = {c.IdContrato}";
+                string sql = $"UPDATE Contratos SET InicioContrato='{c.InicioContrato}', FinContrato='{c.FinContrato}', Deudas={c.Deudas}, EstadoContrato = 1, " +
+                    $"IdInquilino = {c.IdInquilino}, IdInmueble = {c.IdInmueble} WHERE IdContrato = {c.IdContrato}";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.CommandType = CommandType.Text;
@@ -198,5 +198,42 @@ namespace EstadoReal.Models
             }
             return res;
         }
+
+        public IList<Contrato> BuscarEntreFechas(string fechaA, string fechaB)
+        {
+            IList<Contrato> res = new List<Contrato>();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string sql = $"SELECT IdContrato, InicioContrato, FinContrato, Deudas, EstadoContrato, IdInquilino, IdInmueble " +
+                    $" FROM Contratos WHERE EstadoContrato = 1 AND InicioContrato BETWEEN @fechaA AND @fechaB" +
+                    $" AND FinContrato BETWEEN @fechaA AND @fechaB ;";
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.Add("@fechaA", SqlDbType.Date).Value = fechaA;
+                    command.Parameters.Add("@fechaB", SqlDbType.Date).Value = fechaB;
+                    command.CommandType = CommandType.Text;
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Contrato c = new Contrato
+                        {
+                            IdContrato = reader.GetInt32(0),
+                            InicioContrato = reader.GetDateTime(1).ToString(),
+                            FinContrato = reader.GetDateTime(2).ToString(),
+                            Deudas = reader.GetDecimal(3),
+                            EstadoContrato = reader.GetByte(4),
+                            IdInquilino = reader.GetInt32(5),
+                            IdInmueble = reader.GetInt32(6),
+                        };
+                        res.Add(c);
+                    }
+                    connection.Close();
+                }
+            }
+            return res;
+        }
+
+
     }
 }

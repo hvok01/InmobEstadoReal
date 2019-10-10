@@ -12,7 +12,7 @@
         <label class="logo-Volver" for="menu"><img src="~/img/VolverIcon.png" alt="Volver" /></label>
         <label class="logo-1" for="menu"><img src="~/img/MenuBlack.png" alt="Menu" /></label>
         <div class="logo-2"><a asp-action="Index"><img src="~/img/ERIcon1Black.png" alt="Estado Real" /></a></div>
-        <div class="logo-3"><a asp-controller="Home" asp-action="Login"><img src="~/img/SalirIcon.png" alt="Cerrar Sesion" /></a></div>
+        <div class="logo-3"><a asp-controller="Home" asp-action="Logout"><img src="~/img/SalirIcon.png" alt="Cerrar Sesion" /></a></div>
     </nav>
 </div>
 
@@ -55,16 +55,35 @@
                 <p>@Html.DisplayFor(model => model.Deudas)</p>
             </div>
             <div class="form-group">
-                <p>@Html.DisplayNameFor(model => model.IdInquilino)</p>
+                <p>Inquilino</p>
             </div>
             <div class="form-group data">
-                <p>@Html.DisplayFor(model => model.IdInquilino)</p>
+                @foreach (var item in (IList<Inquilino>)ViewBag.InquilinoTodos)
+                {
+                    if (item.IdInquilino == Model.IdInquilino)
+                    {
+                        <p>@(item.Nombre + " " + item.Apellido)</p>
+                    }
+                }
+                <span asp-validation-for="IdInquilino" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <p>@Html.DisplayNameFor(model => model.IdInmueble)</p>
+                <p>Inmueble</p>
             </div>
             <div class="form-group data">
-                <p>@Html.DisplayFor(model => model.IdInmueble)</p>
+                @foreach (var item in (IList<Inmueble>)ViewBag.InmuebleTodos)
+                {
+                    if (item.IdInmueble == Model.IdInmueble)
+                    {
+                        <p>@(item.Direccion)</p>
+                    }
+                }
+                <span asp-validation-for="IdInquilino" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="contendor-f1">
+            <div class="form-group">
+                @Html.ActionLink("Ver Pagos", "ListPagos", new { id = Model.IdContrato })
             </div>
         </div>
         <div class="contendor-f1">

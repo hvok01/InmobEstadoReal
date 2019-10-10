@@ -1,11 +1,10 @@
-﻿@model EstadoReal.Models.Empleado
+﻿@model EstadoReal.Models.Contrato
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "ListPagos";
 }
 
-<link href="~/css/EmpleadoDetalles.css" type="text/css" rel="stylesheet" />
-
+<link href="~/css/EmpleadoCrear.css" rel="stylesheet" type="text/css" />
 
 <div class="contenedor-nav">
     <nav>
@@ -14,6 +13,7 @@
         <label class="logo-1" for="menu"><img src="~/img/MenuBlack.png" alt="Menu" /></label>
         <div class="logo-2"><a asp-action="Index"><img src="~/img/ERIcon1Black.png" alt="Estado Real" /></a></div>
         <div class="logo-3"><a asp-controller="Home" asp-action="Logout"><img src="~/img/SalirIcon.png" alt="Cerrar Sesion" /></a></div>
+
     </nav>
 </div>
 
@@ -23,57 +23,56 @@
     <div><a asp-controller="Inquilino" asp-action="index">Inquilinos</a></div>
     <div><a asp-controller="Contrato" asp-action="index">Contratos</a></div>
     <div><a asp-controller="Pago" asp-action="index">Pagos</a></div>
-    <div><a asp-action="Edit">Configuracion</a></div>
+    <div><a asp-controller="Empleado" asp-action="Index">Configuracion</a></div>
     <div><a asp-controller="Home" asp-action="Logout">Salir</a></div>
 </div>
+
 
 <div class="contenedor-formulario-registrar">
 
     <div class="contenedor-bienvenida">
-        <h2>¿Está seguro de borrar este empleado?</h2>
+        <h2>Lista de Pagos</h2>
     </div>
 
     <div class="contenedor-formulario">
-        <div class="contendor-f1">
-            <div class="form-group">
-                <p>@Html.DisplayNameFor(model => model.Nombre)</p>
+
+        @foreach (var item in (IList<Pago>)ViewBag.MisPagos)
+        {
+            <div class="contendor-f1">
+                <div class="form-group">
+                    <p class="control-label">Monto: @item.Monto</p>
+                </div>
+                <div class="form-group">
+                    @if (item.Pagado == 1)
+                    {
+                        <p class="control-label">Pagado = si</p>
+                    }
+                    else
+                    {
+                        <p class="control-label">Pagado = no</p>
+                    }
+                </div>
             </div>
-            <div class="form-group data">
-                <p>@Html.DisplayFor(model => model.Nombre)</p>
+            <div class="contendor-f1">
+                <div class="form-group">
+                    <p class="control-label">Fecha: @item.Fecha</p>
+                </div>
+                <div class="form-group">
+                    <p class="control-label">Numero de Pago: @item.NroPago</p>
+                </div>
             </div>
-            <div class="form-group">
-                <p>@Html.DisplayNameFor(model => model.Apellido)</p>
-            </div>
-            <div class="form-group data">
-                <p>@Html.DisplayFor(model => model.Apellido)</p>
-            </div>
-        </div>
-        <div class="contendor-f1">
-            <div class="form-group">
-                <p>@Html.DisplayNameFor(model => model.Dni)</p>
-            </div>
-            <div class="form-group data">
-                <p>@Html.DisplayFor(model => model.Dni)</p>
-            </div>
-            <div class="form-group">
-                <p>@Html.DisplayNameFor(model => model.Correo)</p>
-            </div>
-            <div class="form-group data">
-                <p>@Model.Correo</p>
-            </div>
-        </div>
+        }
+
+
         <div class="contendor-f1">
             <div class="form-group ultimo">
-                <form asp-action="Delete">
-                    <a asp-action="Index">Volver</a>
-                    <input type="hidden" name="IdEmpleado" readonly value="@Model.IdEmpleado" />
-                    <input type="submit" value="Delete" class="btn-1" />
-                </form>
+                <a asp-action="Index">Volver</a>
             </div>
         </div>
     </div>
-
 </div>
+
+
 
 <script>
 

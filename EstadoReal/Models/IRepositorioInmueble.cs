@@ -10,5 +10,6 @@ namespace EstadoReal.Models
         IList<Inmueble> ObtenerPorIdPropietario(int id);
         IList<Inmueble> ObtenerDisponiblesPorIdPropietario(int id);
         IList<Inmueble>  ObtenerDisponibles();
+        IList<Contrato> ObtenerContratos(int id);
     }
 }

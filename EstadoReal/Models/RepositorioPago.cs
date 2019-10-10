@@ -58,7 +58,7 @@ namespace EstadoReal.Models
             int res = -1;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"UPDATE Pagos SET Monto={p.Monto} , Pagado={p.Pagado}, Fecha='{p.Fecha}', NroPago={p.NroPago} " +
+                string sql = $"UPDATE Pagos SET Monto={p.Monto} , Pagado={p.Pagado}, Fecha='{p.Fecha}', NroPago={p.NroPago}, IdContrato={p.IdContrato} " +
                     $"WHERE IdPago = {p.IdPago} ;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
@@ -165,6 +165,38 @@ namespace EstadoReal.Models
                 }
             }
             return res;
+        }
+
+        public IList<Pago> ObtenerPagosPorContrato(int id)
+        {
+            List<Pago> res = new List<Pago>();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string sql = $"SELECT p.Monto, p.Pagado, p.Fecha, p.NroPago, p.IdPago " +
+                    $" FROM Pagos p INNER JOIN Contratos c ON p.IdContrato = c.IdContrato" +
+                    $" WHERE p.IdContrato=@id AND p.EstadoPago = 1 ; ";
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.Add("@id", SqlDbType.Int).Value = id;
+                    command.CommandType = CommandType.Text;
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Pago p = new Pago
+                        {
+                            Monto = reader.GetDecimal(0),
+                            Pagado = reader.GetByte(1),
+                            Fecha = reader.GetDateTime(2).ToString(),
+                            NroPago = reader.GetInt32(3),
+                        };
+                        res.Add(p);
+                    }
+                    connection.Close();
+                }
+            }
+            return res;
+
         }
     }
 }

@@ -1,11 +1,10 @@
-﻿@model EstadoReal.Models.Propietario
+﻿@model IEnumerable<EstadoReal.Models.Inmueble>
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "ListPropiedades";
 }
 
-
-<link href="~/css/EmpleadoDetalles.css" type="text/css" rel="stylesheet" />
+<link href="~/css/EmpleadoCrear.css" rel="stylesheet" type="text/css" />
 
 <div class="contenedor-nav">
     <nav>
@@ -28,59 +27,63 @@
 </div>
 
 
+
 <div class="contenedor-formulario-registrar">
 
     <div class="contenedor-bienvenida">
-        <h2>¿Está seguro de borrar este propietario?</h2>
+        <h2>Buscar Inmuebles por nombre de propietario:</h2>
     </div>
-
+    <div class="contenedor-crear">
+        <div class="imagen-usuario"> <img src="~/img/User2.png" alt="crear inmueble" /></div>
+        <div></div>
+        <p>Buscar Inmuebles</p>
+    </div>
     <div class="contenedor-formulario">
-        <div class="contendor-f1">
-            <div class="form-group">
-                <p>@Html.DisplayNameFor(model => model.Nombre)</p>
+        <form asp-action="ListPropiedades" class="formulario">
+            <div class="contendor-f1">
+                <div class="form-group">
+                    <label class="control-label">Nombre Propietario: </label>
+                    <input type="text" name="Nombre" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Apellido Propietario: </label>
+                    <input type="text" name="Apellido" class="form-control" />
+                </div>
             </div>
-            <div class="form-group data">
-                <p>@Html.DisplayFor(model => model.Nombre)</p>
-            </div>
-            <div class="form-group">
-                <p>@Html.DisplayNameFor(model => model.Apellido)</p>
-            </div>
-            <div class="form-group data">
-                <p>@Html.DisplayFor(model => model.Apellido)</p>
-            </div>
-            <div class="form-group">
-                <p>@Html.DisplayNameFor(model => model.Dni)</p>
-            </div>
-            <div class="form-group data">
-                <p>@Html.DisplayFor(model => model.Dni)</p>
-            </div>
-        </div>
 
-        <div class="contendor-f1">
-            <div class="form-group">
-                <p>@Html.DisplayNameFor(model => model.Correo)</p>
-            </div>
-            <div class="form-group data">
-                <p>@Model.Correo</p>
-            </div>
-            <div class="form-group">
-                <p>@Html.DisplayNameFor(model => model.Telefono)</p>
-            </div>
-            <div class="form-group data">
-                <p>@Html.DisplayFor(model => model.Telefono)</p>
-            </div>
-        </div>
-        <div class="contendor-f1">
-            <div class="form-group ultimo">
-                <form asp-action="Delete">
+            <div class="contendor-f1">
+                <div class="form-group ultimo">
                     <a asp-action="Index">Volver</a>
-                    <input type="hidden" name="IdPropietario" readonly value="@Html.DisplayFor(model => model.IdPropietario)" />
-                    <input type="submit" value="borrar" class="btn-1" />
-                </form>
+                    <input type="submit" value="Buscar" class="btn-1" />
+                </div>
+            </div>
+        </form>
+        @if ((IList<Propietario>)ViewBag.misPropietarios != null)
+        {
+            @foreach (var item in Model)
+            {
+                @foreach (var i in (IList<Propietario>)ViewBag.misPropietarios)
+                {
+                    if (item.IdPropietario == i.IdPropietario)
+                    {
+        <div class="contendor-f1">
+            <div class="form-group">
+                <p class="control-label">Direccion: @item.Direccion</p>
+            </div>
+            <div class="form-group">
+                <p class="control-label">Nombre Propietario: @i.Nombre</p>
+            </div>
+            <div class="form-group">
+                <p class="control-label">Apellido Propietario: @i.Apellido</p>
             </div>
         </div>
+                    }
+                }
+            }
+
+        }
+
     </div>
-    <!--asp-route-id="(Arroba)Model.IdInmueble"-->
 </div>
 
 <script>

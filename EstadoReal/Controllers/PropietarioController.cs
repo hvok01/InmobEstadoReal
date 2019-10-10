@@ -85,17 +85,23 @@ namespace EstadoReal.Controllers
                             iterationCount: 1000,
                             numBytesRequested: 256 / 8));
                         repositorio.Alta(propietario);
-                        TempData["Id"] = propietario.IdPropietario;
+                        if (TempData.ContainsKey("Id"))
+                            ViewBag.Id = TempData["Id"];
+                        ViewBag.MensajeError = null;
                         ViewBag.Exito = "Propietario registrado con exito";
                         return View();
                     }
                 }
                 else
+                    if (TempData.ContainsKey("Id"))
+                        ViewBag.Id = TempData["Id"];
                     ViewBag.MensajeError = "No che, sabes que te faltó algo";
                     return View();
             }
             catch (Exception ex)
             {
+                if (TempData.ContainsKey("Id"))
+                    ViewBag.Id = TempData["Id"];
                 ViewBag.Error = ex.Message;
                 ViewBag.StackTrate = ex.StackTrace;
                 ViewBag.MensajeError = "No sabemos que pasó pero hiciste algo mal seguro.";
@@ -116,8 +122,12 @@ namespace EstadoReal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Propietario propietario)
         {
+            ViewBag.Id = propietario.IdPropietario;
+
             try
             {
+                var prop = repositorio.ObtenerPorId(propietario.IdPropietario);
+
                 TempData["Nombre"] = propietario.Nombre;
                 if (ModelState.IsValid && propietario.Nombre != "" && propietario.Clave != "")
                 {
@@ -128,21 +138,21 @@ namespace EstadoReal.Controllers
                         iterationCount: 1000,
                         numBytesRequested: 256 / 8));
                     repositorio.Modificacion(propietario);
-                    TempData["Id"] = propietario.IdPropietario;
-                    ViewBag.MensajeError = "";
+                    ViewBag.MensajeError = null;
                     ViewBag.Exito = "Propietario editado con exito";
-                    return View();
+                    return View(prop);
                 }
                 else
                     ViewBag.MensajeError = "No che, sabes que te faltó algo";
-                    return View();
+                    return View(prop);
             }
             catch (Exception ex)
             {
+                var prop = repositorio.ObtenerPorId(propietario.IdPropietario);
                 ViewBag.Error = ex.Message;
                 ViewBag.StackTrate = ex.StackTrace;
                 ViewBag.MensajeError = "No sabemos que pasó pero hiciste algo mal seguro.";
-                return View();
+                return View(prop);
             }
         }
 
@@ -179,5 +189,6 @@ namespace EstadoReal.Controllers
                 return View();
             }
         }
+
     }
 }

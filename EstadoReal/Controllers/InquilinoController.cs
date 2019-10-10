@@ -66,10 +66,11 @@ namespace EstadoReal.Controllers
         {
             try
             {
+
                 if (ModelState.IsValid && inquilino.Nombre != "")
                 {
                     repositorio.Alta(inquilino);
-                    TempData["Id"] = inquilino.IdInquilino;
+                    ViewBag.MensajeError = null;
                     ViewBag.Exito = "Creado con éxito";
                     return View();
                 }
@@ -99,25 +100,29 @@ namespace EstadoReal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Inquilino inquilino)
         {
+            ViewBag.Id = inquilino.IdInquilino;
+
             try
             {
+                var inqul = repositorio.ObtenerPorId(inquilino.IdInquilino);
+
                 if (ModelState.IsValid && inquilino.Nombre != "")
                 {
                     repositorio.Modificacion(inquilino);
-                    TempData["Id"] = inquilino.IdInquilino;
                     ViewBag.Exito = "Editado con exito";
-                    return View();
+                    return View(inqul);
                 }
                 else
                     ViewBag.MensajeError = "Dejaste algo sin completar ¿puede ser?";
-                    return View();
+                    return View(inqul);
             }
             catch (Exception ex)
             {
+                var inqul = repositorio.ObtenerPorId(inquilino.IdInquilino);
                 ViewBag.Error = ex.Message;
                 ViewBag.StackTrate = ex.StackTrace;
                 ViewBag.MensajeError = "No sabemos que pasó pero hiciste algo mal seguro.";
-                return View();
+                return View(inqul);
             }
         }
 

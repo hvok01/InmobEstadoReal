@@ -12,7 +12,7 @@
         <label class="logo-Volver" for="menu"><img src="~/img/VolverIcon.png" alt="Volver" /></label>
         <label class="logo-1" for="menu"><img src="~/img/MenuBlack.png" alt="Menu" /></label>
         <div class="logo-2"><a asp-action="Index"><img src="~/img/ERIcon1Black.png" alt="Estado Real" /></a></div>
-        <div class="logo-3"><a asp-controller="Home" asp-action="Login"><img src="~/img/SalirIcon.png" alt="Cerrar Sesion" /></a></div>
+        <div class="logo-3"><a asp-controller="Home" asp-action="Logout"><img src="~/img/SalirIcon.png" alt="Cerrar Sesion" /></a></div>
     </nav>
 </div>
 
@@ -82,7 +82,16 @@
                     <input type="submit" value="Editar" class="btn-1" />
                 </div>
             </div>
-            <div> <p style="color: #6D9B65;"> @ViewBag.Exito </p> <p class="mensaje-error">@ViewBag.MensajeError</p></div>
+            <div>
+                @if (ViewBag.MensajeError == null)
+                {
+                    <p style="color: #6D9B65;"> @ViewBag.Exito </p>
+                }
+                else
+                {
+                    <p class="mensaje-error"> @ViewBag.MensajeError</p>
+                }
+            </div>
         </form>
     </div>
 </div>

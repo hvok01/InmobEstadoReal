@@ -74,7 +74,10 @@ namespace EstadoReal.Controllers
                     if(propietario.ObtenerPorCorreo(empleado.Correo) != null)
                     {
                         //este correo ya está en uso y este software no permite los mismo correos :(
-                        return RedirectToAction(nameof(Index));
+                        if (TempData.ContainsKey("Id"))
+                            ViewBag.Id = TempData["Id"];
+                        ViewBag.Mensaje = "Lamentamos informate que no podés elegir este correo. Intenta con otro por favor.";
+                        return View();
                     }
                     else
                     {
@@ -90,12 +93,18 @@ namespace EstadoReal.Controllers
                     
                 }
                 else
-                    return View();
+                if (TempData.ContainsKey("Id"))
+                    ViewBag.Id = TempData["Id"];
+                ViewBag.Mensaje = "Campo vacío y/o correo no disponible. Intente otro";
+                return View();
             }
             catch (Exception ex)
             {
                 ViewBag.Error = ex.Message;
                 ViewBag.StackTrate = ex.StackTrace;
+                if (TempData.ContainsKey("Id"))
+                    ViewBag.Id = TempData["Id"];
+                ViewBag.Mensaje = "No sabemos que pasó pero hiciste algo mal seguro.";
                 return View();
             }
         }
@@ -124,16 +133,20 @@ namespace EstadoReal.Controllers
                         iterationCount: 1000,
                         numBytesRequested: 256 / 8));
                     repositorio.Modificacion(empleado);
-
-                    ViewBag.Mensaje = "Usuario editado con exito";
+                    ViewBag.Mensaje = "";
+                    ViewBag.MensajeExito = "Usuario editado con exito";
                     return View();
                 }
                 else
                     ViewBag.Mensaje = "Nuevo complejo sistema detectó que hay campos vacíos";
+                if (TempData.ContainsKey("Id"))
+                    ViewBag.Id = TempData["Id"];
                 return View();
             }
             catch
             {
+                if (TempData.ContainsKey("Id"))
+                    ViewBag.Id = TempData["Id"];
                 ViewBag.Mensaje = "No sabemos que pasó pero hiciste algo mal seguro.";
                 return View();
             }

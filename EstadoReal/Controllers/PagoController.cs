@@ -15,11 +15,13 @@ namespace EstadoReal.Controllers
     {
         private readonly IRepositorio<Pago> repositorio;
         private readonly IRepositorioEmpleado empleadosRepo;
+        private readonly IRepositorioContrato contrato;
 
-        public PagoController(IRepositorio<Pago> repositorio, IRepositorioEmpleado empleadosRepo)
+        public PagoController(IRepositorio<Pago> repositorio, IRepositorioEmpleado empleadosRepo, IRepositorioContrato contrato)
         {
             this.repositorio = repositorio;
             this.empleadosRepo = empleadosRepo;
+            this.contrato = contrato;
         }
 
         // GET: Pago
@@ -56,6 +58,7 @@ namespace EstadoReal.Controllers
         // GET: Pago/Create
         public ActionResult Create()
         {
+            ViewBag.ContratosTodos = contrato.ObtenerTodos();
             return View();
         }
 
@@ -69,16 +72,19 @@ namespace EstadoReal.Controllers
                 if (ModelState.IsValid)
                 {
                     repositorio.Alta(pago);
-                    TempData["Id"] = pago.IdPago;
+                    ViewBag.ContratosTodos = contrato.ObtenerTodos();
+                    ViewBag.MensajeError = null;
                     ViewBag.Exito = "Realizado con éxito";
                     return View();
                 }
                 else
-                    ViewBag.MensajeError = "Parece que cometiste un error";
+                    ViewBag.ContratosTodos = contrato.ObtenerTodos();
+                ViewBag.MensajeError = "Parece que cometiste un error";
                     return View();
             }
             catch (Exception ex)
             {
+                ViewBag.ContratosTodos = contrato.ObtenerTodos();
                 ViewBag.Error = ex.Message;
                 ViewBag.StackTrate = ex.StackTrace;
                 ViewBag.MensajeError = "No sabemos que pasó pero seguro hiciste algo mal.";
@@ -91,6 +97,7 @@ namespace EstadoReal.Controllers
         {
             ViewBag.id = id;
             var pago = repositorio.ObtenerPorId(id);
+            ViewBag.ContratosTodos = contrato.ObtenerTodos();
             return View(pago);
         }
 
@@ -99,26 +106,34 @@ namespace EstadoReal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Pago pago)
         {
+            ViewBag.id = pago.IdPago;
+
             try
             {
                 if (ModelState.IsValid)
                 {
                     //que pasa aqui coñooo
                     repositorio.Modificacion(pago);
-                    TempData["Id"] = pago.IdPago;
+                    ViewBag.ContratosTodos = contrato.ObtenerTodos();
+                    var pagoRec = repositorio.ObtenerPorId(pago.IdPago);
+                    ViewBag.MensajeError = null;
                     ViewBag.Exito = "Realizado con éxito";
-                    return View();
+                    return View(pagoRec);
                 }
                 else
+                    ViewBag.ContratosTodos = contrato.ObtenerTodos();
+                    var pagoRe= repositorio.ObtenerPorId(pago.IdPago);
                     ViewBag.MensajeError = "Parece que cometiste un error";
-                    return View();
+                    return View(pagoRe);
             }
             catch (Exception ex)
             {
+                ViewBag.ContratosTodos = contrato.ObtenerTodos();
                 ViewBag.Error = ex.Message;
                 ViewBag.StackTrate = ex.StackTrace;
+                var pagoRe = repositorio.ObtenerPorId(pago.IdPago);
                 ViewBag.MensajeError = "No sabemos que pasó pero seguro hiciste algo mal.";
-                return View();
+                return View(pagoRe);
             }
         }
 

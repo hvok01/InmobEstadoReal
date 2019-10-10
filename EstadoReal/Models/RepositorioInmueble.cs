@@ -244,5 +244,38 @@ namespace EstadoReal.Models
             return res;
         }
 
+        public IList<Contrato> ObtenerContratos(int id)
+        {
+            List<Contrato> res = new List<Contrato>();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string sql = $"SELECT c.InicioContrato, c.FinContrato, c.Deudas, c.IdInquilino " +
+                    $" FROM Contratos c INNER JOIN Inmuebles i ON c.IdInmueble = i.IdInmueble" +
+                    $" WHERE i.IdInmueble=@id AND c.EstadoContrato = 1 ;";
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.Add("@id", SqlDbType.Int).Value = id;
+                    command.CommandType = CommandType.Text;
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Contrato c = new Contrato
+                        {
+                            InicioContrato = reader.GetDateTime(0).ToString(),
+                            FinContrato = reader.GetDateTime(1).ToString(),
+                            Deudas = reader.GetDecimal(2),
+                            IdInquilino = reader.GetInt32(3),
+                        };
+                        res.Add(c);
+                    }
+                    connection.Close();
+                }
+            }
+            return res;
+        }
+
+
+
     }
 }

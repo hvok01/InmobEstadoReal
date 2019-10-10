@@ -170,5 +170,41 @@ namespace EstadoReal.Models
             }
             return res;
         }
+
+        public IList<Propietario> ObtenerPorNombreApellido(string nombre, string apellido)
+        {
+            IList<Propietario> res = new List<Propietario>();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string sql = $"SELECT IdPropietario, Nombre, Apellido, Dni, Correo, Telefono, Clave, EstadoPropietario" +
+                    $" FROM Propietarios WHERE EstadoPropietario = 1 AND Nombre = @nombre AND Apellido = @apellido ;";
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.Add("@nombre", SqlDbType.VarChar).Value = nombre;
+                    command.Parameters.Add("@apellido", SqlDbType.VarChar).Value = apellido;
+                    command.CommandType = CommandType.Text;
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Propietario p = new Propietario
+                        {
+                            IdPropietario = reader.GetInt32(0),
+                            Nombre = reader.GetString(1),
+                            Apellido = reader.GetString(2),
+                            Dni = reader.GetInt32(3),
+                            Correo = reader.GetString(4),
+                            Telefono = reader.GetInt64(5),
+                            Clave = reader.GetString(6),
+                            EstadoPropietario = reader.GetByte(7),
+                        };
+                        res.Add(p);
+                    }
+                    connection.Close();
+                }
+            }
+            return res;
+
+        }
     }
 }

@@ -41,82 +41,82 @@ namespace EstadoReal.Controllers
         // GET: Home/Login
         public ActionResult Login()
         {
-            return View();
+            var identity = (ClaimsIdentity)User.Identity;
+            if(identity.Name == null)
+            {
+                return View();
+            } else
+            {
+                return RedirectToAction("Index", "Empleado");
+            }
+            
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginView loginView)
         {
-            try
-            {
-
-                string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                    password: loginView.Clave,
-                    salt: System.Text.Encoding.ASCII.GetBytes("SALADA"),
-                    prf: KeyDerivationPrf.HMACSHA1,
-                    iterationCount: 1000,
-                    numBytesRequested: 256 / 8));
-                var e = empleadosRepo.ObtenerPorCorreo(loginView.Usuario);
-                
-                if ( e == null || e.Clave != hashed)
+                try
                 {
-                    ViewBag.Mensaje = "Datos inválidos";
-                    return View();
-                }
-                var claims = new List<Claim>
+
+                    string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                        password: loginView.Clave,
+                        salt: System.Text.Encoding.ASCII.GetBytes("SALADA"),
+                        prf: KeyDerivationPrf.HMACSHA1,
+                        iterationCount: 1000,
+                        numBytesRequested: 256 / 8));
+                    var e = empleadosRepo.ObtenerPorCorreo(loginView.Usuario);
+
+                    if (e == null || e.Clave != hashed)
+                    {
+                        ViewBag.Mensaje = "Datos inválidos";
+                        return View();
+                    }
+                    var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, e.Correo),
                     new Claim("FullName", e.Nombre + " " + e.Apellido),
                     new Claim(ClaimTypes.Role, "Empleado"),
                 };
 
-                var claimsIdentity = new ClaimsIdentity(
-                    claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var claimsIdentity = new ClaimsIdentity(
+                        claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                var authProperties = new AuthenticationProperties
+                    var authProperties = new AuthenticationProperties
+                    {
+                        //AllowRefresh = <bool>,
+                        // Refreshing the authentication session should be allowed.
+                        AllowRefresh = true,
+                    };
+
+                    TempData["Id"] = e.IdEmpleado;
+
+                    await HttpContext.SignInAsync(
+                        CookieAuthenticationDefaults.AuthenticationScheme,
+                        new ClaimsPrincipal(claimsIdentity),
+                        authProperties);
+                    return RedirectToAction("Index", "Empleado");
+                }
+                catch (Exception ex)
                 {
-                    //AllowRefresh = <bool>,
-                    // Refreshing the authentication session should be allowed.
-                    AllowRefresh = true,
-                    //ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
-                    // The time at which the authentication ticket expires. A 
-                    // value set here overrides the ExpireTimeSpan option of 
-                    // CookieAuthenticationOptions set with AddCookie.
-
-                    //IsPersistent = true,
-                    // Whether the authentication session is persisted across 
-                    // multiple requests. When used with cookies, controls
-                    // whether the cookie's lifetime is absolute (matching the
-                    // lifetime of the authentication ticket) or session-based.
-
-                    //IssuedUtc = <DateTimeOffset>,
-                    // The time at which the authentication ticket was issued.
-
-                    //RedirectUri = <string>
-                    // The full path or absolute URI to be used as an http 
-                    // redirect response value.
-                };
-
-                TempData["Id"] = e.IdEmpleado;
-
-                await HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity),
-                    authProperties);
-                return RedirectToAction("Index","Empleado");
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Error = ex.Message;
-                ViewBag.StackTrate = ex.StackTrace;
-                return View();
-            }
+                    ViewBag.Error = ex.Message;
+                    ViewBag.StackTrate = ex.StackTrace;
+                    return View();
+                }
+            
         }
 
         public ActionResult Registrar()
         {
-            return View();
+            var identity = (ClaimsIdentity)User.Identity;
+            if (identity.Name == null)
+            {
+                return View();
+            } else
+            {
+                return RedirectToAction("Index", "Empleado");
+            }
+                
         }
 
         [HttpPost]
@@ -125,9 +125,11 @@ namespace EstadoReal.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
+                var existeCorreoEmpleado = empleadosRepo.ObtenerPorCorreo(empleado.Correo);
+
+                if (ModelState.IsValid && existeCorreoEmpleado == null)
                 {
-                    if (empleadosRepo.ObtenerPorCorreo(empleado.Correo) != null)
+                    if (propietarios.ObtenerPorCorreo(empleado.Correo) != null)
                     {
                         //este correo ya está en uso y este software no permite los mismo correos :(
                         ViewBag.MensajeError = "Este correo ya fue registrado :(";
@@ -149,7 +151,7 @@ namespace EstadoReal.Controllers
 
                 }
                 else
-                    ViewBag.MensajeError = "No sabemos que pasó pero hiciste algo mal seguro.";
+                    ViewBag.MensajeError = "Campos vacíos u/o el correo ya está en uso.";
                     return View();
             }
             catch (Exception ex)
