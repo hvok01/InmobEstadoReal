@@ -20,25 +20,25 @@
 
 <div class="contenedor-login">
     <div class="contenedor-formulario-login">
-         <form asp-action="Login" class="formulario-login">
-             <div>
-                 <img src="~/img/ERLogo1.png" alt="Estado Real Logo"/>
-             </div>
-             <div> <p class="mensaje-error"> @ViewBag.Mensaje</p> </div>
-             <div class="fomulario-div">
-                 <input asp-for="Usuario" class="txt-box1" placeholder="Usuario"/>
-                 <span asp-validation-for="Usuario"></span>
-             </div>
-             <div class="fomulario-div">
-                 <input asp-for="Clave" class="txt-box1" placeholder="Contraseña"/>
-                 <span asp-validation-for="Clave"></span>
-             </div>
-             <div class="fomulario-div">
-                  <input type="submit" value="Iniciar Sesion" class="btn-1" />
-             </div>
-         </form>
-         <div>
-             <a asp-action="Registrar">Registrate</a>
-         </div>
+        <form asp-action="Login" class="formulario-login">
+            <div>
+                <img src="~/img/ERLogo1.png" alt="Estado Real Logo" />
+            </div>
+            <div> <p class="mensaje-error"> @ViewBag.Mensaje</p> </div>
+            <div class="fomulario-div">
+                <input asp-for="Usuario" class="txt-box1" placeholder="Usuario" />
+                <span asp-validation-for="Usuario"></span>
+            </div>
+            <div class="fomulario-div">
+                <input asp-for="Clave" class="txt-box1" placeholder="Contraseña" />
+                <span asp-validation-for="Clave"></span>
+            </div>
+            <div class="fomulario-div">
+                <input type="submit" value="Iniciar Sesion" class="btn-1" />
+            </div>
+        </form>
+        <div>
+            <a asp-action="Registrar">Registrate</a>
+        </div>
     </div>
 </div>

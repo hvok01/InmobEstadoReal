@@ -39,6 +39,7 @@ namespace EstadoReal
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Empleado", policy => policy.RequireClaim(ClaimTypes.Role, "Empleado"));
+                options.AddPolicy("Propietario", policy => policy.RequireClaim(ClaimTypes.Role, "Propietario"));
             });
             services.AddMvc();
             services.AddTransient<IRepositorio<Propietario>, RepositorioPropietario>();

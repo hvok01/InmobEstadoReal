@@ -20,8 +20,10 @@ namespace EstadoReal.Models
             int res = -1;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"INSERT INTO Inmuebles (Direccion, UsoResidencial, Tipo, Ambientes, Precio, Disponibilidad, EstadoInmueble, IdPropietario) " +
-                    $"VALUES ('{i.Direccion}', {i.UsoResidencial}, '{i.Tipo}', {i.Ambientes}, {i.Precio}, {i.Disponibilidad}, 1 , {i.IdPropietario}) ;";
+                string sql = $"INSERT INTO Inmuebles (Direccion, UsoResidencial, Tipo, Ambientes, Precio, Disponibilidad, " +
+                    $"EstadoInmueble, IdPropietario, Latitud, Longitud) " +
+                    $"VALUES ('{i.Direccion}', {i.UsoResidencial}, '{i.Tipo}', {i.Ambientes}, {i.Precio}, " +
+                    $"{i.Disponibilidad}, 1 , {i.IdPropietario}, {i.Latitud} , {i.Longitud}) ;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.CommandType = CommandType.Text;
@@ -59,7 +61,8 @@ namespace EstadoReal.Models
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string sql = $"UPDATE Inmuebles SET Direccion='{i.Direccion}', UsoResidencial={i.UsoResidencial}, Tipo='{i.Tipo}', Ambientes={i.Ambientes}, Precio= {i.Precio}, " +
-                    $"Disponibilidad={i.Disponibilidad}, EstadoInmueble = 1, IdPropietario = {i.IdPropietario} WHERE IdInmueble = {i.IdInmueble} ;";
+                    $"Disponibilidad={i.Disponibilidad}, " +
+                    $" EstadoInmueble = 1, IdPropietario = {i.IdPropietario}, Latitud = {i.Latitud}, Longitud = {i.Longitud} WHERE IdInmueble = {i.IdInmueble} ;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.CommandType = CommandType.Text;
@@ -76,7 +79,7 @@ namespace EstadoReal.Models
             Inmueble i = null;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"SELECT IdInmueble, Direccion, UsoResidencial, Tipo, Ambientes, Precio, Disponibilidad, EstadoInmueble, IdPropietario " +
+                string sql = $"SELECT IdInmueble, Direccion, UsoResidencial, Tipo, Ambientes, Precio, Disponibilidad, EstadoInmueble, IdPropietario, Latitud, Longitud " +
                     $" FROM Inmuebles WHERE IdInmueble=@id AND EstadoInmueble = 1;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
@@ -97,6 +100,8 @@ namespace EstadoReal.Models
                             Disponibilidad = reader.GetByte(6),
                             EstadoInmueble = reader.GetByte(7),
                             IdPropietario = reader.GetInt32(8),
+                            Latitud = reader.GetDecimal(9),
+                            Longitud = reader.GetDecimal(10),
                         };
                     }
                     connection.Close();
@@ -110,8 +115,9 @@ namespace EstadoReal.Models
             IList<Inmueble> res = new List<Inmueble>();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"SELECT IdInmueble, Direccion, UsoResidencial, Tipo, Ambientes, Precio, Disponibilidad, EstadoInmueble, IdPropietario " +
-                    $" FROM Inmuebles WHERE IdPropietario=@id AND EstadoInmueble = 1;";
+                string sql = $"SELECT IdInmueble, Direccion, UsoResidencial, Tipo, Ambientes, " +
+                    $"Precio, Disponibilidad, EstadoInmueble, i.IdPropietario, Latitud, Longitud, p.Nombre, p.Apellido " +
+                    $" FROM Inmuebles i INNER JOIN Propietarios p ON i.IdPropietario = p.IdPropietario WHERE i.IdPropietario=@id AND EstadoInmueble = 1;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.Parameters.Add("@id", SqlDbType.Int).Value = id;
@@ -131,6 +137,58 @@ namespace EstadoReal.Models
                             Disponibilidad = reader.GetByte(6),
                             EstadoInmueble = reader.GetByte(7),
                             IdPropietario = reader.GetInt32(8),
+                            Latitud = reader.GetDecimal(9),
+                            Longitud = reader.GetDecimal(10),
+                            Duenio = new Propietario
+                            {
+                                Nombre = reader.GetString(11),
+                                Apellido = reader.GetString(12),
+                            }
+                        };
+                        res.Add(i);
+                    }
+                    connection.Close();
+                }
+            }
+            return res;
+        }
+
+        public IList<Inmueble> ObtenerPorNombrePropietario(string nombre, string apellido)
+        {
+            IList<Inmueble> res = new List<Inmueble>();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string sql = $"SELECT IdInmueble, Direccion, UsoResidencial, Tipo, Ambientes, " +
+                    $"Precio, Disponibilidad, EstadoInmueble, i.IdPropietario, Latitud, Longitud, p.Nombre, p.Apellido " +
+                    $" FROM Inmuebles i INNER JOIN Propietarios p ON i.IdPropietario = p.IdPropietario " +
+                    $"WHERE p.Nombre = @nombre AND p.Apellido = @apellido AND EstadoInmueble = 1;";
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.Add("@nombre", SqlDbType.VarChar).Value = nombre;
+                    command.Parameters.Add("@apellido", SqlDbType.VarChar).Value = apellido;
+                    command.CommandType = CommandType.Text;
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Inmueble i = new Inmueble
+                        {
+                            IdInmueble = reader.GetInt32(0),
+                            Direccion = reader.GetString(1),
+                            UsoResidencial = reader.GetByte(2),
+                            Tipo = reader.GetString(3),
+                            Ambientes = reader.GetInt32(4),
+                            Precio = reader.GetDecimal(5),
+                            Disponibilidad = reader.GetByte(6),
+                            EstadoInmueble = reader.GetByte(7),
+                            IdPropietario = reader.GetInt32(8),
+                            Latitud = reader.GetDecimal(9),
+                            Longitud = reader.GetDecimal(10),
+                            Duenio = new Propietario
+                            {
+                                Nombre = reader.GetString(11),
+                                Apellido = reader.GetString(12),
+                            }
                         };
                         res.Add(i);
                     }
@@ -145,7 +203,7 @@ namespace EstadoReal.Models
             IList<Inmueble> res = new List<Inmueble>();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"SELECT IdInmueble, Direccion, UsoResidencial, Tipo, Ambientes, Precio, Disponibilidad, EstadoInmueble, IdPropietario " +
+                string sql = $"SELECT IdInmueble, Direccion, UsoResidencial, Tipo, Ambientes, Precio, Disponibilidad, EstadoInmueble, IdPropietario, Latitud, Longitud " +
                     $" FROM Inmuebles WHERE IdPropietario=@id AND EstadoInmueble = 1 AND Disponibilidad = 1";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
@@ -166,6 +224,8 @@ namespace EstadoReal.Models
                             Disponibilidad = reader.GetByte(6),
                             EstadoInmueble = reader.GetByte(7),
                             IdPropietario = reader.GetInt32(8),
+                            Latitud = reader.GetDecimal(9),
+                            Longitud = reader.GetDecimal(10),
                         };
                         res.Add(i);
                     }
@@ -180,7 +240,7 @@ namespace EstadoReal.Models
             IList<Inmueble> res = new List<Inmueble>();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"SELECT IdInmueble, Direccion, UsoResidencial, Tipo, Ambientes, Precio, Disponibilidad, EstadoInmueble, IdPropietario " +
+                string sql = $"SELECT IdInmueble, Direccion, UsoResidencial, Tipo, Ambientes, Precio, Disponibilidad, EstadoInmueble, IdPropietario, Latitud, Longitud " +
                     $" FROM Inmuebles WHERE EstadoInmueble = 1;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
@@ -200,6 +260,8 @@ namespace EstadoReal.Models
                             Disponibilidad = reader.GetByte(6),
                             EstadoInmueble = reader.GetByte(7),
                             IdPropietario = reader.GetInt32(8),
+                            Latitud = reader.GetDecimal(9),
+                            Longitud = reader.GetDecimal(10),
                         };
                         res.Add(i);
                     }
@@ -215,7 +277,7 @@ namespace EstadoReal.Models
             IList<Inmueble> res = new List<Inmueble>();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"SELECT IdInmueble, Direccion, UsoResidencial, Tipo, Ambientes, Precio, Disponibilidad, EstadoInmueble, IdPropietario " +
+                string sql = $"SELECT IdInmueble, Direccion, UsoResidencial, Tipo, Ambientes, Precio, Disponibilidad, EstadoInmueble, IdPropietario, Latitud, Longitud " +
                     $" FROM Inmuebles WHERE Disponibilidad = 1 AND EstadoInmueble = 1;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
@@ -235,6 +297,8 @@ namespace EstadoReal.Models
                             Disponibilidad = reader.GetByte(6),
                             EstadoInmueble = reader.GetByte(7),
                             IdPropietario = reader.GetInt32(8),
+                            Latitud = reader.GetDecimal(9),
+                            Longitud = reader.GetDecimal(10),
                         };
                         res.Add(i);
                     }
@@ -249,9 +313,9 @@ namespace EstadoReal.Models
             List<Contrato> res = new List<Contrato>();
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sql = $"SELECT c.InicioContrato, c.FinContrato, c.Deudas, c.IdInquilino " +
-                    $" FROM Contratos c INNER JOIN Inmuebles i ON c.IdInmueble = i.IdInmueble" +
-                    $" WHERE i.IdInmueble=@id AND c.EstadoContrato = 1 ;";
+                string sql = $"SELECT c.InicioContrato, c.FinContrato, c.Deudas, c.IdInquilino, i.Nombre, i.Apellido " +
+                    $" FROM Contratos c INNER JOIN Inquilinos i ON c.IdInquilino = i.IdInquilino" +
+                    $" WHERE c.IdInmueble=@id AND c.EstadoContrato = 1 ;";
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.Parameters.Add("@id", SqlDbType.Int).Value = id;
@@ -266,6 +330,11 @@ namespace EstadoReal.Models
                             FinContrato = reader.GetDateTime(1).ToString(),
                             Deudas = reader.GetDecimal(2),
                             IdInquilino = reader.GetInt32(3),
+                            inquilino = new Inquilino
+                            {
+                                Nombre = reader.GetString(4),
+                                Apellido = reader.GetString(5),
+                            }
                         };
                         res.Add(c);
                     }
@@ -275,7 +344,25 @@ namespace EstadoReal.Models
             return res;
         }
 
-
+        public int ActualizarDisponibilidad(int id, int disponibilidad)
+        {
+            int res = -1;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string sql = $"UPDATE Inmuebles SET Disponibilidad=@disponibilidad " +
+                    $" WHERE IdInmueble = @id ;";
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.Add("@id", SqlDbType.Int).Value = id; 
+                    command.Parameters.Add("@disponibilidad", SqlDbType.TinyInt).Value = disponibilidad;
+                    command.CommandType = CommandType.Text;
+                    connection.Open();
+                    res = command.ExecuteNonQuery();
+                    connection.Close();
+                }
+            }
+            return res;
+        }
 
     }
 }

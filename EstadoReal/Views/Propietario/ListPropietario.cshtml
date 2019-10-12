@@ -1,7 +1,7 @@
-﻿@model IEnumerable<EstadoReal.Models.Inmueble>
+﻿@model IEnumerable<EstadoReal.Models.Propietario>
 
 @{
-    ViewData["Title"] = "ListPropiedades";
+    ViewData["Title"] = "ListPropietario";
 }
 
 <link href="~/css/EmpleadoCrear.css" rel="stylesheet" type="text/css" />
@@ -27,19 +27,15 @@
 </div>
 
 
-
 <div class="contenedor-formulario-registrar">
 
     <div class="contenedor-bienvenida">
-        <h2>Buscar Inmuebles por nombre de propietario:</h2>
+        <h2>Lista de propietarios.</h2>
     </div>
-    <div class="contenedor-crear">
-        <div class="imagen-usuario"> <img src="~/img/User2.png" alt="crear inmueble" /></div>
-        <div></div>
-        <p>Buscar Inmuebles</p>
-    </div>
+
     <div class="contenedor-formulario">
-        <form asp-action="ListPropiedades" class="formulario">
+
+        <form asp-action="ListPropietario" class="formulario">
             <div class="contendor-f1">
                 <div class="form-group">
                     <label class="control-label">Nombre Propietario: </label>
@@ -58,6 +54,7 @@
                 </div>
             </div>
         </form>
+
         @if (Model != null)
         {
             @foreach (var i in Model)
@@ -65,13 +62,16 @@
 
                 <div class="contendor-f1">
                     <div class="form-group">
-                        <p class="control-label">Direccion: @i.Direccion</p>
+                        <p class="control-label">Nombre: @i.Nombre</p>
                     </div>
                     <div class="form-group">
-                        <p class="control-label">Nombre Propietario: @i.Duenio.Nombre</p>
+                        <p class="control-label">Apellido: @i.Apellido</p>
                     </div>
                     <div class="form-group">
-                        <p class="control-label">Apellido Propietario: @i.Duenio.Apellido</p>
+                        <p class="control-label">Correo: @i.Correo</p>
+                    </div>
+                    <div class="form-group">
+                        @Html.ActionLink("Ver más", "Details", "Propietario", new { id = i.IdPropietario }, null)
                     </div>
                 </div>
 
@@ -79,7 +79,6 @@
 
         }
         <p class="control-label">@ViewBag.Error</p>
-
     </div>
 </div>
 
@@ -100,3 +99,4 @@
     });
 
 </script>
+

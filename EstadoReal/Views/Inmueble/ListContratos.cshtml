@@ -49,13 +49,7 @@
             </div>
             <div class="contendor-f1">
                 <div class="form-group">
-                    @foreach (var i in (IList<Inquilino>)ViewBag.TodosInquilinos)
-                    {
-                        if (i.IdInquilino == item.IdInquilino)
-                        {
-                            <p class="control-label">Inquilino: @(i.Nombre + " " + i.Apellido)</p>
-                        }
-                    }
+                    <p class="control-label">Inquilino: @(item.inquilino.Nombre + " " + item.inquilino.Apellido)</p>
                 </div>
             </div>
 

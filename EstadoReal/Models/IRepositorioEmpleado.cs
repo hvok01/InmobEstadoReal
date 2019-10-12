@@ -9,5 +9,7 @@ namespace EstadoReal.Models
     {
         Empleado ObtenerPorCorreo(string correo);
 
+        IList<Empleado> ObtenerPorNombreApellido(string nombre, string apellido);
+
     }
 }

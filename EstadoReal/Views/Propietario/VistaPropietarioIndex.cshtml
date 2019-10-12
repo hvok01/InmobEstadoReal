@@ -1,0 +1,82 @@
+﻿@model EstadoReal.Models.Propietario
+
+@{
+    ViewData["Title"] = "VistaPropietarioIndex";
+}
+
+<link href="~/css/EmpleadoCrear.css" rel="stylesheet" type="text/css" />
+
+<div class="contenedor-nav">
+    <nav>
+        <input type="checkbox" id="menu" class="hidden" />
+        <label class="logo-Volver" for="menu"><img src="~/img/VolverIcon.png" alt="Volver" /></label>
+        <label class="logo-1" for="menu"><img src="~/img/MenuBlack.png" alt="Menu" /></label>
+        <div class="logo-2"><a asp-action="VistaPropietarioIndex"><img src="~/img/ERIcon1Black.png" alt="Estado Real" /></a></div>
+        <div class="logo-3"><a asp-controller="Home" asp-action="Logout"><img src="~/img/SalirIcon.png" alt="Cerrar Sesion" /></a></div>
+
+    </nav>
+</div>
+
+<div class="nav-display" id="nav">
+    <div><a asp-controller="Propietario" asp-action="VistaPropietarioIndex">Propietarios</a></div>
+    <div><a asp-controller="Home" asp-action="Logout">Salir</a></div>
+</div>
+
+<div class="contenedor-formulario-registrar">
+
+    <div class="contenedor-bienvenida">
+        <h2>Bienvenido @ViewBag.propietario.Nombre !</h2>
+    </div>
+
+    <div class="contenedor-formulario">
+        <div class="contendor-f1">
+            <div class="form-group">
+                <p class="control-label">Configuraciones de cuenta.</p>
+                @Html.ActionLink("configuraciones", "EditarPropietario", new { id = ViewBag.propietario.IdPropietario })
+            </div>
+        </div>
+        <div class="contendor-f1">
+            <div class="form-group">
+                <p class="control-label">Administrar proiedades.</p>
+                @Html.ActionLink("ver propiedades", "ListarPropiedades", new { id = ViewBag.propietario.IdPropietario })
+            </div>
+        </div>
+        <div class="contendor-f1">
+            <div class="form-group">
+                <p class="control-label">Ver inquilinos.</p>
+                @Html.ActionLink("ver inquilinos", "VerInquilinos", new {id = ViewBag.propietario.IdPropietario })
+            </div>
+        </div>
+        <div class="contendor-f1">
+            <div class="form-group">
+                <p class="control-label">Ver pagos.</p>
+                @Html.ActionLink("ver pagos", "VerPagos", new { id = ViewBag.propietario.IdPropietario })
+            </div>
+        </div>
+        <div class="contendor-f1">
+            <div class="form-group">
+                <p class="control-label">Ver contratos.</p>
+                @Html.ActionLink("ver contratos", "VerContratos", new { id = ViewBag.propietario.IdPropietario })
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    let check = document.getElementById("menu");
+    let nav = document.getElementById("nav");
+    let contenido = document.getElementById("mostrar");
+
+    check.addEventListener('click', () => {
+        if (check.checked) {
+            nav.style.display = "flex";
+            contenido.style.display = "none";
+        } else {
+            nav.style.display = "none";
+            contenido.style.display = "flex";
+        }
+    });
+
+</script>

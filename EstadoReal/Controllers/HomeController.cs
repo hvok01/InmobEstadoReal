@@ -58,7 +58,13 @@ namespace EstadoReal.Controllers
         {
                 try
                 {
-
+                    if(loginView.Usuario.Equals(null) || loginView.Clave.Equals(null))
+                {
+                    ViewBag.Mensaje = "Datos inválidos";
+                    return View();
+                }
+                    else
+                {
                     string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
                         password: loginView.Clave,
                         salt: System.Text.Encoding.ASCII.GetBytes("SALADA"),
@@ -66,41 +72,78 @@ namespace EstadoReal.Controllers
                         iterationCount: 1000,
                         numBytesRequested: 256 / 8));
                     var e = empleadosRepo.ObtenerPorCorreo(loginView.Usuario);
+                    var p = propietarios.ObtenerPorCorreo(loginView.Usuario);
 
                     if (e == null || e.Clave != hashed)
                     {
-                        ViewBag.Mensaje = "Datos inválidos";
-                        return View();
-                    }
-                    var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, e.Correo),
-                    new Claim("FullName", e.Nombre + " " + e.Apellido),
-                    new Claim(ClaimTypes.Role, "Empleado"),
-                };
-
-                    var claimsIdentity = new ClaimsIdentity(
-                        claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-                    var authProperties = new AuthenticationProperties
+                        if(p == null || p.Clave != hashed)
+                        {
+                            ViewBag.Mensaje = "Datos inválidos";
+                            return View();
+                        } else
+                        //es propietario
+                        {
+                            var claims = new List<Claim>
                     {
-                        //AllowRefresh = <bool>,
-                        // Refreshing the authentication session should be allowed.
-                        AllowRefresh = true,
+                        new Claim(ClaimTypes.Name, p.Correo),
+                        new Claim("FullName", p.Nombre + " " + p.Apellido),
+                        new Claim(ClaimTypes.Role, "Propietario"),
                     };
 
-                    TempData["Id"] = e.IdEmpleado;
+                            var claimsIdentity = new ClaimsIdentity(
+                                claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                    await HttpContext.SignInAsync(
-                        CookieAuthenticationDefaults.AuthenticationScheme,
-                        new ClaimsPrincipal(claimsIdentity),
-                        authProperties);
-                    return RedirectToAction("Index", "Empleado");
+                            var authProperties = new AuthenticationProperties
+                            {
+                                //AllowRefresh = <bool>,
+                                // Refreshing the authentication session should be allowed.
+                                AllowRefresh = true,
+                            };
+
+                            TempData["Id"] = p.IdPropietario;
+
+                            await HttpContext.SignInAsync(
+                                CookieAuthenticationDefaults.AuthenticationScheme,
+                                new ClaimsPrincipal(claimsIdentity),
+                                authProperties);
+
+                            return RedirectToAction("VistaPropietarioIndex", "Propietario");
+                        }
+
+                    } else
+                    //es empelado
+                    {
+                        var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, e.Correo),
+                        new Claim("FullName", e.Nombre + " " + e.Apellido),
+                        new Claim(ClaimTypes.Role, "Empleado"),
+                    };
+
+                        var claimsIdentity = new ClaimsIdentity(
+                            claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                        var authProperties = new AuthenticationProperties
+                        {
+                            //AllowRefresh = <bool>,
+                            // Refreshing the authentication session should be allowed.
+                            AllowRefresh = true,
+                        };
+
+                        TempData["Id"] = e.IdEmpleado;
+
+                        await HttpContext.SignInAsync(
+                            CookieAuthenticationDefaults.AuthenticationScheme,
+                            new ClaimsPrincipal(claimsIdentity),
+                            authProperties);
+                        return RedirectToAction("Index", "Empleado");
+                    }
+                }
+                    
                 }
                 catch (Exception ex)
                 {
-                    ViewBag.Error = ex.Message;
-                    ViewBag.StackTrate = ex.StackTrace;
+                    ViewBag.Mensaje = ex.StackTrace;
                     return View();
                 }
             
@@ -156,7 +199,7 @@ namespace EstadoReal.Controllers
             }
             catch (Exception ex)
             {
-                ViewBag.Error = ex.Message;
+                ViewBag.MensajeError = "Campos vacíos u/o el correo ya está en uso.";
                 ViewBag.StackTrate = ex.StackTrace;
                 return View();
             }
@@ -179,7 +222,7 @@ namespace EstadoReal.Controllers
             return View(claims);
         }
 
-        [Authorize(Policy = "Empleado")]
+        [Authorize(Policy= "Propietario")]
         public ActionResult Admin()
         {
             var identity = (ClaimsIdentity)User.Identity;

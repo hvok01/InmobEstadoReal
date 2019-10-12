@@ -1,7 +1,7 @@
-﻿@model IEnumerable<EstadoReal.Models.Inmueble>
+﻿@model IEnumerable<EstadoReal.Models.Empleado>
 
 @{
-    ViewData["Title"] = "ListPropiedades";
+    ViewData["Title"] = "ListEmpleados";
 }
 
 <link href="~/css/EmpleadoCrear.css" rel="stylesheet" type="text/css" />
@@ -27,26 +27,22 @@
 </div>
 
 
-
 <div class="contenedor-formulario-registrar">
 
     <div class="contenedor-bienvenida">
-        <h2>Buscar Inmuebles por nombre de propietario:</h2>
+        <h2>Lista de empelados.</h2>
     </div>
-    <div class="contenedor-crear">
-        <div class="imagen-usuario"> <img src="~/img/User2.png" alt="crear inmueble" /></div>
-        <div></div>
-        <p>Buscar Inmuebles</p>
-    </div>
+
     <div class="contenedor-formulario">
-        <form asp-action="ListPropiedades" class="formulario">
+
+        <form asp-action="ListEmpleados" class="formulario">
             <div class="contendor-f1">
                 <div class="form-group">
-                    <label class="control-label">Nombre Propietario: </label>
+                    <label class="control-label">Nombre Empleado: </label>
                     <input type="text" name="Nombre" class="form-control" />
                 </div>
                 <div class="form-group">
-                    <label class="control-label">Apellido Propietario: </label>
+                    <label class="control-label">Apellido Empleado: </label>
                     <input type="text" name="Apellido" class="form-control" />
                 </div>
             </div>
@@ -58,22 +54,26 @@
                 </div>
             </div>
         </form>
+
         @if (Model != null)
         {
             @foreach (var i in Model)
             {
 
-                <div class="contendor-f1">
-                    <div class="form-group">
-                        <p class="control-label">Direccion: @i.Direccion</p>
-                    </div>
-                    <div class="form-group">
-                        <p class="control-label">Nombre Propietario: @i.Duenio.Nombre</p>
-                    </div>
-                    <div class="form-group">
-                        <p class="control-label">Apellido Propietario: @i.Duenio.Apellido</p>
-                    </div>
-                </div>
+    <div class="contendor-f1">
+        <div class="form-group">
+            <p class="control-label">Nombre: @i.Nombre</p>
+        </div>
+        <div class="form-group">
+            <p class="control-label">Apellido: @i.Apellido</p>
+        </div>
+        <div class="form-group">
+            <p class="control-label">Correo: @i.Correo</p>
+        </div>
+        <div class="form-group">
+            @Html.ActionLink("Ver más", "Details", "Empleado", new { id = i.IdEmpleado }, null)
+        </div>
+    </div>
 
             }
 
@@ -100,3 +100,4 @@
     });
 
 </script>
+

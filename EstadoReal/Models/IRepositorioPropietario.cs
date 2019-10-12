@@ -10,5 +10,6 @@ namespace EstadoReal.Models
         Propietario ObtenerPorCorreo(string correo);
 
         IList<Propietario> ObtenerPorNombreApellido(string nombre, string apellido);
+
     }
 }

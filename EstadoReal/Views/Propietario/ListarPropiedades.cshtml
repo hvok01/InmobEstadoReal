@@ -1,0 +1,155 @@
+﻿@model IEnumerable<EstadoReal.Models.Inmueble>
+
+@{
+    ViewData["Title"] = "ListarPropiedades";
+}
+
+<link href="~/css/EmpleadoDetalles.css" type="text/css" rel="stylesheet" />
+
+<div class="contenedor-nav">
+    <nav>
+        <input type="checkbox" id="menu" class="hidden" />
+        <label class="logo-Volver" for="menu"><img src="~/img/VolverIcon.png" alt="Volver" /></label>
+        <label class="logo-1" for="menu"><img src="~/img/MenuBlack.png" alt="Menu" /></label>
+        <div class="logo-2"><a asp-action="VistaPropietarioIndex"><img src="~/img/ERIcon1Black.png" alt="Estado Real" /></a></div>
+        <div class="logo-3"><a asp-controller="Home" asp-action="Logout"><img src="~/img/SalirIcon.png" alt="Cerrar Sesion" /></a></div>
+    </nav>
+</div>
+
+<div class="nav-display" id="nav">
+    <div><a asp-controller="Propietario" asp-action="VistaPropietarioIndex">Propietarios</a></div>
+    <div><a asp-controller="Home" asp-action="Logout">Salir</a></div>
+</div>
+
+
+<div class="contenedor-formulario-registrar">
+
+    <div class="contenedor-bienvenida">
+        <h2>Estos son tus inmuebles</h2>
+    </div>
+
+    <div class="contenedor-formulario">
+
+        @if (ViewBag.Error == "")
+        {
+
+            @foreach (var item in (IList<Inmueble>)ViewBag.Inmueble)
+            {
+
+                <div class="contendor-f1">
+                    <div class="form-group">
+                        <p>Direccion:</p>
+                    </div>
+                    <div class="form-group data">
+                        <p>@item.Direccion</p>
+                    </div>
+                    <div class="form-group">
+                        <p>Uso Residencial</p>
+                    </div>
+                    <div class="form-group data">
+                        @if (item.UsoResidencial == 1)
+                        {
+                            <p class="col-sm-10">
+                                Sí
+                            </p>
+                        }
+                        else
+                        {
+                            <p class="col-sm-10">
+                                No
+                            </p>
+                        }
+                    </div>
+                    <div class="form-group">
+                        <p>Tipo</p>
+                    </div>
+                    <div class="form-group data">
+                        <p>@item.Tipo</p>
+                    </div>
+                </div>
+                <div class="contendor-f1">
+                    <div class="form-group">
+                        <p>Ambientes</p>
+                    </div>
+                    <div class="form-group data">
+                        <p>@item.Ambientes</p>
+                    </div>
+                    <div class="form-group">
+                        <p>Precio</p>
+                    </div>
+                    <div class="form-group data">
+                        <p>@item.Precio</p>
+                    </div>
+                    <div class="form-group">
+                        <p>Disponibilidad</p>
+                    </div>
+                    <div class="form-group data">
+                        @if (item.Disponibilidad == 1)
+                        {
+                            <p class="col-sm-10">
+                                Disponible
+                            </p>
+                        }
+                        else
+                        {
+                            <p class="col-sm-10">
+                                Ocupado
+                            </p>
+                        }
+                    </div>
+                </div>
+                <div class="contendor-f1">
+                    <div class="form-group">
+                        <p>Longitud</p>
+                    </div>
+                    <div class="form-group data">
+                        <p>@item.Longitud</p>
+                    </div>
+                    <div class="form-group">
+                        <p>Latitud</p>
+                    </div>
+                    <div class="form-group data">
+                        <p>@item.Latitud</p>
+                    </div>
+                    <div class="form-group data">
+                        @Html.ActionLink("Editar Disponibilidad", "EditarDisponibilidad", new { id = item.IdInmueble })
+                    </div>
+                </div>
+            }
+
+        }
+        else
+        {
+            <div class="contendor-f1">
+                <div class="form-group">
+                    <p>@ViewBag.Error</p>
+                </div>
+            </div>
+        }
+
+        <div class="contendor-f1">
+            <div class="form-group ultimo" style="margin-bottom: 50px;">
+                <a asp-action="VistaPropietarioIndex" style="margin-left: 0;">Volver</a>
+            </div>
+        </div>
+    </div>
+        <!--asp-route-id="(Arroba)Model.IdInmueble"-->
+    </div>
+
+<script>
+
+    let check = document.getElementById("menu");
+    let nav = document.getElementById("nav");
+    let contenido = document.getElementById("mostrar");
+
+    check.addEventListener('click', () => {
+        if (check.checked) {
+            nav.style.display = "flex";
+            contenido.style.display = "none";
+        } else {
+            nav.style.display = "none";
+            contenido.style.display = "flex";
+        }
+    });
+
+</script>

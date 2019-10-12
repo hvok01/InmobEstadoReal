@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,9 +23,18 @@ namespace EstadoReal.Models
         public decimal Precio { get; set; }
         [Required]
         public byte Disponibilidad { get; set; }
+        [Required]
+
+        public decimal Longitud { get; set; }
+        [Required]
+
+        public decimal Latitud { get; set; }
 
         public byte EstadoInmueble { get; set; }
         [Required]
         public int IdPropietario { get; set; }
+
+        [ForeignKey("IdPropietario")]
+        public Propietario Duenio { get; set; }
     }
 }

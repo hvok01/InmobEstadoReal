@@ -166,5 +166,40 @@ namespace EstadoReal.Models
             }
             return res;
         }
+
+        public IList<Empleado> ObtenerPorNombreApellido(string nombre, string apellido)
+        {
+            List<Empleado> res = new List<Empleado>();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string sql = $"SELECT IdEmpleado, Nombre, Apellido, Dni, Correo, Clave, EstadoEmpleado " +
+                    $" FROM Empleados WHERE EstadoEmpleado = 1 AND Nombre = @nombre AND  Apellido = @apellido;";
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.Add("@nombre", SqlDbType.VarChar).Value = nombre;
+                    command.Parameters.Add("@apellido", SqlDbType.VarChar).Value = apellido;
+                    command.CommandType = CommandType.Text;
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Empleado e = new Empleado
+                        {
+                            IdEmpleado = reader.GetInt32(0),
+                            Nombre = reader.GetString(1),
+                            Apellido = reader.GetString(2),
+                            Dni = reader.GetInt32(3),
+                            Correo = reader.GetString(4),
+                            Clave = reader.GetString(5),
+                            EstadoEmpleado = reader.GetByte(6),
+                        };
+                        res.Add(e);
+                    }
+                    connection.Close();
+                }
+            }
+            return res;
+        }
+
     }
 }

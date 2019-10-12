@@ -86,14 +86,26 @@
                     <span asp-validation-for="Disponibilidad" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                     <label class="control-label">Propietario</label>
-                     <select class="form-control" name="IdPropietario">
-                            @foreach (var item in (IList<Propietario>)ViewBag.todosPropietarios)
-                            {
-                                @:<option value="@item.IdPropietario">@(item.Nombre + " " + item.Apellido)</option>
-                            }
-                     </select>
-                     <span asp-validation-for="IdPropietario" class="text-danger"></span>
+                    <label asp-for="Longitud" class="control-label"></label>
+                    <input asp-for="Longitud" class="form-control" placeholder="Longitud" />
+                    <span asp-validation-for="Longitud" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="contendor-f1">
+                <div class="form-group">
+                    <label asp-for="Latitud" class="control-label"></label>
+                    <input asp-for="Latitud" class="form-control" placeholder="Latitud" />
+                    <span asp-validation-for="Latitud" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Propietario</label>
+                    <select class="form-control" name="IdPropietario">
+                        @foreach (var item in (IList<Propietario>)ViewBag.todosPropietarios)
+                        {
+                            @:<option value="@item.IdPropietario">@(item.Nombre + " " + item.Apellido)</option>
+                        }
+                    </select>
+                    <span asp-validation-for="IdPropietario" class="text-danger"></span>
                 </div>
             </div>
                 <div class="contendor-f1">

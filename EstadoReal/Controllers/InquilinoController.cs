@@ -10,13 +10,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EstadoReal.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "Empleado")]
     public class InquilinoController : Controller
     {
-        private readonly IRepositorio<Inquilino> repositorio;
+        private readonly IRepositorioInquilino repositorio;
         private readonly IRepositorioEmpleado empleadosRepo;
 
-        public InquilinoController(IRepositorio<Inquilino> repositorio, IRepositorioEmpleado empleadosRepo)
+        public InquilinoController(IRepositorioInquilino repositorio, IRepositorioEmpleado empleadosRepo)
         {
             this.repositorio = repositorio;
             this.empleadosRepo = empleadosRepo;
@@ -159,5 +159,46 @@ namespace EstadoReal.Controllers
                 return View();
             }
         }
+        public ActionResult ListInquilinos()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ListInquilinos(string nombre, string apellido)
+        {
+            try
+            {
+                if (ModelState.IsValid && !nombre.Equals("") && !apellido.Equals(""))
+                {
+                    var inquilino = repositorio.ObtenerPorNombreApellido(nombre, apellido);
+
+                    if(inquilino.Count() == 0)
+                    {
+                        ViewBag.Error = "No se encontraron resultados";
+                        return View();
+                    } 
+                    else
+                    {
+                        ViewBag.Error = "";
+                        return View(inquilino);
+                    }
+                }
+                else
+                {
+                    ViewBag.Error = "No se encontraron resultados";
+                    return View();
+                }
+            }
+            catch (Exception e)
+            {
+                ViewBag.StackTrace = e.StackTrace;
+                ViewBag.Error = "No se encontraron resultados";
+                return View();
+            }
+        }
+
     }
 }

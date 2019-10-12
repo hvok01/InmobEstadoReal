@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EstadoReal.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "Empleado")]
     public class PagoController : Controller
     {
         private readonly IRepositorio<Pago> repositorio;

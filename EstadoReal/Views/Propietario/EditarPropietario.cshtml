@@ -1,0 +1,110 @@
+﻿@model EstadoReal.Models.Propietario
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<link href="~/css/EmpleadoCrear.css" rel="stylesheet" type="text/css" />
+
+<div class="contenedor-nav">
+    <nav>
+        <input type="checkbox" id="menu" class="hidden" />
+        <label class="logo-Volver" for="menu"><img src="~/img/VolverIcon.png" alt="Volver" /></label>
+        <label class="logo-1" for="menu"><img src="~/img/MenuBlack.png" alt="Menu" /></label>
+        <div class="logo-2"><a asp-action="VistaPropietarioIndex"><img src="~/img/ERIcon1Black.png" alt="Estado Real" /></a></div>
+        <div class="logo-3"><a asp-controller="Home" asp-action="Logout"><img src="~/img/SalirIcon.png" alt="Cerrar Sesion" /></a></div>
+    </nav>
+</div>
+
+<div class="nav-display" id="nav">
+    <div><a asp-controller="Propietario" asp-action="VistaPropietarioIndex">Propietarios</a></div>
+    <div><a asp-controller="Home" asp-action="Logout">Salir</a></div>
+</div>
+
+
+<div class="contenedor-formulario-registrar">
+
+    <div class="contenedor-bienvenida">
+        <h2>Editar: No te olvides de llenar todos los campos.</h2>
+    </div>
+    <div class="contenedor-crear">
+        <div class="imagen-usuario"> <img src="~/img/User2.png" alt="crear propietario" /></div>
+        <div></div>
+        <p>Editar Propietario</p>
+    </div>
+    <div class="contenedor-formulario">
+        <form asp-action="EditarPropietario" class="formulario">
+            <input type="hidden" asp-for="IdPropietario" value="@ViewBag.id" />
+            <div class="contendor-f1">
+                <div class="form-group">
+                    <label asp-for="Nombre" class="control-label"></label>
+                    <input asp-for="Nombre" class="form-control" placeholder="Nombre" />
+                    <span asp-validation-for="Nombre" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Apellido" class="control-label"></label>
+                    <input asp-for="Apellido" class="form-control" placeholder="Apellido" />
+                    <span asp-validation-for="Apellido" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="contendor-f1">
+                <div class="form-group">
+                    <label asp-for="Dni" class="control-label"></label>
+                    <input asp-for="Dni" class="form-control" placeholder="Dni" />
+                    <span asp-validation-for="Dni" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Correo" class="control-label"></label>
+                    <input asp-for="Correo" class="form-control" placeholder="Correo" />
+                    <span asp-validation-for="Correo" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="contendor-f1">
+                <div class="form-group">
+                    <label asp-for="Telefono" class="control-label"></label>
+                    <input asp-for="Telefono" class="form-control" placeholder="Telefono" />
+                    <span asp-validation-for="Telefono" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Clave" class="control-label"></label>
+                    <input asp-for="Clave" class="form-control" placeholder="Clave" type="password" />
+                    <span asp-validation-for="Clave" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="contendor-f1">
+                <div class="form-group ultimo">
+                    <a asp-action="VistaPropietarioIndex">Volver</a>
+                    <input type="submit" value="Editar" class="btn-1" />
+                </div>
+            </div>
+            <div>
+                @if (ViewBag.MensajeError == null)
+                {
+                    <p style="color: #6D9B65;"> @ViewBag.Exito </p>
+                }
+                else
+                {
+                    <p class="mensaje-error"> @ViewBag.MensajeError</p>
+                }
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+
+    let check = document.getElementById("menu");
+    let nav = document.getElementById("nav");
+    let contenido = document.getElementById("mostrar");
+
+    check.addEventListener('click', () => {
+        if (check.checked) {
+            nav.style.display = "flex";
+            contenido.style.display = "none";
+        } else {
+            nav.style.display = "none";
+            contenido.style.display = "flex";
+        }
+    });
+
+</script>

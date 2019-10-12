@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EstadoReal.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "Empleado")]
     public class ContratoController : Controller
     {
         private readonly IRepositorioContrato repositorio;
@@ -198,19 +198,28 @@ namespace EstadoReal.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    ViewBag.ResultadosContratos = repositorio.BuscarEntreFechas(contrato.InicioContrato, contrato.FinContrato);
-                    return View();
+                    var contratos = repositorio.BuscarEntreFechas(contrato.InicioContrato, contrato.FinContrato);
+
+                    if (contratos.Count() == 0)
+                    {
+                        ViewBag.Error = "No se encontraron resultados";
+                        return View();
+                    }
+                    else
+                    {
+                        ViewBag.Error = "";
+                        return View(contratos);
+                    }
                 } else
                 {
-                    ViewBag.ResultadosContratos = null;
+                    ViewBag.Error = "No se encontraron resultados";
                     return View();
                 }
                     
             }
             catch (Exception ex)
             {
-                ViewBag.ResultadosContratos = null;
-                ViewBag.Error = ex.Message;
+                ViewBag.Error = "No se encontraron resultados";
                 ViewBag.StackTrae = ex.StackTrace;
                 return View();
             }

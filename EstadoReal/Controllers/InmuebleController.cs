@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EstadoReal.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "Empleado")]
     public class InmuebleController : Controller
     {
         private readonly IRepositorioInmueble repositorio;
@@ -184,7 +184,6 @@ namespace EstadoReal.Controllers
             try
             {
                 var contratos = repositorio.ObtenerContratos(id);
-                ViewBag.TodosInquilinos = inquilino.ObtenerTodos();
                 return View(contratos);
             }
             catch (Exception e)
@@ -208,14 +207,23 @@ namespace EstadoReal.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
+                if (ModelState.IsValid && !Nombre.Equals("") && !Apellido.Equals(""))
                 {
-                    ViewBag.misPropietarios = propietario.ObtenerPorNombreApellido(Nombre, Apellido);
-                    var inmuebles = repositorio.ObtenerTodos();
-                    return View(inmuebles);
+                    var inmuebles = repositorio.ObtenerPorNombrePropietario(Nombre, Apellido);
+                    if (inmuebles.Count() == 0)
+                    {
+                        ViewBag.Error = "No se encontraron resultados";
+                        return View();
+                    }
+                    else
+                    {
+                        ViewBag.Error = "";
+                        return View(inmuebles);
+                    }
                 }
                 else
                 {
+                    ViewBag.Error = "No se encontraron resultados";
                     ViewBag.misPropietarios = null;
                     var inmuebles = repositorio.ObtenerTodos();
                     return View(inmuebles);
@@ -223,8 +231,8 @@ namespace EstadoReal.Controllers
             }
             catch (Exception e)
             {
-                ViewBag.Error = e.Message;
-                ViewBag.StackTrate = e.StackTrace;
+                ViewBag.StackTrace = e.StackTrace;
+                ViewBag.Error = "No se encontraron resultados";
                 return View();
             }
         }

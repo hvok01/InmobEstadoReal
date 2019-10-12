@@ -1,4 +1,4 @@
-﻿@model EstadoReal.Models.Contrato
+﻿@model IEnumerable<EstadoReal.Models.Contrato>
 
 @{
     ViewData["Title"] = "DateFilter";
@@ -37,14 +37,14 @@
         <form asp-action="DateFilter" class="formulario">
             <div class="contendor-f1">
                 <div class="form-group">
-                    <label asp-for="InicioContrato" class="control-label"></label>
+                    <label class="control-label">InicioContrato </label>
                     <input class="form-control" type="date" name="InicioContrato" />
-                    <span asp-validation-for="InicioContrato" class="text-danger"></span>
+                    <span class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="FinContrato" class="control-label"></label>
+                    <label class="control-label">FinContrato</label>
                     <input class="form-control" type="date" name="FinContrato" />
-                    <span asp-validation-for="FinContrato" class="text-danger"></span>
+                    <span class="text-danger"></span>
                 </div>
             </div>
             <div class="contendor-f1">
@@ -54,32 +54,31 @@
                 </div>
             </div>
         </form>
-        @if (ViewBag.ResultadosContratos != null)
+        @if (Model != null)
         {
             <div class="contenedor-bienvenida">
                 <h2>Resultados de la busqueda:</h2>
             </div>
-            @foreach (var item in (IList<Contrato>)ViewBag.ResultadosContratos)
+            @foreach (var item in Model)
             {
-    <div class="contendor-f1">
-        <div class="form-group">
-            <p class="control-label">Inicio Contrato: @item.InicioContrato</p>
-            <span asp-validation-for="InicioContrato" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <p class="control-label">Fin Contrato: @item.FinContrato</p>
-            <span asp-validation-for="FinContrato" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            <p class="control-label">Id Contrato: @item.IdContrato</p>
-            <span asp-validation-for="IdContrato" class="text-danger"></span>
-        </div>
-        <div class="form-group">
-            @Html.ActionLink("ver más", "Details", new { id = item.IdContrato })
-        </div>
-    </div>
+                <div class="contendor-f1">
+                    <div class="form-group">
+                        <p class="control-label">Inicio Contrato: @item.InicioContrato</p>
+                    </div>
+                    <div class="form-group">
+                        <p class="control-label">Fin Contrato: @item.FinContrato</p>
+                    </div>
+                    <div class="form-group">
+                        <p class="control-label">Id Contrato: @item.IdContrato</p>
+                    </div>
+                    <div class="form-group">
+                        @Html.ActionLink("ver más", "Details", new { id = item.IdContrato })
+                    </div>
+                </div>
             }
         }
+
+        <p class="control-label">@ViewBag.Error</p>
 
     </div>
 </div>

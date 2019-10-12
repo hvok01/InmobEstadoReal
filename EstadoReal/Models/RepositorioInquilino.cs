@@ -175,5 +175,78 @@ namespace EstadoReal.Models
             }
             return res;
         }
+
+        public IList<Inquilino> ObtenerPorNombreApellido(string nombre,string apellido)
+        {
+            IList<Inquilino> res = new List<Inquilino>();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string sql = $"SELECT IdInquilino, Nombre, Apellido, Dni, LugarTrabajo, Correo, Telefono, NombreGarante, DniGarante, EstadoInquilino " +
+                    $" FROM Inquilinos WHERE EstadoInquilino = 1 AND Nombre = @nombre AND Apellido = @apellido;";
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.Add("@nombre", SqlDbType.VarChar).Value = nombre;
+                    command.Parameters.Add("@apellido", SqlDbType.VarChar).Value = apellido;
+                    command.CommandType = CommandType.Text;
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Inquilino i = new Inquilino
+                        {
+                            IdInquilino = reader.GetInt32(0),
+                            Nombre = reader.GetString(1),
+                            Apellido = reader.GetString(2),
+                            Dni = reader.GetInt32(3),
+                            LugarTrabajo = reader.GetString(4),
+                            Correo = reader.GetString(5),
+                            Telefono = reader.GetInt64(6),
+                            NombreGarante = reader.GetString(7),
+                            DniGarante = reader.GetInt32(8),
+                            EstadoInquilino = reader.GetByte(9),
+                        };
+                        res.Add(i);
+                    }
+                    connection.Close();
+                }
+            }
+            return res;
+        }
+
+        public IList<Inquilino> ObtenerPorContratoId(int id)
+        {
+            IList<Inquilino> res = new List<Inquilino>();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string sql = $"SELECT IdInquilino, Nombre, Apellido, Dni, LugarTrabajo, Correo, Telefono, NombreGarante, DniGarante, EstadoInquilino " +
+                    $" FROM Inquilinos i INNER JOIN Contratos c ON p.IdContrato= c.IdContrato WHERE EstadoInquilino = 1 AND c.IdContrato = @id;";
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.Add("@id", SqlDbType.Int).Value = id;
+                    command.CommandType = CommandType.Text;
+                    connection.Open();
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Inquilino i = new Inquilino
+                        {
+                            IdInquilino = reader.GetInt32(0),
+                            Nombre = reader.GetString(1),
+                            Apellido = reader.GetString(2),
+                            Dni = reader.GetInt32(3),
+                            LugarTrabajo = reader.GetString(4),
+                            Correo = reader.GetString(5),
+                            Telefono = reader.GetInt64(6),
+                            NombreGarante = reader.GetString(7),
+                            DniGarante = reader.GetInt32(8),
+                            EstadoInquilino = reader.GetByte(9),
+                        };
+                        res.Add(i);
+                    }
+                    connection.Close();
+                }
+            }
+            return res;
+        }
     }
 }

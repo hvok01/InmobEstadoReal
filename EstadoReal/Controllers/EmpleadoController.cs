@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EstadoReal.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "Empleado")]
     public class EmpleadoController : Controller
     {
         private readonly IRepositorioEmpleado repositorio;
@@ -182,6 +182,47 @@ namespace EstadoReal.Controllers
             {
                 ViewBag.Error = ex.Message;
                 ViewBag.StackTrae = ex.StackTrace;
+                return View();
+            }
+        }
+
+        // GET: Empleado/Delete/5
+        public ActionResult ListEmpleados()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ListEmpleados(string nombre, string apellido)
+        {
+            try
+            {
+                if (ModelState.IsValid && !nombre.Equals("") && !apellido.Equals(""))
+                {
+                    var empelados = repositorio.ObtenerPorNombreApellido(nombre, apellido);
+
+                    if (empelados.Count() == 0)
+                    {
+                        ViewBag.Error = "No se encontraron resultados";
+                        return View();
+                    }
+                    else
+                    {
+                        ViewBag.Error = "";
+                        return View(empelados);
+                    }
+                }
+                else
+                {
+                    ViewBag.Error = "No se encontraron resultados";
+                    return View();
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.StackTrace = ex.StackTrace;
+                ViewBag.Error = "No se encontraron resultados";
                 return View();
             }
         }
