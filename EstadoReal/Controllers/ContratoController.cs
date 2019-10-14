@@ -75,6 +75,8 @@ namespace EstadoReal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Contrato contrato)
         {
+            ViewBag.id = contrato.IdContrato;
+
             try
             {
                 if (ModelState.IsValid)

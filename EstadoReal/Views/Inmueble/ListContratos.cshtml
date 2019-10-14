@@ -54,11 +54,21 @@
             </div>
 
         }
-        <div class="contendor-f1">
-            <div class="form-group ultimo">
-                <a asp-action="Index">Volver</a>
+        @if (ViewBag.Error != "")
+        {
+            <div class="contendor-f1">
+                <div class="form-group">
+
+                    <p class="control-label">@ViewBag.Error</p>
+                   
+                </div>
             </div>
-        </div>
+        }
+            <div class="contendor-f1">
+                <div class="form-group ultimo">
+                    <a asp-action="Index">Volver</a>
+                </div>
+            </div>
     </div>
 </div>
 

@@ -184,11 +184,18 @@ namespace EstadoReal.Controllers
             try
             {
                 var contratos = repositorio.ObtenerContratos(id);
+                if (contratos.Count > 0)
+                {
+                    ViewBag.Error = "";
+                }
+                else
+                {
+                    ViewBag.Error = "No se encontraron resultados";
+                }
                 return View(contratos);
             }
             catch (Exception e)
             {
-                ViewBag.Error = e.Message;
                 ViewBag.StackTrate = e.StackTrace;
                 return View();
             }

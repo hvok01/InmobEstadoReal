@@ -112,7 +112,7 @@ namespace EstadoReal.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    //que pasa aqui coñooo
+                    
                     repositorio.Modificacion(pago);
                     ViewBag.ContratosTodos = contrato.ObtenerTodos();
                     var pagoRec = repositorio.ObtenerPorId(pago.IdPago);

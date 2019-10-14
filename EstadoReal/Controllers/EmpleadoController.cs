@@ -122,6 +122,7 @@ namespace EstadoReal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Empleado empleado)
         {
+            ViewBag.id = empleado.IdEmpleado;
             try
             {
                 if (ModelState.IsValid && empleado.Nombre != "" && empleado.Clave != "")
@@ -139,14 +140,10 @@ namespace EstadoReal.Controllers
                 }
                 else
                     ViewBag.Mensaje = "Nuevo complejo sistema detectó que hay campos vacíos";
-                if (TempData.ContainsKey("Id"))
-                    ViewBag.Id = TempData["Id"];
                 return View();
             }
             catch
             {
-                if (TempData.ContainsKey("Id"))
-                    ViewBag.Id = TempData["Id"];
                 ViewBag.Mensaje = "No sabemos que pasó pero hiciste algo mal seguro.";
                 return View();
             }
