@@ -89,8 +89,8 @@ namespace EstadoReal.Models
                         c = new Contrato
                         {
                             IdContrato = reader.GetInt32(0),
-                            InicioContrato = reader.GetDateTime(1).ToString(),
-                            FinContrato = reader.GetDateTime(2).ToString(),
+                            InicioContrato = reader.GetDateTime(1),
+                            FinContrato = reader.GetDateTime(2),
                             Deudas = reader.GetDecimal(3),
                             EstadoContrato = reader.GetByte(4),
                             IdInquilino = reader.GetInt32(5),
@@ -121,8 +121,8 @@ namespace EstadoReal.Models
                         c = new Contrato
                         {
                             IdContrato = reader.GetInt32(0),
-                            InicioContrato = reader.GetDateTime(1).ToString(),
-                            FinContrato = reader.GetDateTime(2).ToString(),
+                            InicioContrato = reader.GetDateTime(1),
+                            FinContrato = reader.GetDateTime(2),
                             Deudas = reader.GetDecimal(3),
                             EstadoContrato = reader.GetByte(4),
                             IdInquilino = reader.GetInt32(5),
@@ -153,8 +153,8 @@ namespace EstadoReal.Models
                         c = new Contrato
                         {
                             IdContrato = reader.GetInt32(0),
-                            InicioContrato = reader.GetDateTime(1).ToString(),
-                            FinContrato = reader.GetDateTime(2).ToString(),
+                            InicioContrato = reader.GetDateTime(1),
+                            FinContrato = reader.GetDateTime(2),
                             Deudas = reader.GetDecimal(3),
                             EstadoContrato = reader.GetByte(4),
                             IdInquilino = reader.GetInt32(5),
@@ -184,8 +184,8 @@ namespace EstadoReal.Models
                         Contrato c = new Contrato
                         {
                             IdContrato = reader.GetInt32(0),
-                            InicioContrato = reader.GetDateTime(1).ToString(),
-                            FinContrato = reader.GetDateTime(2).ToString(),
+                            InicioContrato = reader.GetDateTime(1),
+                            FinContrato = reader.GetDateTime(2),
                             Deudas = reader.GetDecimal(3),
                             EstadoContrato = reader.GetByte(4),
                             IdInquilino = reader.GetInt32(5),
@@ -199,7 +199,7 @@ namespace EstadoReal.Models
             return res;
         }
 
-        public IList<Contrato> BuscarEntreFechas(string fechaA, string fechaB)
+        public IList<Contrato> BuscarEntreFechas(DateTime fechaA, DateTime fechaB)
         {
             IList<Contrato> res = new List<Contrato>();
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -219,8 +219,8 @@ namespace EstadoReal.Models
                         Contrato c = new Contrato
                         {
                             IdContrato = reader.GetInt32(0),
-                            InicioContrato = reader.GetDateTime(1).ToString(),
-                            FinContrato = reader.GetDateTime(2).ToString(),
+                            InicioContrato = reader.GetDateTime(1),
+                            FinContrato = reader.GetDateTime(2),
                             Deudas = reader.GetDecimal(3),
                             EstadoContrato = reader.GetByte(4),
                             IdInquilino = reader.GetInt32(5),
@@ -252,8 +252,8 @@ namespace EstadoReal.Models
                         Contrato c = new Contrato
                         {
                             IdContrato = reader.GetInt32(0),
-                            InicioContrato = reader.GetDateTime(1).ToString(),
-                            FinContrato = reader.GetDateTime(2).ToString(),
+                            InicioContrato = reader.GetDateTime(1),
+                            FinContrato = reader.GetDateTime(2),
                             Deudas = reader.GetDecimal(3),
                             EstadoContrato = reader.GetByte(4),
                             IdInquilino = reader.GetInt32(5),

@@ -170,7 +170,7 @@ namespace EstadoReal.Controllers
 
         // GET: Propietario/Delete/5
         [Authorize(Policy = "Empleado")]
-        public ActionResult Delete(int id)
+        public ActionResult Eliminar(int id)
         {
             try
             {
@@ -189,7 +189,7 @@ namespace EstadoReal.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Policy = "Empleado")]
-        public ActionResult Delete(Propietario propietario)
+        public ActionResult Eliminar(Propietario propietario)
         {
             try
             {

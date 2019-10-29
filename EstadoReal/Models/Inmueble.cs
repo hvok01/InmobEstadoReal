@@ -9,6 +9,7 @@ namespace EstadoReal.Models
 {
     public class Inmueble
     {
+        [ForeignKey("Inmueble")]
         [Key]
         public int IdInmueble { get; set; }
         [Required]
@@ -24,10 +25,8 @@ namespace EstadoReal.Models
         [Required]
         public byte Disponibilidad { get; set; }
         [Required]
-
         public decimal Longitud { get; set; }
         [Required]
-
         public decimal Latitud { get; set; }
 
         public byte EstadoInmueble { get; set; }
@@ -36,5 +35,6 @@ namespace EstadoReal.Models
 
         [ForeignKey("IdPropietario")]
         public Propietario Duenio { get; set; }
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,9 +12,9 @@ namespace EstadoReal.Models
         [Key]
         public int IdContrato { get; set; }
         [Required]
-        public string InicioContrato { get; set; }
+        public DateTime InicioContrato { get; set; }
         [Required]
-        public string FinContrato { get; set; }
+        public DateTime FinContrato { get; set; }
         [Required]
         public decimal Deudas { get; set; }
         [Required]
@@ -23,6 +24,11 @@ namespace EstadoReal.Models
 
         public byte EstadoContrato { get; set; }
 
-        public Inquilino inquilino { get; set; }
+        [ForeignKey("IdInquilino")]
+        public Inquilino Inquilino { get; set; }
+
+        [ForeignKey("IdInmueble")]
+        public Inmueble Inmueble { get; set; }
+
     }
 }

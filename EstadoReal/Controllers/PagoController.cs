@@ -138,7 +138,7 @@ namespace EstadoReal.Controllers
         }
 
         // GET: Pago/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Eliminar(int id)
         {
             try
             {
@@ -156,7 +156,7 @@ namespace EstadoReal.Controllers
         // POST: Pago/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(Pago pago)
+        public ActionResult Eliminar(Pago pago)
         {
             try
             {

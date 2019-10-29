@@ -11,7 +11,7 @@ namespace EstadoReal.Models
 
         Contrato ObtenerPorIdInmueble(int id);
 
-        IList<Contrato> BuscarEntreFechas(string fechaA, string fechaB);
+        IList<Contrato> BuscarEntreFechas(DateTime fechaA, DateTime fechaB);
 
         IList<Contrato> ObtenerTodosPorIdInmueble(int id);
 

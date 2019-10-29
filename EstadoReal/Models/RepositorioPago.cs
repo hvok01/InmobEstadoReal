@@ -91,7 +91,7 @@ namespace EstadoReal.Models
                             IdPago = reader.GetInt32(0),
                             Monto = reader.GetDecimal(1),
                             Pagado = reader.GetByte(2),
-                            Fecha = reader.GetDateTime(3).ToString(),
+                            Fecha = reader.GetDateTime(3),
                             NroPago = reader.GetInt32(4),
                             EstadoPago = reader.GetByte(5),
                             IdContrato = reader.GetInt32(6),
@@ -123,7 +123,7 @@ namespace EstadoReal.Models
                             IdPago = reader.GetInt32(0),
                             Monto = reader.GetDecimal(1),
                             Pagado = reader.GetByte(2),
-                            Fecha = reader.GetDateTime(3).ToString(),
+                            Fecha = reader.GetDateTime(3),
                             NroPago = reader.GetInt32(4),
                             EstadoPago = reader.GetByte(5),
                             IdContrato = reader.GetInt32(6),
@@ -154,7 +154,7 @@ namespace EstadoReal.Models
                             IdPago = reader.GetInt32(0),
                             Monto = reader.GetDecimal(1),
                             Pagado = reader.GetByte(2),
-                            Fecha = reader.GetDateTime(3).ToString(),
+                            Fecha = reader.GetDateTime(3),
                             NroPago = reader.GetInt32(4),
                             EstadoPago = reader.GetByte(5),
                             IdContrato = reader.GetInt32(6),
@@ -187,7 +187,7 @@ namespace EstadoReal.Models
                         {
                             Monto = reader.GetDecimal(0),
                             Pagado = reader.GetByte(1),
-                            Fecha = reader.GetDateTime(2).ToString(),
+                            Fecha = reader.GetDateTime(2),
                             NroPago = reader.GetInt32(3),
                         };
                         res.Add(p);

@@ -326,11 +326,11 @@ namespace EstadoReal.Models
                     {
                         Contrato c = new Contrato
                         {
-                            InicioContrato = reader.GetDateTime(0).ToString(),
-                            FinContrato = reader.GetDateTime(1).ToString(),
+                            InicioContrato = reader.GetDateTime(0),
+                            FinContrato = reader.GetDateTime(1),
                             Deudas = reader.GetDecimal(2),
                             IdInquilino = reader.GetInt32(3),
-                            inquilino = new Inquilino
+                            Inquilino = new Inquilino
                             {
                                 Nombre = reader.GetString(4),
                                 Apellido = reader.GetString(5),

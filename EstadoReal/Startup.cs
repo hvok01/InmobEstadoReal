@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace EstadoReal
 {
@@ -35,6 +36,19 @@ namespace EstadoReal
                     options.LogoutPath = "/Home/Logout";
                     //antes era restringido pero no tenemos xd
                     options.AccessDeniedPath = "/Home/Index";
+                })
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = configuration["TokenAuthentication:Issuer"],
+                        ValidAudience = configuration["TokenAuthentication:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.ASCII.GetBytes(configuration["TokenAuthentication:SecretKey"])),
+                    };
                 });
             services.AddAuthorization(options =>
             {

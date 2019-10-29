@@ -153,7 +153,7 @@ namespace EstadoReal.Controllers
         }
 
         // GET: Contrato/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Eliminar(int id)
         {
             try
             {
@@ -171,7 +171,7 @@ namespace EstadoReal.Controllers
         // POST: Contrato/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(Contrato contrato)
+        public ActionResult Eliminar(Contrato contrato)
         {
             try
             {

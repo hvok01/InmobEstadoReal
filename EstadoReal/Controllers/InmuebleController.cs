@@ -145,7 +145,7 @@ namespace EstadoReal.Controllers
         }
 
         // GET: Inmueble/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Eliminar(int id)
         {
             try
             {
@@ -163,7 +163,7 @@ namespace EstadoReal.Controllers
         // POST: Inmueble/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(Inmueble inmueble)
+        public ActionResult Eliminar(Inmueble inmueble)
         {
             try
             {
